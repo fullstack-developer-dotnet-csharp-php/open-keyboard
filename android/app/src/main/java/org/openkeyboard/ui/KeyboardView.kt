@@ -246,13 +246,15 @@ class KeyboardView @JvmOverloads constructor(
             if (pk.type == KeyType.NORMAL && pk.code.length == 1) {
                 val sanskrit = engine?.getLongPressChar(pk.code[0])
                 val longChar = when {
-                    sanskrit != null && !isEnglishLayout -> {
-                        val upper = pk.code.uppercase()
-                        if (engine?.hasKeyMapping(upper) == true) {
-                            upper
-                        } else {
-                            sanskrit
-                        }
+                    !isEnglishLayout -> {
+                        if (sanskrit != null) {
+                            val upper = pk.code.uppercase()
+                            if (engine?.hasKeyMapping(upper) == true) {
+                                upper
+                            } else {
+                                sanskrit
+                            }
+                        } else null
                     }
                     else -> thirdTextMap[pk.code.lowercase()]
                 }
@@ -703,7 +705,7 @@ class KeyboardView @JvmOverloads constructor(
                     if (showThirdText && !isSymbols && !isEmoji && k.code.length == 1) {
                         val customLongPress = engine?.getLongPressChar(k.code[0])
                         val thirdText = when {
-                            !isEnglishLayout && customLongPress != null -> customLongPress
+                            !isEnglishLayout -> customLongPress
                             else -> thirdTextMap[k.code.lowercase()]
                         }
                         if (thirdText != null) {

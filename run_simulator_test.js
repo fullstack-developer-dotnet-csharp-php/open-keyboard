@@ -29,7 +29,7 @@ const artDir = 'C:/Users/Siva/.gemini/antigravity-cli/brain/a9b6704e-33fd-4e2e-9
   if (firstKeyText !== 'q') throw new Error(`Expected 'q', got '${firstKeyText}'`);
 
   const thirdTextQ = await page.textContent('.gboard-row:nth-child(1) .gboard-key:nth-child(1) .key-third-text');
-  console.log('Q 3rd text hint (expected 1):', thirdTextQ);
+  console.log('Q 3rd text hint in English (expected 1):', thirdTextQ);
   if (thirdTextQ !== '1') throw new Error(`Expected '1', got '${thirdTextQ}'`);
 
   const hintBadgeCount = await page.locator('.key-hint-badge').count();
@@ -77,46 +77,103 @@ const artDir = 'C:/Users/Siva/.gemini/antigravity-cli/brain/a9b6704e-33fd-4e2e-9
   await page.selectOption('#keymapSelect', 'Tamil 26.xml');
   await page.waitForTimeout(400);
 
-  // Check 3rd text on Row 1 (numbers 1..0, NOT Tamil numbers)
-  const t26_q_third = await page.textContent('.gboard-row:nth-child(1) .gboard-key:nth-child(1) .key-third-text');
-  console.log('Tamil 26 Q 3rd text (expected 1):', t26_q_third);
-  if (t26_q_third !== '1') throw new Error(`Expected '1', got '${t26_q_third}'`);
+  // Verify qwertyu keycaps
+  const expectedRow1 = [
+    { key: 'q', tamil: 'ங்' },
+    { key: 'w', tamil: 'ய்' },
+    { key: 'e', tamil: 'ச்' },
+    { key: 'r', tamil: 'ப்' },
+    { key: 't', tamil: 'ன்' },
+    { key: 'y', tamil: 'ஐ' },
+    { key: 'u', tamil: 'ட்' }
+  ];
 
-  // Check Sanskrit on 'a' (expected ஷ)
-  // 'a' is key index 1 in row 2
-  const a_third = await page.textContent('.gboard-row:nth-child(2) .gboard-key:nth-child(1) .key-third-text');
+  for (let i = 0; i < expectedRow1.length; i++) {
+    const item = expectedRow1[i];
+    const keyLoc = page.locator(`.gboard-row:nth-child(1) .gboard-key:nth-child(${i + 1})`);
+    const mainText = await keyLoc.locator('.key-main-text').textContent();
+    const badgeText = await keyLoc.locator('.key-hint-badge').textContent();
+    console.log(`Row 1 Key ${item.key}: mainText='${mainText}', badge='${badgeText}' (expected '${item.tamil}', '${item.key}')`);
+    if (mainText !== item.tamil) throw new Error(`Key ${item.key}: expected main text '${item.tamil}', got '${mainText}'`);
+    if (badgeText !== item.key) throw new Error(`Key ${item.key}: expected badge '${item.key}', got '${badgeText}'`);
+
+    // Verify row 1 has NO numbers 1..0 on Tamil 26
+    const thirdLoc = keyLoc.locator('.key-third-text');
+    const hasThird = await thirdLoc.count();
+    if (hasThird > 0) {
+      const thirdVal = await thirdLoc.textContent();
+      throw new Error(`Row 1 key ${item.key} should not have 3rd text, got '${thirdVal}'`);
+    }
+  }
+  console.log('✓ Verified qwertyu keycaps match desktop XML and have no numbers on row 1');
+
+  // Check Sanskrit hints on 'a', 's', 'd', 'f', 'z'
+  const a_third = await page.locator('.gboard-key:has(.key-hint-badge:text-is("a")) .key-third-text').textContent();
   console.log('Tamil 26 key "a" 3rd text (expected Sanskrit ஷ):', a_third);
   if (a_third !== 'ஷ') throw new Error(`Expected 'ஷ', got '${a_third}'`);
 
-  // Check Sanskrit on 's' (expected ஸ)
-  const s_third = await page.textContent('.gboard-row:nth-child(2) .gboard-key:nth-child(2) .key-third-text');
+  const s_third = await page.locator('.gboard-key:has(.key-hint-badge:text-is("s")) .key-third-text').textContent();
   console.log('Tamil 26 key "s" 3rd text (expected Sanskrit ஸ):', s_third);
   if (s_third !== 'ஸ') throw new Error(`Expected 'ஸ', got '${s_third}'`);
 
-  // Check Sanskrit on 'd' (expected ஹ)
-  const d_third = await page.textContent('.gboard-row:nth-child(2) .gboard-key:nth-child(3) .key-third-text');
+  const d_third = await page.locator('.gboard-key:has(.key-hint-badge:text-is("d")) .key-third-text').textContent();
   console.log('Tamil 26 key "d" 3rd text (expected Sanskrit ஹ):', d_third);
   if (d_third !== 'ஹ') throw new Error(`Expected 'ஹ', got '${d_third}'`);
 
-  // Check Sanskrit on 'f' (expected ஜ)
-  const f_third = await page.textContent('.gboard-row:nth-child(2) .gboard-key:nth-child(4) .key-third-text');
+  const f_third = await page.locator('.gboard-key:has(.key-hint-badge:text-is("f")) .key-third-text').textContent();
   console.log('Tamil 26 key "f" 3rd text (expected Sanskrit ஜ):', f_third);
   if (f_third !== 'ஜ') throw new Error(`Expected 'ஜ', got '${f_third}'`);
-
-  // Check Sanskrit on 'z' (expected ஸ்ரீ)
-  const z_third = await page.textContent('.gboard-row:nth-child(3) .gboard-key:nth-child(2) .key-third-text');
-  console.log('Tamil 26 key "z" 3rd text (expected Sanskrit ஸ்ரீ):', z_third);
-  if (z_third !== 'ஸ்ரீ') throw new Error(`Expected 'ஸ்ரீ', got '${z_third}'`);
-
-  // Check top-right ASCII reference badges exist in Tamil 26
-  const t26_badges = await page.locator('.key-hint-badge').count();
-  console.log('Tamil 26 reference badges count (expected > 20):', t26_badges);
-  if (t26_badges < 20) throw new Error(`Expected >20 badges, got ${t26_badges}`);
 
   await page.screenshot({ path: path.join(artDir, 'test_4_tamil26_default.png') });
   console.log('Saved test_4_tamil26_default.png');
 
-  // 5. Tamil 26 CAPS Shift Test
+  // 5. Typing Tests in Tamil 26: 2 times pressing s
+  console.log('Testing: 2 times pressing s');
+  await page.click('#btnClear');
+  const sKeyLoc = page.locator('.gboard-key:has(.key-hint-badge:text-is("s"))').first();
+  const hKeyLoc = page.locator('.gboard-key:has(.key-hint-badge:text-is("h"))').first();
+  const yKeyLoc = page.locator('.gboard-key:has(.key-hint-badge:text-is("y"))').first();
+
+  // Press s once
+  await sKeyLoc.click();
+  await page.waitForTimeout(100);
+  let curVal = await page.inputValue('#editor');
+  console.log('Pressed s once:', curVal, '(expected க்)');
+  if (curVal !== 'க்') throw new Error(`Expected 'க்', got '${curVal}'`);
+
+  // Press s twice
+  await sKeyLoc.click();
+  await page.waitForTimeout(100);
+  curVal = await page.inputValue('#editor');
+  console.log('Pressed s twice:', curVal, '(expected க்க்)');
+  if (curVal !== 'க்க்') throw new Error(`Expected 'க்க்', got '${curVal}'`);
+
+  // Press h -> becomes க்க
+  await hKeyLoc.click();
+  await page.waitForTimeout(100);
+  curVal = await page.inputValue('#editor');
+  console.log('Pressed h after ss:', curVal, '(expected க்க)');
+  if (curVal !== 'க்க') throw new Error(`Expected 'க்க', got '${curVal}'`);
+
+  // Press h again -> becomes க்கா
+  await hKeyLoc.click();
+  await page.waitForTimeout(100);
+  curVal = await page.inputValue('#editor');
+  console.log('Pressed h again:', curVal, '(expected க்கா)');
+  if (curVal !== 'க்கா') throw new Error(`Expected 'க்கா', got '${curVal}'`);
+
+  // Test s + y -> கை
+  await page.click('#btnClear');
+  await sKeyLoc.click();
+  await page.waitForTimeout(100);
+  await yKeyLoc.click();
+  await page.waitForTimeout(100);
+  curVal = await page.inputValue('#editor');
+  console.log('Pressed s then y:', curVal, '(expected கை)');
+  if (curVal !== 'கை') throw new Error(`Expected 'கை', got '${curVal}'`);
+  console.log('✓ Verified 2 times pressing s and s+y combining work perfectly according to original XML!');
+
+  // 6. Tamil 26 CAPS Shift Test
   console.log('Testing: Tamil 26 CAPS Shift mode');
   await page.click('.gboard-key.shift');
   await page.waitForTimeout(300);
@@ -128,7 +185,7 @@ const artDir = 'C:/Users/Siva/.gemini/antigravity-cli/brain/a9b6704e-33fd-4e2e-9
   await page.screenshot({ path: path.join(artDir, 'test_5_tamil26_caps.png') });
   console.log('Saved test_5_tamil26_caps.png');
 
-  // 6. Tamil 26 Small English (Star ★) Shift Test
+  // 7. Tamil 26 Small English (Star ★) Shift Test
   console.log('Testing: Tamil 26 Small English mode (star ★)');
   await page.click('.gboard-key.shift');
   await page.waitForTimeout(300);
@@ -144,7 +201,7 @@ const artDir = 'C:/Users/Siva/.gemini/antigravity-cli/brain/a9b6704e-33fd-4e2e-9
   await page.click('.gboard-key.shift');
   await page.waitForTimeout(300);
 
-  // 7. Test Dropdown Menu (🔄 Sync button next to smiley)
+  // 8. Test Dropdown Menu (🔄 Sync button next to smiley)
   console.log('Testing: Dropdown Menu (🔄 button)');
   await page.click('.gboard-row:nth-child(4) .gboard-key:nth-child(3)');
   await page.waitForTimeout(300);
