@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" ?>
+<Table>
+	<Header>
+		<Language>Tamil</Language>
+		<Encoding>Unicode</Encoding>
+		<Keyboard>Inscript</Keyboard>
+		<LCID>0449</LCID>
+		<Author>NHM</Author>
+		<Description>UNICODE is a 16-bit encoding designed by Unicode Consortium</Description>
+	</Header>
+<Data>
+<Map><Character>0021</Character><Keys>21</Keys></Map>
+<Map><Character>0031</Character><Keys>31</Keys></Map>
+<Map><Character>0040</Character><Keys>40</Keys></Map>
+<Map><Character>0032</Character><Keys>32</Keys></Map>
+<Map><Character>0023</Character><Keys>23</Keys></Map>
+<Map><Character>0033</Character><Keys>33</Keys></Map>
+<Map><Character>0024</Character><Keys>24</Keys></Map>
+<Map><Character>0034</Character><Keys>34</Keys></Map>
+<Map><Character>0025</Character><Keys>25</Keys></Map>
+<Map><Character>0035</Character><Keys>35</Keys></Map>
+<Map><Character>005E</Character><Keys>5E</Keys></Map>
+<Map><Character>0036</Character><Keys>36</Keys></Map>
+<Map><Character>0B950BCD0BB7</Character><Keys>26</Keys></Map>
+<Map><Character>0037</Character><Keys>37</Keys></Map>
+<Map><Character>0038</Character><Keys>38</Keys></Map>
+<Map><Character>0028</Character><Keys>28</Keys></Map>
+<Map><Character>0039</Character><Keys>39</Keys></Map>
+<Map><Character>0029</Character><Keys>29</Keys></Map>
+<Map><Character>0030</Character><Keys>30</Keys></Map>
+<Map><Character>0B83</Character><Keys>5F</Keys></Map>
+<Map><Character>002D</Character><Keys>2D</Keys></Map>
+<Map><Character>002B</Character><Keys>2B</Keys></Map>
+<Map><Character>003D</Character><Keys>3D</Keys></Map>
+<Map><Character>0B94</Character><Keys>51</Keys></Map>
+<Map><Character>0BCC</Character><Keys>71</Keys></Map>
+<Map><Character>0B90</Character><Keys>57</Keys></Map>
+<Map><Character>0BC8</Character><Keys>77</Keys></Map>
+<Map><Character>0B86</Character><Keys>45</Keys></Map>
+<Map><Character>0BBE</Character><Keys>65</Keys></Map>
+<Map><Character>0B88</Character><Keys>52</Keys></Map>
+<Map><Character>0BC0</Character><Keys>72</Keys></Map>
+<Map><Character>0B8A</Character><Keys>54</Keys></Map>
+<Map><Character>0BC2</Character><Keys>74</Keys></Map>
+<Map><Character>0059</Character><Keys>59</Keys></Map>
+<Map><Character>0079</Character><Keys>79</Keys></Map>
+<Map><Character>0B99</Character><Keys>55</Keys></Map>
+<Map><Character>0BB9</Character><Keys>75</Keys></Map>
+<Map><Character>0049</Character><Keys>49</Keys></Map>
+<Map><Character>0069</Character><Keys>69</Keys></Map>
+<Map><Character>004F</Character><Keys>4F</Keys></Map>
+<Map><Character>006F</Character><Keys>6F</Keys></Map>
+<Map><Character>0050</Character><Keys>50</Keys></Map>
+<Map><Character>0B9C</Character><Keys>70</Keys></Map>
+<Map><Character>007B</Character><Keys>7B</Keys></Map>
+<Map><Character>005B</Character><Keys>5B</Keys></Map>
+<Map><Character>0B9E</Character><Keys>7D</Keys></Map>
+<Map><Character>005D</Character><Keys>5D</Keys></Map>
+<Map><Character>0B93</Character><Keys>41</Keys></Map>
+<Map><Character>0BCB</Character><Keys>61</Keys></Map>
+<Map><Character>0B8F</Character><Keys>53</Keys></Map>
+<Map><Character>0BC7</Character><Keys>73</Keys></Map>
+<Map><Character>0B85</Character><Keys>44</Keys></Map>
+<Map><Character>0BCD</Character><Keys>64</Keys></Map>
+<Map><Character>0B87</Character><Keys>46</Keys></Map>
+<Map><Character>0BBF</Character><Keys>66</Keys></Map>
+<Map><Character>0B89</Character><Keys>47</Keys></Map>
+<Map><Character>0BC1</Character><Keys>67</Keys></Map>
+<Map><Character>0048</Character><Keys>48</Keys></Map>
+<Map><Character>0BAA</Character><Keys>68</Keys></Map>
+<Map><Character>0BB1</Character><Keys>4A</Keys></Map>
+<Map><Character>0BB0</Character><Keys>6A</Keys></Map>
+<Map><Character>004B</Character><Keys>4B</Keys></Map>
+<Map><Character>0B95</Character><Keys>6B</Keys></Map>
+<Map><Character>004C</Character><Keys>4C</Keys></Map>
+<Map><Character>0BA4</Character><Keys>6C</Keys></Map>
+<Map><Character>003A</Character><Keys>3A</Keys></Map>
+<Map><Character>0B9A</Character><Keys>3B</Keys></Map>
+<Map><Character>0022</Character><Keys>22</Keys></Map>
+<Map><Character>0B9F</Character><Keys>27</Keys></Map>
+<Map><Character>007C</Character><Keys>7C</Keys></Map>
+<Map><Character>005C</Character><Keys>5C</Keys></Map>
+<Map><Character>0B92</Character><Keys>7E</Keys></Map>
+<Map><Character>0BCA</Character><Keys>60</Keys></Map>
+<Map><Character>0B8E</Character><Keys>5A</Keys></Map>
+<Map><Character>0BC6</Character><Keys>7A</Keys></Map>
+<Map><Character>0058</Character><Keys>58</Keys></Map>
+<Map><Character>0078</Character><Keys>78</Keys></Map>
+<Map><Character>0BA3</Character><Keys>43</Keys></Map>
+<Map><Character>0BAE</Character><Keys>63</Keys></Map>
+<Map><Character>0BA9</Character><Keys>56</Keys></Map>
+<Map><Character>0BA8</Character><Keys>76</Keys></Map>
+<Map><Character>0BB4</Character><Keys>42</Keys></Map>
+<Map><Character>0BB5</Character><Keys>62</Keys></Map>
+<Map><Character>0BB3</Character><Keys>4E</Keys></Map>
+<Map><Character>0BB2</Character><Keys>6E</Keys></Map>
+<Map><Character>004D</Character><Keys>4D</Keys></Map>
+<Map><Character>0BB8</Character><Keys>6D</Keys></Map>
+<Map><Character>0BB7</Character><Keys>3C</Keys></Map>
+<Map><Character>002C</Character><Keys>2C</Keys></Map>
+<Map><Character>003E</Character><Keys>3E</Keys></Map>
+<Map><Character>002E</Character><Keys>2E</Keys></Map>
+<Map><Character>0BAF</Character><Keys>2F</Keys></Map>
+<Map><Character>0BB70BCD0BB0</Character><Keys>2A</Keys></Map>
+</Data>
+</Table>

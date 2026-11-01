@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Table>
+	<Header>
+		<Language>Russian</Language>
+		<Encoding>Unicode</Encoding>
+		<Keyboard>Translit</Keyboard>
+		<Author>Open Keyboard Community</Author>
+		<Description>Russian Cyrillic QWERTY Transliteration</Description>
+	</Header>
+<Data>
+<Map><Character>0430</Character><Keys>61</Keys></Map>
+<Map><Character>0431</Character><Keys>62</Keys></Map>
+<Map><Character>0432</Character><Keys>76</Keys></Map>
+<Map><Character>0433</Character><Keys>67</Keys></Map>
+<Map><Character>0434</Character><Keys>64</Keys></Map>
+<Map><Character>0435</Character><Keys>65</Keys></Map>
+<Map><Character>0451</Character><Keys>796F</Keys></Map>
+<Map><Character>0436</Character><Keys>7A68</Keys></Map>
+<Map><Character>0437</Character><Keys>7A</Keys></Map>
+<Map><Character>0438</Character><Keys>69</Keys></Map>
+<Map><Character>043A</Character><Keys>6B</Keys></Map>
+<Map><Character>043B</Character><Keys>6C</Keys></Map>
+<Map><Character>043C</Character><Keys>6D</Keys></Map>
+<Map><Character>043D</Character><Keys>6E</Keys></Map>
+<Map><Character>043E</Character><Keys>6F</Keys></Map>
+<Map><Character>043F</Character><Keys>70</Keys></Map>
+<Map><Character>0440</Character><Keys>72</Keys></Map>
+<Map><Character>0441</Character><Keys>73</Keys></Map>
+<Map><Character>0442</Character><Keys>74</Keys></Map>
+<Map><Character>0443</Character><Keys>75</Keys></Map>
+<Map><Character>0444</Character><Keys>66</Keys></Map>
+<Map><Character>0445</Character><Keys>6B68</Keys></Map>
+<Map><Character>0446</Character><Keys>7473</Keys></Map>
+<Map><Character>0447</Character><Keys>6368</Keys></Map>
+<Map><Character>0448</Character><Keys>7368</Keys></Map>
+<Map><Character>0449</Character><Keys>73686368</Keys></Map>
+<Map><Character>044E</Character><Keys>7975</Keys></Map>
+<Map><Character>044F</Character><Keys>7961</Keys></Map>
+<Map><Character>0410</Character><Keys>41</Keys></Map>
+<Map><Character>0411</Character><Keys>42</Keys></Map>
+<Map><Character>0412</Character><Keys>56</Keys></Map>
+<Map><Character>0413</Character><Keys>47</Keys></Map>
+<Map><Character>0414</Character><Keys>44</Keys></Map>
+</Data>
+</Table>

@@ -1,0 +1,598 @@
+﻿<?xml version="1.0" ?>
+<Table>
+	<Header>
+		<Language>Tamil</Language>
+		<Encoding>Unicode</Encoding>
+		<Keyboard>Tamil26</Keyboard>
+		<LCID>0449</LCID>
+		<Author>SIVA</Author>
+		<Description>UNICODE is a 16-bit encoding designed by Unicode Consortium</Description>
+			<ShiftCycle>Tamil,CapsEnglish,SmallEnglish</ShiftCycle>
+	</Header>
+<Data>
+<Map><Display>0B950BCD</Display><Character>0B950BCD</Character><Keys>73</Keys></Map>
+<Map><Display>0B990BCD</Display><Character>0B990BCD</Character><Keys>71</Keys></Map>
+<Map><Display>0B9A0BCD</Display><Character>0B9A0BCD</Character><Keys>65</Keys></Map>
+<Map><Display>0B9E0BCD</Display><Character>0B9E0BCD</Character><Keys>70</Keys></Map>
+<Map><Display>0B9F0BCD</Display><Character>0B9F0BCD</Character><Keys>75</Keys></Map>
+<Map><Display>0BA30BCD</Display><Character>0BA30BCD</Character><Keys>78</Keys></Map>
+<Map><Display>0BA40BCD</Display><Character>0BA40BCD</Character><Keys>61</Keys></Map>
+<Map><Display>0BAA0BCD</Display><Character>0BAA0BCD</Character><Keys>72</Keys></Map>
+<Map><Display>0BAE0BCD</Display><Character>0BAE0BCD</Character><Keys>66</Keys></Map>
+<Map><Display>0BAF0BCD</Display><Character>0BAF0BCD</Character><Keys>77</Keys></Map>
+<Map><Display>0BB00BCD</Display><Character>0BB00BCD</Character><Keys>64</Keys></Map>
+<Map><Display>0BB20BCD</Display><Character>0BB20BCD</Character><Keys>62</Keys></Map>
+<Map><Display>0BB50BCD</Display><Character>0BB50BCD</Character><Keys>76</Keys></Map>
+<Map><Display>0BB40BCD</Display><Character>0BB40BCD</Character><Keys>7A</Keys></Map>
+<Map><Display>0BB30BCD</Display><Character>0BB30BCD</Character><Keys>63</Keys></Map>
+<Map><Display>0BB10BCD</Display><Character>0BB10BCD</Character><Keys>6F</Keys></Map>
+<Map><Display>0BA90BCD</Display><Character>0BA90BCD</Character><Keys>74</Keys></Map>
+<Map><Display>0B85</Display><Character>0B85</Character><Keys>68</Keys></Map>
+<Map><Display>0B86</Display><Character>0B86</Character><Keys>6868</Keys></Map>
+<Map><Display>0B85</Display><Character>0B85</Character><Keys>68</Keys></Map>
+<Map><Display>0B86</Display><Character>0B86</Character><Keys>6868</Keys></Map>
+<Map><Display>0B86</Display><Character>0B86</Character><Keys>6867</Keys></Map>
+<Map><Display>0B87</Display><Character>0B87</Character><Keys>6A</Keys></Map>
+<Map><Display>0B88</Display><Character>0B88</Character><Keys>6A6A</Keys></Map>
+<Map><Display>0B88</Display><Character>0B88</Character><Keys>6A67</Keys></Map>
+<Map><Display>0B89</Display><Character>0B89</Character><Keys>6B</Keys></Map>
+<Map><Display>0B8A</Display><Character>0B8A</Character><Keys>6B6B</Keys></Map>
+<Map><Display>0B8A</Display><Character>0B8A</Character><Keys>6B67</Keys></Map>
+<Map><Display>0B8E</Display><Character>0B8E</Character><Keys>6c</Keys></Map>
+<Map><Display>0B8F</Display><Character>0B8F</Character><Keys>6c6c</Keys></Map>
+<Map><Display>0B8F</Display><Character>0B8F</Character><Keys>6c67</Keys></Map>
+<Map><Display>0B90</Display><Character>0B90</Character><Keys>79</Keys></Map>
+<Map><Display>0B92</Display><Character>0B92</Character><Keys>6E</Keys></Map>
+<Map><Display>0B93</Display><Character>0B93</Character><Keys>6E6E</Keys></Map>
+<Map><Display>0B93</Display><Character>0B93</Character><Keys>6E67</Keys></Map>
+<Map><Display>0B94</Display><Character>0B94</Character><Keys>6D</Keys></Map>
+<Map><Display>0B95</Display><Character>0B95</Character><Keys>7368</Keys></Map>
+<Map><Display>0B950BBE</Display><Character>0B950BBE</Character><Keys>736868</Keys></Map>
+<Map><Display>0B950BBE</Display><Character>0B950BBE</Character><Keys>736867</Keys></Map>
+<Map><Display>0B950BBF</Display><Character>0B950BBF</Character><Keys>736A</Keys></Map>
+<Map><Display>0B950BC0</Display><Character>0B950BC0</Character><Keys>736A6A</Keys></Map>
+<Map><Display>0B950BC0</Display><Character>0B950BC0</Character><Keys>736A67</Keys></Map>
+<Map><Display>0B950BC1</Display><Character>0B950BC1</Character><Keys>736B</Keys></Map>
+<Map><Display>0B950BC2</Display><Character>0B950BC2</Character><Keys>736B6B</Keys></Map>
+<Map><Display>0B950BC2</Display><Character>0B950BC2</Character><Keys>736B67</Keys></Map>
+<Map><Display>0B950BC6</Display><Character>0B950BC6</Character><Keys>736c</Keys></Map>
+<Map><Display>0B950BC7</Display><Character>0B950BC7</Character><Keys>736c6c</Keys></Map>
+<Map><Display>0B950BC7</Display><Character>0B950BC7</Character><Keys>736c67</Keys></Map>
+<Map><Display>0B950BC8</Display><Character>0B950BC8</Character><Keys>7379</Keys></Map>
+<Map><Display>0B950BCA</Display><Character>0B950BCA</Character><Keys>736E</Keys></Map>
+<Map><Display>0B950BCB</Display><Character>0B950BCB</Character><Keys>736E6E</Keys></Map>
+<Map><Display>0B950BCB</Display><Character>0B950BCB</Character><Keys>736E67</Keys></Map>
+<Map><Display>0B950BCC</Display><Character>0B950BCC</Character><Keys>736D</Keys></Map>
+<Map><Display>0b99</Display><Character>0b99</Character><Keys>7168</Keys></Map>
+<Map><Display>0b990BBE</Display><Character>0b990BBE</Character><Keys>716868</Keys></Map>
+<Map><Display>0b990BBE</Display><Character>0b990BBE</Character><Keys>716867</Keys></Map>
+<Map><Display>0b990BBF</Display><Character>0b990BBF</Character><Keys>716A</Keys></Map>
+<Map><Display>0b990BC0</Display><Character>0b990BC0</Character><Keys>716A6A</Keys></Map>
+<Map><Display>0b990BC0</Display><Character>0b990BC0</Character><Keys>716A67</Keys></Map>
+<Map><Display>0b990BC1</Display><Character>0b990BC1</Character><Keys>716B</Keys></Map>
+<Map><Display>0b990BC2</Display><Character>0b990BC2</Character><Keys>716B6B</Keys></Map>
+<Map><Display>0b990BC2</Display><Character>0b990BC2</Character><Keys>716B67</Keys></Map>
+<Map><Display>0b990BC6</Display><Character>0b990BC6</Character><Keys>716c</Keys></Map>
+<Map><Display>0b990BC7</Display><Character>0b990BC7</Character><Keys>716c6c</Keys></Map>
+<Map><Display>0b990BC7</Display><Character>0b990BC7</Character><Keys>716c67</Keys></Map>
+<Map><Display>0b990BC8</Display><Character>0b990BC8</Character><Keys>7179</Keys></Map>
+<Map><Display>0b990BCA</Display><Character>0b990BCA</Character><Keys>716E</Keys></Map>
+<Map><Display>0b990BCB</Display><Character>0b990BCB</Character><Keys>716E6E</Keys></Map>
+<Map><Display>0b990BCB</Display><Character>0b990BCB</Character><Keys>716E67</Keys></Map>
+<Map><Display>0b990BCC</Display><Character>0b990BCC</Character><Keys>716D</Keys></Map>
+<Map><Display>0b9A</Display><Character>0b9A</Character><Keys>6568</Keys></Map>
+<Map><Display>0b9A0BBE</Display><Character>0b9A0BBE</Character><Keys>656868</Keys></Map>
+<Map><Display>0b9A0BBE</Display><Character>0b9A0BBE</Character><Keys>656867</Keys></Map>
+<Map><Display>0b9A0BBF</Display><Character>0b9A0BBF</Character><Keys>656A</Keys></Map>
+<Map><Display>0b9A0BC0</Display><Character>0b9A0BC0</Character><Keys>656A6A</Keys></Map>
+<Map><Display>0b9A0BC0</Display><Character>0b9A0BC0</Character><Keys>656A67</Keys></Map>
+<Map><Display>0b9A0BC1</Display><Character>0b9A0BC1</Character><Keys>656B</Keys></Map>
+<Map><Display>0b9A0BC2</Display><Character>0b9A0BC2</Character><Keys>656B6B</Keys></Map>
+<Map><Display>0b9A0BC2</Display><Character>0b9A0BC2</Character><Keys>656B67</Keys></Map>
+<Map><Display>0b9A0BC6</Display><Character>0b9A0BC6</Character><Keys>656c</Keys></Map>
+<Map><Display>0b9A0BC7</Display><Character>0b9A0BC7</Character><Keys>656c6c</Keys></Map>
+<Map><Display>0b9A0BC7</Display><Character>0b9A0BC7</Character><Keys>656c67</Keys></Map>
+<Map><Display>0b9A0BC8</Display><Character>0b9A0BC8</Character><Keys>6579</Keys></Map>
+<Map><Display>0b9A0BCA</Display><Character>0b9A0BCA</Character><Keys>656E</Keys></Map>
+<Map><Display>0b9A0BCB</Display><Character>0b9A0BCB</Character><Keys>656E6E</Keys></Map>
+<Map><Display>0b9A0BCB</Display><Character>0b9A0BCB</Character><Keys>656E67</Keys></Map>
+<Map><Display>0b9A0BCC</Display><Character>0b9A0BCC</Character><Keys>656D</Keys></Map>
+<Map><Display>0B9E</Display><Character>0B9E</Character><Keys>7068</Keys></Map>
+<Map><Display>0B9E0BBE</Display><Character>0B9E0BBE</Character><Keys>706868</Keys></Map>
+<Map><Display>0B9E0BBE</Display><Character>0B9E0BBE</Character><Keys>706867</Keys></Map>
+<Map><Display>0B9E0BBF</Display><Character>0B9E0BBF</Character><Keys>706A</Keys></Map>
+<Map><Display>0B9E0BC0</Display><Character>0B9E0BC0</Character><Keys>706A6A</Keys></Map>
+<Map><Display>0B9E0BC0</Display><Character>0B9E0BC0</Character><Keys>706A67</Keys></Map>
+<Map><Display>0B9E0BC1</Display><Character>0B9E0BC1</Character><Keys>706B</Keys></Map>
+<Map><Display>0B9E0BC2</Display><Character>0B9E0BC2</Character><Keys>706B6B</Keys></Map>
+<Map><Display>0B9E0BC2</Display><Character>0B9E0BC2</Character><Keys>706B67</Keys></Map>
+<Map><Display>0B9E0BC6</Display><Character>0B9E0BC6</Character><Keys>706c</Keys></Map>
+<Map><Display>0B9E0BC7</Display><Character>0B9E0BC7</Character><Keys>706c6c</Keys></Map>
+<Map><Display>0B9E0BC7</Display><Character>0B9E0BC7</Character><Keys>706c67</Keys></Map>
+<Map><Display>0B9E0BC8</Display><Character>0B9E0BC8</Character><Keys>7079</Keys></Map>
+<Map><Display>0B9E0BCA</Display><Character>0B9E0BCA</Character><Keys>706E</Keys></Map>
+<Map><Display>0B9E0BCB</Display><Character>0B9E0BCB</Character><Keys>706E6E</Keys></Map>
+<Map><Display>0B9E0BCB</Display><Character>0B9E0BCB</Character><Keys>706E67</Keys></Map>
+<Map><Display>0B9E0BCC</Display><Character>0B9E0BCC</Character><Keys>706D</Keys></Map>
+<Map><Display>0B9F</Display><Character>0B9F</Character><Keys>7568</Keys></Map>
+<Map><Display>0B9F0BBE</Display><Character>0B9F0BBE</Character><Keys>756868</Keys></Map>
+<Map><Display>0B9F0BBE</Display><Character>0B9F0BBE</Character><Keys>756867</Keys></Map>
+<Map><Display>0B9F0BBF</Display><Character>0B9F0BBF</Character><Keys>756A</Keys></Map>
+<Map><Display>0B9F0BC0</Display><Character>0B9F0BC0</Character><Keys>756A6A</Keys></Map>
+<Map><Display>0B9F0BC0</Display><Character>0B9F0BC0</Character><Keys>756A67</Keys></Map>
+<Map><Display>0B9F0BC1</Display><Character>0B9F0BC1</Character><Keys>756B</Keys></Map>
+<Map><Display>0B9F0BC2</Display><Character>0B9F0BC2</Character><Keys>756B6B</Keys></Map>
+<Map><Display>0B9F0BC2</Display><Character>0B9F0BC2</Character><Keys>756B67</Keys></Map>
+<Map><Display>0B9F0BC6</Display><Character>0B9F0BC6</Character><Keys>756c</Keys></Map>
+<Map><Display>0B9F0BC7</Display><Character>0B9F0BC7</Character><Keys>756c6c</Keys></Map>
+<Map><Display>0B9F0BC7</Display><Character>0B9F0BC7</Character><Keys>756c67</Keys></Map>
+<Map><Display>0B9F0BC8</Display><Character>0B9F0BC8</Character><Keys>7579</Keys></Map>
+<Map><Display>0B9F0BCA</Display><Character>0B9F0BCA</Character><Keys>756E</Keys></Map>
+<Map><Display>0B9F0BCB</Display><Character>0B9F0BCB</Character><Keys>756E6E</Keys></Map>
+<Map><Display>0B9F0BCB</Display><Character>0B9F0BCB</Character><Keys>756E67</Keys></Map>
+<Map><Display>0B9F0BCC</Display><Character>0B9F0BCC</Character><Keys>756D</Keys></Map>
+<Map><Display>0BA80BCD</Display><Character>0BA80BCD</Character><Keys>69</Keys></Map>
+<Map><Display>0BA3</Display><Character>0BA3</Character><Keys>7868</Keys></Map>
+<Map><Display>0BA30BBE</Display><Character>0BA30BBE</Character><Keys>786868</Keys></Map>
+<Map><Display>0BA30BBE</Display><Character>0BA30BBE</Character><Keys>786867</Keys></Map>
+<Map><Display>0BA30BBF</Display><Character>0BA30BBF</Character><Keys>786A</Keys></Map>
+<Map><Display>0BA30BC0</Display><Character>0BA30BC0</Character><Keys>786A6A</Keys></Map>
+<Map><Display>0BA30BC0</Display><Character>0BA30BC0</Character><Keys>786A67</Keys></Map>
+<Map><Display>0BA30BC1</Display><Character>0BA30BC1</Character><Keys>786B</Keys></Map>
+<Map><Display>0BA30BC2</Display><Character>0BA30BC2</Character><Keys>786B6B</Keys></Map>
+<Map><Display>0BA30BC2</Display><Character>0BA30BC2</Character><Keys>786B67</Keys></Map>
+<Map><Display>0BA30BC6</Display><Character>0BA30BC6</Character><Keys>786c</Keys></Map>
+<Map><Display>0BA30BC7</Display><Character>0BA30BC7</Character><Keys>786c6c</Keys></Map>
+<Map><Display>0BA30BC7</Display><Character>0BA30BC7</Character><Keys>786c67</Keys></Map>
+<Map><Display>0BA30BC8</Display><Character>0BA30BC8</Character><Keys>7879</Keys></Map>
+<Map><Display>0BA30BCA</Display><Character>0BA30BCA</Character><Keys>786E</Keys></Map>
+<Map><Display>0BA30BCB</Display><Character>0BA30BCB</Character><Keys>786E6E</Keys></Map>
+<Map><Display>0BA30BCB</Display><Character>0BA30BCB</Character><Keys>786E67</Keys></Map>
+<Map><Display>0BA30BCC</Display><Character>0BA30BCC</Character><Keys>786D</Keys></Map>
+<Map><Display>0BA4</Display><Character>0BA4</Character><Keys>6168</Keys></Map>
+<Map><Display>0BA40BBE</Display><Character>0BA40BBE</Character><Keys>616868</Keys></Map>
+<Map><Display>0BA40BBE</Display><Character>0BA40BBE</Character><Keys>616867</Keys></Map>
+<Map><Display>0BA40BBF</Display><Character>0BA40BBF</Character><Keys>616A</Keys></Map>
+<Map><Display>0BA40BC0</Display><Character>0BA40BC0</Character><Keys>616A6A</Keys></Map>
+<Map><Display>0BA40BC0</Display><Character>0BA40BC0</Character><Keys>616A67</Keys></Map>
+<Map><Display>0BA40BC1</Display><Character>0BA40BC1</Character><Keys>616B</Keys></Map>
+<Map><Display>0BA40BC2</Display><Character>0BA40BC2</Character><Keys>616B6B</Keys></Map>
+<Map><Display>0BA40BC2</Display><Character>0BA40BC2</Character><Keys>616B67</Keys></Map>
+<Map><Display>0BA40BC6</Display><Character>0BA40BC6</Character><Keys>616c</Keys></Map>
+<Map><Display>0BA40BC7</Display><Character>0BA40BC7</Character><Keys>616c6c</Keys></Map>
+<Map><Display>0BA40BC7</Display><Character>0BA40BC7</Character><Keys>616c67</Keys></Map>
+<Map><Display>0BA40BC8</Display><Character>0BA40BC8</Character><Keys>6179</Keys></Map>
+<Map><Display>0BA40BCA</Display><Character>0BA40BCA</Character><Keys>616E</Keys></Map>
+<Map><Display>0BA40BCB</Display><Character>0BA40BCB</Character><Keys>616E6E</Keys></Map>
+<Map><Display>0BA40BCB</Display><Character>0BA40BCB</Character><Keys>616E67</Keys></Map>
+<Map><Display>0BA40BCC</Display><Character>0BA40BCC</Character><Keys>616D</Keys></Map>
+<Map><Display>0BA8</Display><Character>0BA8</Character><Keys>6968</Keys></Map>
+<Map><Display>0BA80BBE</Display><Character>0BA80BBE</Character><Keys>696868</Keys></Map>
+<Map><Display>0BA80BBE</Display><Character>0BA80BBE</Character><Keys>696867</Keys></Map>
+<Map><Display>0BA80BBF</Display><Character>0BA80BBF</Character><Keys>696A</Keys></Map>
+<Map><Display>0BA80BC0</Display><Character>0BA80BC0</Character><Keys>696A6A</Keys></Map>
+<Map><Display>0BA80BC0</Display><Character>0BA80BC0</Character><Keys>696A67</Keys></Map>
+<Map><Display>0BA80BC1</Display><Character>0BA80BC1</Character><Keys>696B</Keys></Map>
+<Map><Display>0BA80BC2</Display><Character>0BA80BC2</Character><Keys>696B6B</Keys></Map>
+<Map><Display>0BA80BC2</Display><Character>0BA80BC2</Character><Keys>696B67</Keys></Map>
+<Map><Display>0BA80BC6</Display><Character>0BA80BC6</Character><Keys>696c</Keys></Map>
+<Map><Display>0BA80BC7</Display><Character>0BA80BC7</Character><Keys>696c6c</Keys></Map>
+<Map><Display>0BA80BC7</Display><Character>0BA80BC7</Character><Keys>696c67</Keys></Map>
+<Map><Display>0BA80BC8</Display><Character>0BA80BC8</Character><Keys>6979</Keys></Map>
+<Map><Display>0BA80BCA</Display><Character>0BA80BCA</Character><Keys>696E</Keys></Map>
+<Map><Display>0BA80BCB</Display><Character>0BA80BCB</Character><Keys>696E6E</Keys></Map>
+<Map><Display>0BA80BCB</Display><Character>0BA80BCB</Character><Keys>696E67</Keys></Map>
+<Map><Display>0BA80BCC</Display><Character>0BA80BCC</Character><Keys>696D</Keys></Map>
+<Map><Display>0BAA</Display><Character>0BAA</Character><Keys>7268</Keys></Map>
+<Map><Display>0BAA0BBE</Display><Character>0BAA0BBE</Character><Keys>726868</Keys></Map>
+<Map><Display>0BAA0BBE</Display><Character>0BAA0BBE</Character><Keys>726867</Keys></Map>
+<Map><Display>0BAA0BBF</Display><Character>0BAA0BBF</Character><Keys>726A</Keys></Map>
+<Map><Display>0BAA0BC0</Display><Character>0BAA0BC0</Character><Keys>726A6A</Keys></Map>
+<Map><Display>0BAA0BC0</Display><Character>0BAA0BC0</Character><Keys>726A67</Keys></Map>
+<Map><Display>0BAA0BC1</Display><Character>0BAA0BC1</Character><Keys>726B</Keys></Map>
+<Map><Display>0BAA0BC2</Display><Character>0BAA0BC2</Character><Keys>726B6B</Keys></Map>
+<Map><Display>0BAA0BC2</Display><Character>0BAA0BC2</Character><Keys>726B67</Keys></Map>
+<Map><Display>0BAA0BC6</Display><Character>0BAA0BC6</Character><Keys>726c</Keys></Map>
+<Map><Display>0BAA0BC7</Display><Character>0BAA0BC7</Character><Keys>726c6c</Keys></Map>
+<Map><Display>0BAA0BC7</Display><Character>0BAA0BC7</Character><Keys>726c67</Keys></Map>
+<Map><Display>0BAA0BC8</Display><Character>0BAA0BC8</Character><Keys>7279</Keys></Map>
+<Map><Display>0BAA0BCA</Display><Character>0BAA0BCA</Character><Keys>726E</Keys></Map>
+<Map><Display>0BAA0BCB</Display><Character>0BAA0BCB</Character><Keys>726E6E</Keys></Map>
+<Map><Display>0BAA0BCB</Display><Character>0BAA0BCB</Character><Keys>726E67</Keys></Map>
+<Map><Display>0BAA0BCC</Display><Character>0BAA0BCC</Character><Keys>726D</Keys></Map>
+<Map><Display>0BAE</Display><Character>0BAE</Character><Keys>6668</Keys></Map>
+<Map><Display>0BAE0BBE</Display><Character>0BAE0BBE</Character><Keys>666868</Keys></Map>
+<Map><Display>0BAE0BBE</Display><Character>0BAE0BBE</Character><Keys>666867</Keys></Map>
+<Map><Display>0BAE0BBF</Display><Character>0BAE0BBF</Character><Keys>666A</Keys></Map>
+<Map><Display>0BAE0BC0</Display><Character>0BAE0BC0</Character><Keys>666A6A</Keys></Map>
+<Map><Display>0BAE0BC0</Display><Character>0BAE0BC0</Character><Keys>666A67</Keys></Map>
+<Map><Display>0BAE0BC1</Display><Character>0BAE0BC1</Character><Keys>666B</Keys></Map>
+<Map><Display>0BAE0BC2</Display><Character>0BAE0BC2</Character><Keys>666B6B</Keys></Map>
+<Map><Display>0BAE0BC2</Display><Character>0BAE0BC2</Character><Keys>666B67</Keys></Map>
+<Map><Display>0BAE0BC6</Display><Character>0BAE0BC6</Character><Keys>666c</Keys></Map>
+<Map><Display>0BAE0BC7</Display><Character>0BAE0BC7</Character><Keys>666c6c</Keys></Map>
+<Map><Display>0BAE0BC7</Display><Character>0BAE0BC7</Character><Keys>666c67</Keys></Map>
+<Map><Display>0BAE0BC8</Display><Character>0BAE0BC8</Character><Keys>6679</Keys></Map>
+<Map><Display>0BAE0BCA</Display><Character>0BAE0BCA</Character><Keys>666E</Keys></Map>
+<Map><Display>0BAE0BCB</Display><Character>0BAE0BCB</Character><Keys>666E6E</Keys></Map>
+<Map><Display>0BAE0BCB</Display><Character>0BAE0BCB</Character><Keys>666E67</Keys></Map>
+<Map><Display>0BAE0BCC</Display><Character>0BAE0BCC</Character><Keys>666D</Keys></Map>
+<Map><Display>0BAF</Display><Character>0BAF</Character><Keys>7768</Keys></Map>
+<Map><Display>0BAF0BBE</Display><Character>0BAF0BBE</Character><Keys>776868</Keys></Map>
+<Map><Display>0BAF0BBE</Display><Character>0BAF0BBE</Character><Keys>776867</Keys></Map>
+<Map><Display>0BAF0BBF</Display><Character>0BAF0BBF</Character><Keys>776A</Keys></Map>
+<Map><Display>0BAF0BC0</Display><Character>0BAF0BC0</Character><Keys>776A6A</Keys></Map>
+<Map><Display>0BAF0BC0</Display><Character>0BAF0BC0</Character><Keys>776A67</Keys></Map>
+<Map><Display>0BAF0BC1</Display><Character>0BAF0BC1</Character><Keys>776B</Keys></Map>
+<Map><Display>0BAF0BC2</Display><Character>0BAF0BC2</Character><Keys>776B6B</Keys></Map>
+<Map><Display>0BAF0BC2</Display><Character>0BAF0BC2</Character><Keys>776B67</Keys></Map>
+<Map><Display>0BAF0BC6</Display><Character>0BAF0BC6</Character><Keys>776c</Keys></Map>
+<Map><Display>0BAF0BC7</Display><Character>0BAF0BC7</Character><Keys>776c6c</Keys></Map>
+<Map><Display>0BAF0BC7</Display><Character>0BAF0BC7</Character><Keys>776c67</Keys></Map>
+<Map><Display>0BAF0BC8</Display><Character>0BAF0BC8</Character><Keys>7779</Keys></Map>
+<Map><Display>0BAF0BCA</Display><Character>0BAF0BCA</Character><Keys>776E</Keys></Map>
+<Map><Display>0BAF0BCB</Display><Character>0BAF0BCB</Character><Keys>776E6E</Keys></Map>
+<Map><Display>0BAF0BCB</Display><Character>0BAF0BCB</Character><Keys>776E67</Keys></Map>
+<Map><Display>0BAF0BCC</Display><Character>0BAF0BCC</Character><Keys>776D</Keys></Map>
+<Map><Display>0BB0</Display><Character>0BB0</Character><Keys>6468</Keys></Map>
+<Map><Display>0BB00BBE</Display><Character>0BB00BBE</Character><Keys>646868</Keys></Map>
+<Map><Display>0BB00BBE</Display><Character>0BB00BBE</Character><Keys>646867</Keys></Map>
+<Map><Display>0BB00BBF</Display><Character>0BB00BBF</Character><Keys>646A</Keys></Map>
+<Map><Display>0BB00BC0</Display><Character>0BB00BC0</Character><Keys>646A6A</Keys></Map>
+<Map><Display>0BB00BC0</Display><Character>0BB00BC0</Character><Keys>646A67</Keys></Map>
+<Map><Display>0BB00BC1</Display><Character>0BB00BC1</Character><Keys>646B</Keys></Map>
+<Map><Display>0BB00BC2</Display><Character>0BB00BC2</Character><Keys>646B6B</Keys></Map>
+<Map><Display>0BB00BC2</Display><Character>0BB00BC2</Character><Keys>646B67</Keys></Map>
+<Map><Display>0BB00BC6</Display><Character>0BB00BC6</Character><Keys>646c</Keys></Map>
+<Map><Display>0BB00BC7</Display><Character>0BB00BC7</Character><Keys>646c6c</Keys></Map>
+<Map><Display>0BB00BC7</Display><Character>0BB00BC7</Character><Keys>646c67</Keys></Map>
+<Map><Display>0BB00BC8</Display><Character>0BB00BC8</Character><Keys>6479</Keys></Map>
+<Map><Display>0BB00BCA</Display><Character>0BB00BCA</Character><Keys>646E</Keys></Map>
+<Map><Display>0BB00BCB</Display><Character>0BB00BCB</Character><Keys>646E6E</Keys></Map>
+<Map><Display>0BB00BCB</Display><Character>0BB00BCB</Character><Keys>646E67</Keys></Map>
+<Map><Display>0BB00BCC</Display><Character>0BB00BCC</Character><Keys>646D</Keys></Map>
+<Map><Display>0BB2</Display><Character>0BB2</Character><Keys>6268</Keys></Map>
+<Map><Display>0BB20BBE</Display><Character>0BB20BBE</Character><Keys>626868</Keys></Map>
+<Map><Display>0BB20BBE</Display><Character>0BB20BBE</Character><Keys>626867</Keys></Map>
+<Map><Display>0BB20BBF</Display><Character>0BB20BBF</Character><Keys>626A</Keys></Map>
+<Map><Display>0BB20BC0</Display><Character>0BB20BC0</Character><Keys>626A6A</Keys></Map>
+<Map><Display>0BB20BC0</Display><Character>0BB20BC0</Character><Keys>626A67</Keys></Map>
+<Map><Display>0BB20BC1</Display><Character>0BB20BC1</Character><Keys>626B</Keys></Map>
+<Map><Display>0BB20BC2</Display><Character>0BB20BC2</Character><Keys>626B6B</Keys></Map>
+<Map><Display>0BB20BC2</Display><Character>0BB20BC2</Character><Keys>626B67</Keys></Map>
+<Map><Display>0BB20BC6</Display><Character>0BB20BC6</Character><Keys>626c</Keys></Map>
+<Map><Display>0BB20BC7</Display><Character>0BB20BC7</Character><Keys>626c6c</Keys></Map>
+<Map><Display>0BB20BC7</Display><Character>0BB20BC7</Character><Keys>626c67</Keys></Map>
+<Map><Display>0BB20BC8</Display><Character>0BB20BC8</Character><Keys>6279</Keys></Map>
+<Map><Display>0BB20BCA</Display><Character>0BB20BCA</Character><Keys>626E</Keys></Map>
+<Map><Display>0BB20BCB</Display><Character>0BB20BCB</Character><Keys>626E6E</Keys></Map>
+<Map><Display>0BB20BCB</Display><Character>0BB20BCB</Character><Keys>626E67</Keys></Map>
+<Map><Display>0BB20BCC</Display><Character>0BB20BCC</Character><Keys>626D</Keys></Map>
+<Map><Display>0BB5</Display><Character>0BB5</Character><Keys>7668</Keys></Map>
+<Map><Display>0BB50BBE</Display><Character>0BB50BBE</Character><Keys>766868</Keys></Map>
+<Map><Display>0BB50BBE</Display><Character>0BB50BBE</Character><Keys>766867</Keys></Map>
+<Map><Display>0BB50BBF</Display><Character>0BB50BBF</Character><Keys>766A</Keys></Map>
+<Map><Display>0BB50BC0</Display><Character>0BB50BC0</Character><Keys>766A6A</Keys></Map>
+<Map><Display>0BB50BC0</Display><Character>0BB50BC0</Character><Keys>766A67</Keys></Map>
+<Map><Display>0BB50BC1</Display><Character>0BB50BC1</Character><Keys>766B</Keys></Map>
+<Map><Display>0BB50BC2</Display><Character>0BB50BC2</Character><Keys>766B6B</Keys></Map>
+<Map><Display>0BB50BC2</Display><Character>0BB50BC2</Character><Keys>766B67</Keys></Map>
+<Map><Display>0BB50BC6</Display><Character>0BB50BC6</Character><Keys>766c</Keys></Map>
+<Map><Display>0BB50BC7</Display><Character>0BB50BC7</Character><Keys>766c6c</Keys></Map>
+<Map><Display>0BB50BC7</Display><Character>0BB50BC7</Character><Keys>766c67</Keys></Map>
+<Map><Display>0BB50BC8</Display><Character>0BB50BC8</Character><Keys>7679</Keys></Map>
+<Map><Display>0BB50BCA</Display><Character>0BB50BCA</Character><Keys>766E</Keys></Map>
+<Map><Display>0BB50BCB</Display><Character>0BB50BCB</Character><Keys>766E6E</Keys></Map>
+<Map><Display>0BB50BCB</Display><Character>0BB50BCB</Character><Keys>766E67</Keys></Map>
+<Map><Display>0BB50BCC</Display><Character>0BB50BCC</Character><Keys>766D</Keys></Map>
+<Map><Display>0BB4</Display><Character>0BB4</Character><Keys>7A68</Keys></Map>
+<Map><Display>0BB40BBE</Display><Character>0BB40BBE</Character><Keys>7A6868</Keys></Map>
+<Map><Display>0BB40BBE</Display><Character>0BB40BBE</Character><Keys>7A6867</Keys></Map>
+<Map><Display>0BB40BBF</Display><Character>0BB40BBF</Character><Keys>7A6A</Keys></Map>
+<Map><Display>0BB40BC0</Display><Character>0BB40BC0</Character><Keys>7A6A6A</Keys></Map>
+<Map><Display>0BB40BC0</Display><Character>0BB40BC0</Character><Keys>7A6A67</Keys></Map>
+<Map><Display>0BB40BC1</Display><Character>0BB40BC1</Character><Keys>7A6B</Keys></Map>
+<Map><Display>0BB40BC2</Display><Character>0BB40BC2</Character><Keys>7A6B6B</Keys></Map>
+<Map><Display>0BB40BC2</Display><Character>0BB40BC2</Character><Keys>7A6B67</Keys></Map>
+<Map><Display>0BB40BC6</Display><Character>0BB40BC6</Character><Keys>7A6c</Keys></Map>
+<Map><Display>0BB40BC7</Display><Character>0BB40BC7</Character><Keys>7A6c6c</Keys></Map>
+<Map><Display>0BB40BC7</Display><Character>0BB40BC7</Character><Keys>7A6c67</Keys></Map>
+<Map><Display>0BB40BC8</Display><Character>0BB40BC8</Character><Keys>7A79</Keys></Map>
+<Map><Display>0BB40BCA</Display><Character>0BB40BCA</Character><Keys>7A6E</Keys></Map>
+<Map><Display>0BB40BCB</Display><Character>0BB40BCB</Character><Keys>7A6E6E</Keys></Map>
+<Map><Display>0BB40BCB</Display><Character>0BB40BCB</Character><Keys>7A6E67</Keys></Map>
+<Map><Display>0BB40BCC</Display><Character>0BB40BCC</Character><Keys>7A6D</Keys></Map>
+<Map><Display>0BB3</Display><Character>0BB3</Character><Keys>6368</Keys></Map>
+<Map><Display>0BB30BBE</Display><Character>0BB30BBE</Character><Keys>636868</Keys></Map>
+<Map><Display>0BB30BBE</Display><Character>0BB30BBE</Character><Keys>636867</Keys></Map>
+<Map><Display>0BB30BBF</Display><Character>0BB30BBF</Character><Keys>636A</Keys></Map>
+<Map><Display>0BB30BC0</Display><Character>0BB30BC0</Character><Keys>636A6A</Keys></Map>
+<Map><Display>0BB30BC0</Display><Character>0BB30BC0</Character><Keys>636A67</Keys></Map>
+<Map><Display>0BB30BC1</Display><Character>0BB30BC1</Character><Keys>636B</Keys></Map>
+<Map><Display>0BB30BC2</Display><Character>0BB30BC2</Character><Keys>636B6B</Keys></Map>
+<Map><Display>0BB30BC2</Display><Character>0BB30BC2</Character><Keys>636B67</Keys></Map>
+<Map><Display>0BB30BC6</Display><Character>0BB30BC6</Character><Keys>636c</Keys></Map>
+<Map><Display>0BB30BC7</Display><Character>0BB30BC7</Character><Keys>636c6c</Keys></Map>
+<Map><Display>0BB30BC7</Display><Character>0BB30BC7</Character><Keys>636c67</Keys></Map>
+<Map><Display>0BB30BC8</Display><Character>0BB30BC8</Character><Keys>6379</Keys></Map>
+<Map><Display>0BB30BCA</Display><Character>0BB30BCA</Character><Keys>636E</Keys></Map>
+<Map><Display>0BB30BCB</Display><Character>0BB30BCB</Character><Keys>636E6E</Keys></Map>
+<Map><Display>0BB30BCB</Display><Character>0BB30BCB</Character><Keys>636E67</Keys></Map>
+<Map><Display>0BB30BCC</Display><Character>0BB30BCC</Character><Keys>636D</Keys></Map>
+<Map><Display>0BB1</Display><Character>0BB1</Character><Keys>6F68</Keys></Map>
+<Map><Display>0BB10BBE</Display><Character>0BB10BBE</Character><Keys>6F6868</Keys></Map>
+<Map><Display>0BB10BBE</Display><Character>0BB10BBE</Character><Keys>6F6867</Keys></Map>
+<Map><Display>0BB10BBF</Display><Character>0BB10BBF</Character><Keys>6F6A</Keys></Map>
+<Map><Display>0BB10BC0</Display><Character>0BB10BC0</Character><Keys>6F6A6A</Keys></Map>
+<Map><Display>0BB10BC0</Display><Character>0BB10BC0</Character><Keys>6F6A67</Keys></Map>
+<Map><Display>0BB10BC1</Display><Character>0BB10BC1</Character><Keys>6F6B</Keys></Map>
+<Map><Display>0BB10BC2</Display><Character>0BB10BC2</Character><Keys>6F6B6B</Keys></Map>
+<Map><Display>0BB10BC2</Display><Character>0BB10BC2</Character><Keys>6F6B67</Keys></Map>
+<Map><Display>0BB10BC6</Display><Character>0BB10BC6</Character><Keys>6F6c</Keys></Map>
+<Map><Display>0BB10BC7</Display><Character>0BB10BC7</Character><Keys>6F6c6c</Keys></Map>
+<Map><Display>0BB10BC7</Display><Character>0BB10BC7</Character><Keys>6F6c67</Keys></Map>
+<Map><Display>0BB10BC8</Display><Character>0BB10BC8</Character><Keys>6F79</Keys></Map>
+<Map><Display>0BB10BCA</Display><Character>0BB10BCA</Character><Keys>6F6E</Keys></Map>
+<Map><Display>0BB10BCB</Display><Character>0BB10BCB</Character><Keys>6F6E6E</Keys></Map>
+<Map><Display>0BB10BCB</Display><Character>0BB10BCB</Character><Keys>6F6E67</Keys></Map>
+<Map><Display>0BB10BCC</Display><Character>0BB10BCC</Character><Keys>6F6D</Keys></Map>
+<Map><Display>0BA9</Display><Character>0BA9</Character><Keys>7468</Keys></Map>
+<Map><Display>0BA90BBE</Display><Character>0BA90BBE</Character><Keys>746868</Keys></Map>
+<Map><Display>0BA90BBE</Display><Character>0BA90BBE</Character><Keys>746867</Keys></Map>
+<Map><Display>0BA90BBF</Display><Character>0BA90BBF</Character><Keys>746A</Keys></Map>
+<Map><Display>0BA90BC0</Display><Character>0BA90BC0</Character><Keys>746A6A</Keys></Map>
+<Map><Display>0BA90BC0</Display><Character>0BA90BC0</Character><Keys>746A67</Keys></Map>
+<Map><Display>0BA90BC1</Display><Character>0BA90BC1</Character><Keys>746B</Keys></Map>
+<Map><Display>0BA90BC2</Display><Character>0BA90BC2</Character><Keys>746B6B</Keys></Map>
+<Map><Display>0BA90BC2</Display><Character>0BA90BC2</Character><Keys>746B67</Keys></Map>
+<Map><Display>0BA90BC6</Display><Character>0BA90BC6</Character><Keys>746c</Keys></Map>
+<Map><Display>0BA90BC7</Display><Character>0BA90BC7</Character><Keys>746c6c</Keys></Map>
+<Map><Display>0BA90BC7</Display><Character>0BA90BC7</Character><Keys>746c67</Keys></Map>
+<Map><Display>0BA90BC8</Display><Character>0BA90BC8</Character><Keys>7479</Keys></Map>
+<Map><Display>0BA90BCA</Display><Character>0BA90BCA</Character><Keys>746E</Keys></Map>
+<Map><Display>0BA90BCB</Display><Character>0BA90BCB</Character><Keys>746E6E</Keys></Map>
+<Map><Display>0BA90BCB</Display><Character>0BA90BCB</Character><Keys>746E67</Keys></Map>
+<Map><Display>0BA90BCC</Display><Character>0BA90BCC</Character><Keys>746D</Keys></Map>
+<Map><Display>0B9C0BCD</Display><Character>0B9C0BCD</Character><Keys>7967</Keys></Map>
+<Map><Display>0B9C</Display><Character>0B9C</Character><Keys>796768</Keys></Map>
+<Map><Display>0B9C0BBE</Display><Character>0B9C0BBE</Character><Keys>79676868</Keys></Map>
+<Map><Display>0B9C0BBE</Display><Character>0B9C0BBE</Character><Keys>79676867</Keys></Map>
+<Map><Display>0B9C0BBF</Display><Character>0B9C0BBF</Character><Keys>79676A</Keys></Map>
+<Map><Display>0B9C0BC0</Display><Character>0B9C0BC0</Character><Keys>79676A6A</Keys></Map>
+<Map><Display>0B9C0BC0</Display><Character>0B9C0BC0</Character><Keys>79676A67</Keys></Map>
+<Map><Display>0B9C0BC1</Display><Character>0B9C0BC1</Character><Keys>79676B</Keys></Map>
+<Map><Display>0B9C0BC2</Display><Character>0B9C0BC2</Character><Keys>79676B6B</Keys></Map>
+<Map><Display>0B9C0BC2</Display><Character>0B9C0BC2</Character><Keys>79676B67</Keys></Map>
+<Map><Display>0B9C0BC6</Display><Character>0B9C0BC6</Character><Keys>79676c</Keys></Map>
+<Map><Display>0B9C0BC7</Display><Character>0B9C0BC7</Character><Keys>79676c6c</Keys></Map>
+<Map><Display>0B9C0BC7</Display><Character>0B9C0BC7</Character><Keys>79676c67</Keys></Map>
+<Map><Display>0B9C0BC8</Display><Character>0B9C0BC8</Character><Keys>796779</Keys></Map>
+<Map><Display>0B9C0BCA</Display><Character>0B9C0BCA</Character><Keys>79676E</Keys></Map>
+<Map><Display>0B9C0BCB</Display><Character>0B9C0BCB</Character><Keys>79676E6E</Keys></Map>
+<Map><Display>0B9C0BCB</Display><Character>0B9C0BCB</Character><Keys>79676E67</Keys></Map>
+<Map><Display>0B9C0BCC</Display><Character>0B9C0BCC</Character><Keys>79676D</Keys></Map>
+<Map><Display>0BB80BCD</Display><Character>0BB80BCD</Character><Keys>7467</Keys></Map>
+<Map><Display>0BB8</Display><Character>0BB8</Character><Keys>746768</Keys></Map>
+<Map><Display>0BB80BBE</Display><Character>0BB80BBE</Character><Keys>74676868</Keys></Map>
+<Map><Display>0BB80BBE</Display><Character>0BB80BBE</Character><Keys>74676867</Keys></Map>
+<Map><Display>0BB80BBF</Display><Character>0BB80BBF</Character><Keys>74676A</Keys></Map>
+<Map><Display>0BB80BC0</Display><Character>0BB80BC0</Character><Keys>74676A6A</Keys></Map>
+<Map><Display>0BB80BC0</Display><Character>0BB80BC0</Character><Keys>74676A67</Keys></Map>
+<Map><Display>0BB80BC1</Display><Character>0BB80BC1</Character><Keys>74676B</Keys></Map>
+<Map><Display>0BB80BC2</Display><Character>0BB80BC2</Character><Keys>74676B6B</Keys></Map>
+<Map><Display>0BB80BC2</Display><Character>0BB80BC2</Character><Keys>74676B67</Keys></Map>
+<Map><Display>0BB80BC6</Display><Character>0BB80BC6</Character><Keys>74676c</Keys></Map>
+<Map><Display>0BB80BC7</Display><Character>0BB80BC7</Character><Keys>74676c6c</Keys></Map>
+<Map><Display>0BB80BC7</Display><Character>0BB80BC7</Character><Keys>74676c67</Keys></Map>
+<Map><Display>0BB80BC8</Display><Character>0BB80BC8</Character><Keys>746774</Keys></Map>
+<Map><Display>0BB80BCA</Display><Character>0BB80BCA</Character><Keys>74676E</Keys></Map>
+<Map><Display>0BB80BCB</Display><Character>0BB80BCB</Character><Keys>74676E6E</Keys></Map>
+<Map><Display>0BB80BCB</Display><Character>0BB80BCB</Character><Keys>74676E67</Keys></Map>
+<Map><Display>0BB80BCC</Display><Character>0BB80BCC</Character><Keys>74676D</Keys></Map>
+<Map><Display>0BB70BCD</Display><Character>0BB70BCD</Character><Keys>7267</Keys></Map>
+<Map><Display>0BB7</Display><Character>0BB7</Character><Keys>726768</Keys></Map>
+<Map><Display>0BB70BBE</Display><Character>0BB70BBE</Character><Keys>72676868</Keys></Map>
+<Map><Display>0BB70BBE</Display><Character>0BB70BBE</Character><Keys>72676867</Keys></Map>
+<Map><Display>0BB70BBF</Display><Character>0BB70BBF</Character><Keys>72676A</Keys></Map>
+<Map><Display>0BB70BC0</Display><Character>0BB70BC0</Character><Keys>72676A6A</Keys></Map>
+<Map><Display>0BB70BC0</Display><Character>0BB70BC0</Character><Keys>72676A67</Keys></Map>
+<Map><Display>0BB70BC1</Display><Character>0BB70BC1</Character><Keys>72676B</Keys></Map>
+<Map><Display>0BB70BC2</Display><Character>0BB70BC2</Character><Keys>72676B6B</Keys></Map>
+<Map><Display>0BB70BC2</Display><Character>0BB70BC2</Character><Keys>72676B67</Keys></Map>
+<Map><Display>0BB70BC6</Display><Character>0BB70BC6</Character><Keys>72676c</Keys></Map>
+<Map><Display>0BB70BC7</Display><Character>0BB70BC7</Character><Keys>72676c6c</Keys></Map>
+<Map><Display>0BB70BC7</Display><Character>0BB70BC7</Character><Keys>72676c67</Keys></Map>
+<Map><Display>0BB70BC8</Display><Character>0BB70BC8</Character><Keys>726772</Keys></Map>
+<Map><Display>0BB70BCA</Display><Character>0BB70BCA</Character><Keys>72676E</Keys></Map>
+<Map><Display>0BB70BCB</Display><Character>0BB70BCB</Character><Keys>72676E6E</Keys></Map>
+<Map><Display>0BB70BCB</Display><Character>0BB70BCB</Character><Keys>72676E67</Keys></Map>
+<Map><Display>0BB70BCC</Display><Character>0BB70BCC</Character><Keys>72676D</Keys></Map>
+<Map><Display>0BB90BCD</Display><Character>0BB90BCD</Character><Keys>6567</Keys></Map>
+<Map><Display>0BB9</Display><Character>0BB9</Character><Keys>656768</Keys></Map>
+<Map><Display>0BB90BBE</Display><Character>0BB90BBE</Character><Keys>65676868</Keys></Map>
+<Map><Display>0BB90BBE</Display><Character>0BB90BBE</Character><Keys>65676867</Keys></Map>
+<Map><Display>0BB90BBF</Display><Character>0BB90BBF</Character><Keys>65676A</Keys></Map>
+<Map><Display>0BB90BC0</Display><Character>0BB90BC0</Character><Keys>65676A6A</Keys></Map>
+<Map><Display>0BB90BC0</Display><Character>0BB90BC0</Character><Keys>65676A67</Keys></Map>
+<Map><Display>0BB90BC1</Display><Character>0BB90BC1</Character><Keys>65676B</Keys></Map>
+<Map><Display>0BB90BC2</Display><Character>0BB90BC2</Character><Keys>65676B6B</Keys></Map>
+<Map><Display>0BB90BC2</Display><Character>0BB90BC2</Character><Keys>65676B67</Keys></Map>
+<Map><Display>0BB90BC6</Display><Character>0BB90BC6</Character><Keys>65676c</Keys></Map>
+<Map><Display>0BB90BC7</Display><Character>0BB90BC7</Character><Keys>65676c6c</Keys></Map>
+<Map><Display>0BB90BC7</Display><Character>0BB90BC7</Character><Keys>65676c67</Keys></Map>
+<Map><Display>0BB90BC8</Display><Character>0BB90BC8</Character><Keys>656765</Keys></Map>
+<Map><Display>0BB90BCA</Display><Character>0BB90BCA</Character><Keys>65676E</Keys></Map>
+<Map><Display>0BB90BCB</Display><Character>0BB90BCB</Character><Keys>65676E6E</Keys></Map>
+<Map><Display>0BB90BCB</Display><Character>0BB90BCB</Character><Keys>65676E67</Keys></Map>
+<Map><Display>0BB90BCC</Display><Character>0BB90BCC</Character><Keys>65676D</Keys></Map>
+<Map><Display>0B950BCD0BB70BCD</Display><Character>0B950BCD0BB70BCD</Character><Keys>7767</Keys></Map>
+<Map><Display>0B950BCD0BB7</Display><Character>0B950BCD0BB7</Character><Keys>776768</Keys></Map>
+<Map><Display>0B950BCD0BB70BBE</Display><Character>0B950BCD0BB70BBE</Character><Keys>77676868</Keys></Map>
+<Map><Display>0B950BCD0BB70BBE</Display><Character>0B950BCD0BB70BBE</Character><Keys>77676867</Keys></Map>
+<Map><Display>0B950BCD0BB70BBF</Display><Character>0B950BCD0BB70BBF</Character><Keys>77676A</Keys></Map>
+<Map><Display>0B950BCD0BB70BC0</Display><Character>0B950BCD0BB70BC0</Character><Keys>77676A6A</Keys></Map>
+<Map><Display>0B950BCD0BB70BC0</Display><Character>0B950BCD0BB70BC0</Character><Keys>77676A67</Keys></Map>
+<Map><Display>0B950BCD0BB70BC1</Display><Character>0B950BCD0BB70BC1</Character><Keys>77676B</Keys></Map>
+<Map><Display>0B950BCD0BB70BC2</Display><Character>0B950BCD0BB70BC2</Character><Keys>77676B6B</Keys></Map>
+<Map><Display>0B950BCD0BB70BC2</Display><Character>0B950BCD0BB70BC2</Character><Keys>77676B67</Keys></Map>
+<Map><Display>0B950BCD0BB70BC6</Display><Character>0B950BCD0BB70BC6</Character><Keys>77676c</Keys></Map>
+<Map><Display>0B950BCD0BB70BC7</Display><Character>0B950BCD0BB70BC7</Character><Keys>77676c6c</Keys></Map>
+<Map><Display>0B950BCD0BB70BC7</Display><Character>0B950BCD0BB70BC7</Character><Keys>77676c67</Keys></Map>
+<Map><Display>0B950BCD0BB70BC8</Display><Character>0B950BCD0BB70BC8</Character><Keys>776777</Keys></Map>
+<Map><Display>0B950BCD0BB70BCA</Display><Character>0B950BCD0BB70BCA</Character><Keys>77676E</Keys></Map>
+<Map><Display>0B950BCD0BB70BCB</Display><Character>0B950BCD0BB70BCB</Character><Keys>77676E6E</Keys></Map>
+<Map><Display>0B950BCD0BB70BCB</Display><Character>0B950BCD0BB70BCB</Character><Keys>77676E67</Keys></Map>
+<Map><Display>0B950BCD0BB70BCC</Display><Character>0B950BCD0BB70BCC</Character><Keys>77676D</Keys></Map>
+<Map><Display>0BB80BCD0BB00BC0</Display><Character>0BB80BCD0BB00BC0</Character><Keys>7167</Keys></Map>
+<Map><Display>0B83</Display><Character>0B83</Character><Keys>6D67</Keys></Map>
+<Map><Display>0031</Display><Character>0031</Character><Keys>31</Keys></Map>
+<Map><Display>0032</Display><Character>0032</Character><Keys>32</Keys></Map>
+<Map><Display>0033</Display><Character>0033</Character><Keys>33</Keys></Map>
+<Map><Display>0034</Display><Character>0034</Character><Keys>34</Keys></Map>
+<Map><Display>0035</Display><Character>0035</Character><Keys>35</Keys></Map>
+<Map><Display>0036</Display><Character>0036</Character><Keys>36</Keys></Map>
+<Map><Display>0037</Display><Character>0037</Character><Keys>37</Keys></Map>
+<Map><Display>0038</Display><Character>0038</Character><Keys>38</Keys></Map>
+<Map><Display>0039</Display><Character>0039</Character><Keys>39</Keys></Map>
+<Map><Display>0030</Display><Character>0030</Character><Keys>30</Keys></Map>
+<Map><Display>0021</Display><Character>0021</Character><Keys>21</Keys></Map>
+<Map><Display>0040</Display><Character>0040</Character><Keys>40</Keys></Map>
+<Map><Display>0023</Display><Character>0023</Character><Keys>23</Keys></Map>
+<Map><Display>0024</Display><Character>0024</Character><Keys>24</Keys></Map>
+<Map><Display>0025</Display><Character>0025</Character><Keys>25</Keys></Map>
+<Map><Display>005E</Display><Character>005E</Character><Keys>5E</Keys></Map>
+<Map><Display>0026</Display><Character>0026</Character><Keys>26</Keys></Map>
+<Map><Display>002A</Display><Character>002A</Character><Keys>2A</Keys></Map>
+<Map><Display>0028</Display><Character>0028</Character><Keys>28</Keys></Map>
+<Map><Display>002D</Display><Character>002D</Character><Keys>2D</Keys></Map>
+<Map><Display>003D</Display><Character>003D</Character><Keys>3D</Keys></Map>
+<Map><Display>0051</Display><Character>0051</Character><Keys>51</Keys></Map>
+<Map><Display>0057</Display><Character>0057</Character><Keys>57</Keys></Map>
+<Map><Display>0045</Display><Character>0045</Character><Keys>45</Keys></Map>
+<Map><Display>0052</Display><Character>0052</Character><Keys>52</Keys></Map>
+<Map><Display>0054</Display><Character>0054</Character><Keys>54</Keys></Map>
+<Map><Display>0059</Display><Character>0059</Character><Keys>59</Keys></Map>
+<Map><Display>0055</Display><Character>0055</Character><Keys>55</Keys></Map>
+<Map><Display>0049</Display><Character>0049</Character><Keys>49</Keys></Map>
+<Map><Display>004F</Display><Character>004F</Character><Keys>4F</Keys></Map>
+<Map><Display>0050</Display><Character>0050</Character><Keys>50</Keys></Map>
+<Map><Display>007B</Display><Character>007B</Character><Keys>7B</Keys></Map>
+<Map><Display>007D</Display><Character>007D</Character><Keys>7D</Keys></Map>
+<Map><Display>0041</Display><Character>0041</Character><Keys>41</Keys></Map>
+<Map><Display>0053</Display><Character>0053</Character><Keys>53</Keys></Map>
+<Map><Display>0044</Display><Character>0044</Character><Keys>44</Keys></Map>
+<Map><Display>0046</Display><Character>0046</Character><Keys>46</Keys></Map>
+<Map><Display>0047</Display><Character>0047</Character><Keys>47</Keys></Map>
+<Map><Display>0048</Display><Character>0048</Character><Keys>48</Keys></Map>
+<Map><Display>004A</Display><Character>004A</Character><Keys>4A</Keys></Map>
+<Map><Display>004B</Display><Character>004B</Character><Keys>4B</Keys></Map>
+<Map><Display>004C</Display><Character>004C</Character><Keys>4C</Keys></Map>
+<Map><Display>003A</Display><Character>003A</Character><Keys>3A</Keys></Map>
+<Map><Display>0022</Display><Character>0022</Character><Keys>22</Keys></Map>
+<Map><Display>007E</Display><Character>007E</Character><Keys>7E</Keys></Map>
+<Map><Display>007C</Display><Character>007C</Character><Keys>7C</Keys></Map>
+<Map><Display>005A</Display><Character>005A</Character><Keys>5A</Keys></Map>
+<Map><Display>0058</Display><Character>0058</Character><Keys>58</Keys></Map>
+<Map><Display>0043</Display><Character>0043</Character><Keys>43</Keys></Map>
+<Map><Display>0056</Display><Character>0056</Character><Keys>56</Keys></Map>
+<Map><Display>0042</Display><Character>0042</Character><Keys>42</Keys></Map>
+<Map><Display>004E</Display><Character>004E</Character><Keys>4E</Keys></Map>
+<Map><Display>004D</Display><Character>004D</Character><Keys>4D</Keys></Map>
+<Map><Display>003C</Display><Character>003C</Character><Keys>3C</Keys></Map>
+<Map><Display>003E</Display><Character>003E</Character><Keys>3E</Keys></Map>
+<Map><Display>003F</Display><Character>003F</Character><Keys>3F</Keys></Map>
+<Map><Display>0029</Display><Character>0029</Character><Keys>29</Keys></Map>
+<Map><Display>005F</Display><Character>005F</Character><Keys>5F</Keys></Map>
+<Map><Display>002B</Display><Character>002B</Character><Keys>2B</Keys></Map>
+<Map><Display>0071</Display><Character>0071</Character><Keys>7160</Keys></Map>
+<Map><Display>0077</Display><Character>0077</Character><Keys>7760</Keys></Map>
+<Map><Display>0065</Display><Character>0065</Character><Keys>6560</Keys></Map>
+<Map><Display>0072</Display><Character>0072</Character><Keys>7260</Keys></Map>
+<Map><Display>0074</Display><Character>0074</Character><Keys>7460</Keys></Map>
+<Map><Display>0079</Display><Character>0079</Character><Keys>7960</Keys></Map>
+<Map><Display>0075</Display><Character>0075</Character><Keys>7560</Keys></Map>
+<Map><Display>0069</Display><Character>0069</Character><Keys>6960</Keys></Map>
+<Map><Display>006F</Display><Character>006F</Character><Keys>6F60</Keys></Map>
+<Map><Display>0070</Display><Character>0070</Character><Keys>7060</Keys></Map>
+<Map><Display>0061</Display><Character>0061</Character><Keys>6160</Keys></Map>
+<Map><Display>0073</Display><Character>0073</Character><Keys>7360</Keys></Map>
+<Map><Display>0064</Display><Character>0064</Character><Keys>6460</Keys></Map>
+<Map><Display>0066</Display><Character>0066</Character><Keys>6660</Keys></Map>
+<Map><Display>0067</Display><Character>0067</Character><Keys>6760</Keys></Map>
+<Map><Display>0068</Display><Character>0068</Character><Keys>6860</Keys></Map>
+<Map><Display>006A</Display><Character>006A</Character><Keys>6A60</Keys></Map>
+<Map><Display>006B</Display><Character>006B</Character><Keys>6B60</Keys></Map>
+<Map><Display>006C</Display><Character>006C</Character><Keys>6C60</Keys></Map>
+<Map><Display>007A</Display><Character>007A</Character><Keys>7A60</Keys></Map>
+<Map><Display>0078</Display><Character>0078</Character><Keys>7860</Keys></Map>
+<Map><Display>0063</Display><Character>0063</Character><Keys>6360</Keys></Map>
+<Map><Display>0076</Display><Character>0076</Character><Keys>7660</Keys></Map>
+<Map><Display>0062</Display><Character>0062</Character><Keys>6260</Keys></Map>
+<Map><Display>006E</Display><Character>006E</Character><Keys>6E60</Keys></Map>
+<Map><Display>006D</Display><Character>006D</Character><Keys>6D60</Keys></Map>
+<Map><Display>0060</Display><Character>0060</Character><Keys>60</Keys></Map>
+<Map><Display>007E</Display><Character>007E</Character><Keys>7E</Keys></Map>
+<Map><Display>005B</Display><Character>005B</Character><Keys>5B</Keys></Map>
+<Map><Display>005D</Display><Character>005D</Character><Keys>5D</Keys></Map>
+<Map><Display>0027</Display><Character>0027</Character><Keys>27</Keys></Map>
+<Map><Display>003B</Display><Character>003B</Character><Keys>3B</Keys></Map>
+<Map><Display>005C</Display><Character>005C</Character><Keys>5C</Keys></Map>
+<Map><Display>002C</Display><Character>002C</Character><Keys>2C</Keys></Map>
+<Map><Display>002E</Display><Character>002E</Character><Keys>2E</Keys></Map>
+<Map><Display>002F</Display><Character>002F</Character><Keys>2F</Keys></Map>
+<!-- CapsEnglish Layer (1st Shift press) -->
+<Map Layer="CapsEnglish"><Display>A</Display><Character>0041</Character><Keys>41</Keys></Map>
+<Map Layer="CapsEnglish"><Display>B</Display><Character>0042</Character><Keys>42</Keys></Map>
+<Map Layer="CapsEnglish"><Display>C</Display><Character>0043</Character><Keys>43</Keys></Map>
+<Map Layer="CapsEnglish"><Display>D</Display><Character>0044</Character><Keys>44</Keys></Map>
+<Map Layer="CapsEnglish"><Display>E</Display><Character>0045</Character><Keys>45</Keys></Map>
+<Map Layer="CapsEnglish"><Display>F</Display><Character>0046</Character><Keys>46</Keys></Map>
+<Map Layer="CapsEnglish"><Display>G</Display><Character>0047</Character><Keys>47</Keys></Map>
+<Map Layer="CapsEnglish"><Display>H</Display><Character>0048</Character><Keys>48</Keys></Map>
+<Map Layer="CapsEnglish"><Display>I</Display><Character>0049</Character><Keys>49</Keys></Map>
+<Map Layer="CapsEnglish"><Display>J</Display><Character>004A</Character><Keys>4A</Keys></Map>
+<Map Layer="CapsEnglish"><Display>K</Display><Character>004B</Character><Keys>4B</Keys></Map>
+<Map Layer="CapsEnglish"><Display>L</Display><Character>004C</Character><Keys>4C</Keys></Map>
+<Map Layer="CapsEnglish"><Display>M</Display><Character>004D</Character><Keys>4D</Keys></Map>
+<Map Layer="CapsEnglish"><Display>N</Display><Character>004E</Character><Keys>4E</Keys></Map>
+<Map Layer="CapsEnglish"><Display>O</Display><Character>004F</Character><Keys>4F</Keys></Map>
+<Map Layer="CapsEnglish"><Display>P</Display><Character>0050</Character><Keys>50</Keys></Map>
+<Map Layer="CapsEnglish"><Display>Q</Display><Character>0051</Character><Keys>51</Keys></Map>
+<Map Layer="CapsEnglish"><Display>R</Display><Character>0052</Character><Keys>52</Keys></Map>
+<Map Layer="CapsEnglish"><Display>S</Display><Character>0053</Character><Keys>53</Keys></Map>
+<Map Layer="CapsEnglish"><Display>T</Display><Character>0054</Character><Keys>54</Keys></Map>
+<Map Layer="CapsEnglish"><Display>U</Display><Character>0055</Character><Keys>55</Keys></Map>
+<Map Layer="CapsEnglish"><Display>V</Display><Character>0056</Character><Keys>56</Keys></Map>
+<Map Layer="CapsEnglish"><Display>W</Display><Character>0057</Character><Keys>57</Keys></Map>
+<Map Layer="CapsEnglish"><Display>X</Display><Character>0058</Character><Keys>58</Keys></Map>
+<Map Layer="CapsEnglish"><Display>Y</Display><Character>0059</Character><Keys>59</Keys></Map>
+<Map Layer="CapsEnglish"><Display>Z</Display><Character>005A</Character><Keys>5A</Keys></Map>
+<!-- SmallEnglish Layer (2nd Shift press) -->
+<Map Layer="SmallEnglish"><Display>a</Display><Character>0061</Character><Keys>61</Keys></Map>
+<Map Layer="SmallEnglish"><Display>b</Display><Character>0062</Character><Keys>62</Keys></Map>
+<Map Layer="SmallEnglish"><Display>c</Display><Character>0063</Character><Keys>63</Keys></Map>
+<Map Layer="SmallEnglish"><Display>d</Display><Character>0064</Character><Keys>64</Keys></Map>
+<Map Layer="SmallEnglish"><Display>e</Display><Character>0065</Character><Keys>65</Keys></Map>
+<Map Layer="SmallEnglish"><Display>f</Display><Character>0066</Character><Keys>66</Keys></Map>
+<Map Layer="SmallEnglish"><Display>g</Display><Character>0067</Character><Keys>67</Keys></Map>
+<Map Layer="SmallEnglish"><Display>h</Display><Character>0068</Character><Keys>68</Keys></Map>
+<Map Layer="SmallEnglish"><Display>i</Display><Character>0069</Character><Keys>69</Keys></Map>
+<Map Layer="SmallEnglish"><Display>j</Display><Character>006A</Character><Keys>6A</Keys></Map>
+<Map Layer="SmallEnglish"><Display>k</Display><Character>006B</Character><Keys>6B</Keys></Map>
+<Map Layer="SmallEnglish"><Display>l</Display><Character>006C</Character><Keys>6C</Keys></Map>
+<Map Layer="SmallEnglish"><Display>m</Display><Character>006D</Character><Keys>6D</Keys></Map>
+<Map Layer="SmallEnglish"><Display>n</Display><Character>006E</Character><Keys>6E</Keys></Map>
+<Map Layer="SmallEnglish"><Display>o</Display><Character>006F</Character><Keys>6F</Keys></Map>
+<Map Layer="SmallEnglish"><Display>p</Display><Character>0070</Character><Keys>70</Keys></Map>
+<Map Layer="SmallEnglish"><Display>q</Display><Character>0071</Character><Keys>71</Keys></Map>
+<Map Layer="SmallEnglish"><Display>r</Display><Character>0072</Character><Keys>72</Keys></Map>
+<Map Layer="SmallEnglish"><Display>s</Display><Character>0073</Character><Keys>73</Keys></Map>
+<Map Layer="SmallEnglish"><Display>t</Display><Character>0074</Character><Keys>74</Keys></Map>
+<Map Layer="SmallEnglish"><Display>u</Display><Character>0075</Character><Keys>75</Keys></Map>
+<Map Layer="SmallEnglish"><Display>v</Display><Character>0076</Character><Keys>76</Keys></Map>
+<Map Layer="SmallEnglish"><Display>w</Display><Character>0077</Character><Keys>77</Keys></Map>
+<Map Layer="SmallEnglish"><Display>x</Display><Character>0078</Character><Keys>78</Keys></Map>
+<Map Layer="SmallEnglish"><Display>y</Display><Character>0079</Character><Keys>79</Keys></Map>
+<Map Layer="SmallEnglish"><Display>z</Display><Character>007A</Character><Keys>7A</Keys></Map>
+</Data>
+</Table>

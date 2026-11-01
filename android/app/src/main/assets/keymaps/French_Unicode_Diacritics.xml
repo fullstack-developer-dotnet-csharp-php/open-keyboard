@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Table>
+	<Header>
+		<Language>French</Language>
+		<Encoding>Unicode</Encoding>
+		<Keyboard>Diacritics</Keyboard>
+		<Author>Open Keyboard Community</Author>
+		<Description>French Accents & Diacritics Mapping</Description>
+	</Header>
+<Data>
+<Map><Character>00E9</Character><Keys>6527</Keys></Map>
+<Map><Character>00C9</Character><Keys>4527</Keys></Map>
+<Map><Character>00E8</Character><Keys>6560</Keys></Map>
+<Map><Character>00C8</Character><Keys>4560</Keys></Map>
+<Map><Character>00EA</Character><Keys>655E</Keys></Map>
+<Map><Character>00CA</Character><Keys>455E</Keys></Map>
+<Map><Character>00EB</Character><Keys>653A</Keys></Map>
+<Map><Character>00E0</Character><Keys>6160</Keys></Map>
+<Map><Character>00C0</Character><Keys>4160</Keys></Map>
+<Map><Character>00E2</Character><Keys>615E</Keys></Map>
+<Map><Character>00E7</Character><Keys>632C</Keys></Map>
+<Map><Character>00C7</Character><Keys>432C</Keys></Map>
+<Map><Character>00EE</Character><Keys>695E</Keys></Map>
+<Map><Character>00EF</Character><Keys>693A</Keys></Map>
+<Map><Character>00F4</Character><Keys>6F5E</Keys></Map>
+<Map><Character>00F9</Character><Keys>7560</Keys></Map>
+<Map><Character>00FB</Character><Keys>755E</Keys></Map>
+<Map><Character>0153</Character><Keys>6F65</Keys></Map>
+<Map><Character>0152</Character><Keys>4F45</Keys></Map>
+</Data>
+</Table>

@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open Keyboard - Universal Open Source XML Keyboard (Gboard Style)</title>
+  <style>
+    :root {
+      --bg: #121214;
+      --card: #1c1b1f;
+      --card-border: #2b2930;
+      --text: #e6e1e5;
+      --text-muted: #8e918f;
+      
+      /* Gboard Official Dark Theme Colors */
+      --gboard-bg: #1c1b1f;
+      --gboard-header: #151417;
+      --gboard-key-normal: #2b2930;
+      --gboard-key-special: #1e1d22;
+      --gboard-key-pressed: #44424a;
+      --gboard-accent-blue: #a8c7fa;
+      --gboard-accent-text: #062e6f;
+      --gboard-hint-cyan: #7fcfff;
+      --gboard-popup-bg: #38363d;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Roboto", "Segoe UI", Arial, sans-serif;
+    }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px 8px;
+    }
+    .container {
+      width: 100%;
+      max-width: 680px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    header {
+      text-align: center;
+      padding: 6px 0;
+    }
+    header h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--gboard-accent-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    header p {
+      color: var(--text-muted);
+      font-size: 13px;
+      margin-top: 4px;
+    }
+    .badge-bar {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 600;
+      background: #2b2930;
+      color: #a8c7fa;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+    .controls-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 12px;
+      align-items: center;
+    }
+    @media (max-width: 580px) {
+      .controls-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    select, input[type="file"], button {
+      width: 100%;
+      padding: 9px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--card-border);
+      background: #151417;
+      color: var(--text);
+      font-size: 13px;
+      outline: none;
+      transition: all 0.2s;
+    }
+    select:focus, button:focus {
+      border-color: var(--gboard-accent-blue);
+    }
+    .upload-zone {
+      border: 1.5px dashed #44424a;
+      border-radius: 8px;
+      padding: 10px;
+      text-align: center;
+      cursor: pointer;
+      background: #151417;
+      position: relative;
+    }
+    .upload-zone:hover {
+      border-color: var(--gboard-accent-blue);
+    }
+    .upload-zone input {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+    .upload-zone span {
+      font-size: 12px;
+      color: var(--gboard-accent-blue);
+      font-weight: 500;
+    }
+
+    /* Output Editor Area */
+    .editor {
+      width: 100%;
+      height: 90px;
+      background: #151417;
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 17px;
+      line-height: 1.5;
+      color: #fff;
+      resize: vertical;
+      outline: none;
+    }
+    .editor:focus {
+      border-color: var(--gboard-accent-blue);
+    }
+    .editor-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 6px;
+      margin-top: 6px;
+    }
+    .action-btn {
+      width: auto;
+      padding: 5px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      background: #2b2930;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    /* Gboard Pixel-Perfect Container */
+    .gboard-container {
+      background: var(--gboard-bg);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.6);
+      user-select: none;
+      -webkit-user-select: none;
+      border: 1px solid #2b2930;
+    }
+    .gboard-header {
+      height: 38px;
+      background: var(--gboard-header);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+      border-bottom: 1px solid #2b2930;
+    }
+    .gboard-chip {
+      background: #2b2930;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #e6e1e5;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .gboard-buffer-chip {
+      color: var(--gboard-accent-blue);
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    /* Keyboard Rows */
+    .gboard-body {
+      padding: 6px 3px 8px 3px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .gboard-row {
+      display: flex;
+      justify-content: center;
+      gap: 4px;
+    }
+    .gboard-key {
+      flex: 1;
+      height: 44px;
+      background: var(--gboard-key-normal);
+      border-radius: 7px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      transition: background 0.08s;
+      max-width: 58px;
+    }
+    .gboard-key:active {
+      background: var(--gboard-key-pressed);
+    }
+    .key-main-text {
+      font-size: 17px;
+      color: #e6e1e5;
+      font-weight: 400;
+    }
+    .key-hint-badge {
+      font-size: 9.5px;
+      font-weight: bold;
+      color: var(--gboard-hint-cyan);
+      position: absolute;
+      top: 2px;
+      right: 4px;
+    }
+    .gboard-key.special {
+      background: var(--gboard-key-special);
+      flex: 1.45;
+      font-size: 13px;
+      color: #c4c7c5;
+      font-weight: bold;
+    }
+    .gboard-key.shift.active {
+      background: var(--gboard-accent-blue);
+      color: var(--gboard-accent-text);
+    }
+    .gboard-key.space {
+      flex: 4.5;
+      font-size: 11px;
+      color: #8e918f;
+    }
+    .gboard-key.enter {
+      flex: 1.45;
+      background: var(--gboard-accent-blue);
+      color: var(--gboard-accent-text);
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    /* Row 2 Gboard indentation */
+    .gboard-row-2-indent {
+      width: calc((100% - (10 * 4px)) / 20);
+    }
+
+    /* Layout Dropdown Menu */
+    .layout-dropdown-menu {
+      position: absolute;
+      top: 42px;
+      left: 12px;
+      background: #25232A;
+      border: 1.2px solid #3F3D47;
+      border-radius: 10px;
+      box-shadow: 0 10px 28px rgba(0,0,0,0.6);
+      z-index: 100;
+      min-width: 220px;
+      max-height: 220px;
+      overflow-y: auto;
+      padding: 6px 0;
+    }
+    .layout-dropdown-item {
+      padding: 9px 14px;
+      font-size: 13px;
+      color: #E6E1E5;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.1s;
+    }
+    .layout-dropdown-item:hover {
+      background: #3D3A45;
+    }
+    .layout-dropdown-item.active {
+      background: #26364D;
+      color: #A8C7FA;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>⌨️ Open Keyboard</h1>
+      <p>Google Keyboard (Gboard) Material Design • XML-Driven Engine</p>
+      <div class="badge-bar">
+        <span class="badge">English Default</span>
+        <span class="badge">SIVA Tamil26ADN</span>
+        <span class="badge">All Indian & European Languages</span>
+        <span class="badge">Gboard Compact Height (235dp)</span>
+      </div>
+    </header>
+
+    <!-- Controls -->
+    <div class="card">
+      <div class="controls-grid">
+        <div>
+          <label for="keymapSelect">Active XML Layout</label>
+          <select id="keymapSelect"></select>
+        </div>
+        <div>
+          <label>Upload Custom XML</label>
+          <div class="upload-zone" id="dropZone">
+            <input type="file" id="fileInput" accept=".xml">
+            <span id="uploadText">📁 Choose or Drop .XML file</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notepad -->
+    <div class="card">
+      <label>Playground (Click keys or use physical keyboard)</label>
+      <textarea id="editor" class="editor" placeholder="Type here using Gboard-styled Open Keyboard..."></textarea>
+      <div class="editor-actions">
+        <button class="action-btn" id="btnCopy">📋 Copy</button>
+        <button class="action-btn" id="btnClear">🗑️ Clear</button>
+      </div>
+    </div>
+
+    <!-- Gboard Mockup -->
+    <div class="gboard-container" style="position:relative;">
+      <!-- Top Suggestion Strip (Dedicated for Text Suggestions!) -->
+      <div class="gboard-header" id="suggestionStrip" style="display:flex; justify-content:space-around; align-items:center; position:relative;">
+        <span class="suggestion-chip" id="sug1" style="flex:1; text-align:center; color:#c4c7c5; font-size:13px; cursor:pointer;">,</span>
+        <span class="suggestion-chip center" id="sug2" style="flex:1; text-align:center; color:#A8C7FA; font-size:14px; font-weight:bold; cursor:pointer;">English</span>
+        <span class="suggestion-chip" id="sug3" style="flex:1; text-align:center; color:#c4c7c5; font-size:13px; cursor:pointer;">.</span>
+        <!-- Floating Dropdown Menu (pops up above bottom row) -->
+        <div id="layoutDropdown" class="layout-dropdown-menu" style="display:none; bottom:48px; top:auto; left:65px;"></div>
+      </div>
+      <div class="gboard-body" id="keyboardBody"></div>
+    </div>
+  </div>
+
+  <script src="bundled_keymaps.js"></script>
+  <script>
+    class OpenXmlParser {
+      static parse(xmlString) {
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(xmlString, "text/xml");
+        const getTag = (t, fb = "") => xmlDoc.getElementsByTagName(t)[0]?.textContent.trim() || fb;
+
+        const language = getTag("Language", "Universal");
+        const encoding = getTag("Encoding", "Unicode");
+        const keyboard = getTag("Keyboard", "Custom");
+        const author = getTag("Author", "Community");
+
+        const mapNodes = xmlDoc.getElementsByTagName("Map");
+        const mappings = new Map();
+        const singleCharBadges = new Map();
+
+        for (let i = 0; i < mapNodes.length; i++) {
+          const charNode = mapNodes[i].getElementsByTagName("Character")[0];
+          const displayNode = mapNodes[i].getElementsByTagName("Display")[0];
+          const keysNode = mapNodes[i].getElementsByTagName("Keys")[0];
+
+          if (keysNode && (charNode || displayNode)) {
+            const keysHex = keysNode.textContent.trim();
+            const charHex = (charNode || displayNode).textContent.trim();
+            const displayHex = displayNode ? displayNode.textContent.trim() : charHex;
+
+            const keyStr = OpenXmlParser.hexToKeys(keysHex);
+            const charStr = OpenXmlParser.hexToChar(charHex);
+            const displayStr = OpenXmlParser.hexToChar(displayHex);
+
+            mappings.set(keyStr, charStr);
+            if (keyStr.length === 1 && !singleCharBadges.has(keyStr)) {
+              singleCharBadges.set(keyStr, displayStr);
+            }
+          }
+        }
+
+        return { language, encoding, keyboard, author, mappings, singleCharBadges };
+      }
+
+      static hexToKeys(hex) {
+        let str = "";
+        for (let i = 0; i < hex.length; i += 2) {
+          str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+        }
+        return str;
+      }
+
+      static hexToChar(hex) {
+        let str = "";
+        const step = (hex.length % 4 === 0) ? 4 : 2;
+        for (let i = 0; i < hex.length; i += step) {
+          str += String.fromCharCode(parseInt(hex.substr(i, step), 16));
+        }
+        return str;
+      }
+    }
+
+    class OpenKeyboardEngine {
+      constructor(parsedKeymap) {
+        this.keymap = parsedKeymap;
+        this.buffer = "";
+        this.lastOutput = "";
+        this.trie = {};
+        this.buildTrie();
+      }
+
+      buildTrie() {
+        this.trie = {};
+        for (const [key, val] of this.keymap.mappings.entries()) {
+          let node = this.trie;
+          for (let i = 0; i < key.length; i++) {
+            const ch = key[i];
+            if (!node[ch]) node[ch] = { _val: null };
+            node = node[ch];
+          }
+          node._val = val;
+        }
+      }
+
+      hasPrefix(prefix) {
+        let node = this.trie;
+        for (let i = 0; i < prefix.length; i++) {
+          const ch = prefix[i];
+          if (!node[ch]) return false;
+          node = node[ch];
+        }
+        return true;
+      }
+
+      getMatch(str) {
+        let node = this.trie;
+        for (let i = 0; i < str.length; i++) {
+          const ch = str[i];
+          if (!node[ch]) return null;
+          node = node[ch];
+        }
+        return node._val;
+      }
+
+      handleKey(char) {
+        const candidate = this.buffer + char;
+        if (this.hasPrefix(candidate)) {
+          this.buffer = candidate;
+          const match = this.getMatch(this.buffer);
+          if (match !== null) {
+            const del = this.lastOutput.length;
+            this.lastOutput = match;
+            return { deleteCount: del, insertText: match, buffer: this.buffer };
+          } else {
+            return { deleteCount: 0, insertText: "", buffer: this.buffer };
+          }
+        } else {
+          this.buffer = "";
+          this.lastOutput = "";
+          if (this.hasPrefix(char)) {
+            this.buffer = char;
+            const match = this.getMatch(this.buffer);
+            if (match !== null) {
+              this.lastOutput = match;
+              return { deleteCount: 0, insertText: match, buffer: this.buffer };
+            } else {
+              return { deleteCount: 0, insertText: "", buffer: this.buffer };
+            }
+          } else {
+            return { deleteCount: 0, insertText: char, buffer: "" };
+          }
+        }
+      }
+
+      handleBackspace() {
+        if (this.buffer.length > 0) {
+          const del = this.lastOutput.length;
+          this.buffer = this.buffer.slice(0, -1);
+          if (this.buffer.length > 0) {
+            const match = this.getMatch(this.buffer);
+            this.lastOutput = match || "";
+            return { deleteCount: del, insertText: this.lastOutput, buffer: this.buffer };
+          } else {
+            this.lastOutput = "";
+            return { deleteCount: del, insertText: "", buffer: "" };
+          }
+        }
+        return { deleteCount: 1, insertText: "", buffer: "" };
+      }
+
+      reset() {
+        this.buffer = "";
+        this.lastOutput = "";
+      }
+    }
+
+    let currentParsed = null;
+    let engine = null;
+    let shiftMode = 'TAMIL'; // 'TAMIL', 'CAPS_ENGLISH', 'SMALL_ENGLISH'
+    let isSymbols = false;
+    let isEmoji = false;
+
+    const editor = document.getElementById("editor");
+    const keymapSelect = document.getElementById("keymapSelect");
+    const keyboardBody = document.getElementById("keyboardBody");
+    const lblBuffer = document.getElementById("lblBuffer");
+    const lblLayoutChip = document.getElementById("lblLayoutChip");
+
+    const row1Chars = ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"];
+    const row2Chars = ["a", "s", "d", "f", "g", "h", "j", "k", "l"];
+    const row3Chars = ["z", "x", "c", "v", "b", "n", "m"];
+
+    const symRow1 = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
+    const symRow2 = ["@", "#", "$", "%", "&", "-", "+", "(", ")", "/"];
+    const symRow3 = ["*", "\"", "'", ":", ";", "!", "?"];
+
+    const emojiRow1 = ["😀", "😂", "😍", "🥰", "😎", "😊", "🙏", "👍", "❤️", "🔥"];
+    const emojiRow2 = ["🤣", "😅", "😋", "😘", "🤩", "🥳", "👏", "🎉", "✨"];
+    const emojiRow3 = ["🤝", "🙌", "💐", "💯", "💪", "🤔", "👌"];
+
+    function initKeymaps() {
+      if (!window.BUNDLED_KEYMAPS) return;
+      const keys = Object.keys(window.BUNDLED_KEYMAPS);
+      keys.sort((a, b) => (a === "English.xml" ? -1 : b === "English.xml" ? 1 : a === "Tamil26ADN.xml" ? -1 : b === "Tamil26ADN.xml" ? 1 : a.localeCompare(b)));
+
+      keymapSelect.innerHTML = "";
+      keys.forEach(k => {
+        const item = window.BUNDLED_KEYMAPS[k];
+        const opt = document.createElement("option");
+        opt.value = k;
+        opt.textContent = `[${item.language}] ${item.keyboard} - ${item.author}`;
+        keymapSelect.appendChild(opt);
+      });
+
+      const def = keys.find(k => k === "English.xml") || keys.find(k => k === "Tamil26ADN.xml") || keys[0];
+      keymapSelect.value = def;
+      loadKeymap(window.BUNDLED_KEYMAPS[def].xml);
+    }
+
+    function loadKeymap(xml) {
+      currentParsed = OpenXmlParser.parse(xml);
+      engine = new OpenKeyboardEngine(currentParsed);
+      const sug2 = document.getElementById("sug2");
+      if (sug2) sug2.textContent = currentParsed.keyboard;
+      renderGboard();
+    }
+
+    function renderGboard() {
+      keyboardBody.innerHTML = "";
+
+      // Row 1
+      const r1Div = document.createElement("div");
+      r1Div.className = "gboard-row";
+      const r1 = isEmoji ? emojiRow1 : (isSymbols ? symRow1 : row1Chars);
+      r1.forEach(ch => r1Div.appendChild(createKey(ch)));
+      keyboardBody.appendChild(r1Div);
+
+      // Row 2 (Indented with half key width on both sides - Gboard style!)
+      const r2Div = document.createElement("div");
+      r2Div.className = "gboard-row";
+      const r2 = isEmoji ? emojiRow2 : (isSymbols ? symRow2 : row2Chars);
+      r2.forEach(ch => r2Div.appendChild(createKey(ch)));
+      keyboardBody.appendChild(r2Div);
+
+      // Row 3 (Shift/ABC, 7 keys, Backspace)
+      const r3Div = document.createElement("div");
+      r3Div.className = "gboard-row";
+
+      // Shift / ABC
+      const shiftKey = document.createElement("div");
+      shiftKey.className = "gboard-key special shift" + (isShift ? " active" : "");
+      shiftKey.textContent = (isSymbols || isEmoji) ? "ABC" : (isShift ? "⇪" : "⇧");
+      shiftKey.onclick = () => { 
+        if (isEmoji) isEmoji = false;
+        else if (isSymbols) isSymbols = false; 
+        else isShift = !isShift; 
+        renderGboard(); 
+      };
+      r3Div.appendChild(shiftKey);
+
+      const r3 = isEmoji ? emojiRow3 : (isSymbols ? symRow3 : row3Chars);
+      r3.forEach(ch => r3Div.appendChild(createKey(ch)));
+
+      // Del
+      const delKey = document.createElement("div");
+      delKey.className = "gboard-key special";
+      delKey.textContent = "⌫";
+      delKey.onclick = () => applyBackspace();
+      r3Div.appendChild(delKey);
+
+      keyboardBody.appendChild(r3Div);
+
+      // Row 4 (?123, Smiley 😊, Space, Period, Enter)
+      const r4Div = document.createElement("div");
+      r4Div.className = "gboard-row";
+
+      // 1. ?123 / ABC
+      const symKey = document.createElement("div");
+      symKey.className = "gboard-key special";
+      symKey.textContent = isSymbols ? "ABC" : "?123";
+      symKey.onclick = () => { 
+        if (isEmoji) isEmoji = false;
+        isSymbols = !isSymbols; 
+        renderGboard(); 
+      };
+      r4Div.appendChild(symKey);
+
+      // 2. Smiley 😊 button
+      const smileyKey = document.createElement("div");
+      smileyKey.className = "gboard-key special" + (isEmoji ? " active" : "");
+      smileyKey.textContent = isEmoji ? "ABC" : "😊";
+      smileyKey.onclick = () => {
+        if (isSymbols) isSymbols = false;
+        isEmoji = !isEmoji;
+        renderGboard();
+      };
+      r4Div.appendChild(smileyKey);
+
+      // 3. Keyboard Selection 🌐 button (Next to Smilys!)
+      const langKey = document.createElement("div");
+      langKey.className = "gboard-key special";
+      langKey.textContent = "🌐";
+      langKey.title = "Switch Keyboard Layout";
+      langKey.onclick = (e) => {
+        e.stopPropagation();
+        toggleLayoutDropdown();
+      };
+      r4Div.appendChild(langKey);
+
+      // 4. Space
+      const spaceKey = document.createElement("div");
+      spaceKey.className = "gboard-key space";
+      spaceKey.textContent = isEmoji ? "Emojis 😊" : (currentParsed.keyboard.includes("Tamil26") ? "தமிழ் • Tamil26ADN" : currentParsed.keyboard);
+      spaceKey.onclick = () => applyChar(" ");
+      r4Div.appendChild(spaceKey);
+
+      // Period
+      r4Div.appendChild(createKey("."));
+
+      // Enter
+      const enterKey = document.createElement("div");
+      enterKey.className = "gboard-key enter";
+      enterKey.textContent = "⏎";
+      enterKey.onclick = () => applyChar("\n");
+      r4Div.appendChild(enterKey);
+
+      keyboardBody.appendChild(r4Div);
+    }
+
+    function createKey(char) {
+      const keyDiv = document.createElement("div");
+      keyDiv.className = "gboard-key";
+      const displayChar = isEmoji ? char : (isShift ? char.toUpperCase() : char.toLowerCase());
+
+      const span = document.createElement("span");
+      span.className = "key-main-text";
+      span.textContent = displayChar;
+      keyDiv.appendChild(span);
+
+      if (!isEmoji && currentParsed && currentParsed.singleCharBadges.has(displayChar)) {
+        const badge = document.createElement("span");
+        badge.className = "key-hint-badge";
+        badge.textContent = currentParsed.singleCharBadges.get(displayChar);
+        keyDiv.appendChild(badge);
+      }
+
+      keyDiv.onclick = () => applyChar(displayChar);
+      return keyDiv;
+    }
+
+    function applyChar(ch) {
+      const isEnglish = (currentParsed && (currentParsed.language === "English" || currentParsed.keyboard === "English"));
+      if (isEmoji || isEnglish) {
+        if (engine) engine.reset();
+        insertText(0, ch);
+        lblBuffer.textContent = "";
+        return;
+      }
+      if (!engine) return;
+      const res = engine.handleKey(ch);
+      insertText(res.deleteCount, res.insertText);
+      lblBuffer.textContent = res.buffer ? `[${res.buffer}]` : "";
+    }
+
+    function applyBackspace() {
+      if (!engine) return;
+      const res = engine.handleBackspace();
+      insertText(res.deleteCount, res.insertText);
+      lblBuffer.textContent = res.buffer ? `[${res.buffer}]` : "";
+    }
+
+    function insertText(delCount, text) {
+      const start = editor.selectionStart;
+      const end = editor.selectionEnd;
+      let val = editor.value;
+
+      let prefix = val.substring(0, start);
+      let suffix = val.substring(end);
+
+      if (delCount > 0 && prefix.length >= delCount) {
+        prefix = prefix.substring(0, prefix.length - delCount);
+      }
+
+      editor.value = prefix + text + suffix;
+      const newPos = prefix.length + text.length;
+      editor.setSelectionRange(newPos, newPos);
+      editor.focus();
+    }
+
+    function toggleLayoutDropdown() {
+      const dd = document.getElementById("layoutDropdown");
+      if (dd.style.display === "block") {
+        dd.style.display = "none";
+      } else {
+        renderDropdownItems();
+        dd.style.display = "block";
+      }
+    }
+
+    function renderDropdownItems() {
+      const dd = document.getElementById("layoutDropdown");
+      dd.innerHTML = "";
+      const keys = Object.keys(window.BUNDLED_KEYMAPS);
+      keys.sort((a, b) => (a === "English.xml" ? -1 : b === "English.xml" ? 1 : a === "Tamil26ADN.xml" ? -1 : b === "Tamil26ADN.xml" ? 1 : a.localeCompare(b)));
+
+      keys.forEach(k => {
+        const item = window.BUNDLED_KEYMAPS[k];
+        const isActive = (currentParsed && currentParsed.keyboard === item.keyboard);
+        const div = document.createElement("div");
+        div.className = "layout-dropdown-item" + (isActive ? " active" : "");
+        div.innerHTML = `<span style="width:16px; font-weight:bold;">${isActive ? "✓" : ""}</span><span>${item.keyboard} <span style="opacity:0.6; font-size:11px;">[${item.language}]</span></span>`;
+        div.onclick = (e) => {
+          e.stopPropagation();
+          keymapSelect.value = k;
+          loadKeymap(item.xml);
+          dd.style.display = "none";
+        };
+        dd.appendChild(div);
+      });
+    }
+
+    document.addEventListener("click", (e) => {
+      const dd = document.getElementById("layoutDropdown");
+      if (dd && dd.style.display === "block" && !dd.contains(e.target)) {
+        dd.style.display = "none";
+      }
+    });
+    keymapSelect.onchange = () => loadKeymap(window.BUNDLED_KEYMAPS[keymapSelect.value].xml);
+
+    // Physical Keyboard Listener
+    window.addEventListener("keydown", (e) => {
+      if (document.activeElement === editor && e.key !== "Backspace" && e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        e.preventDefault();
+        applyChar(e.key);
+      } else if (document.activeElement === editor && e.key === "Backspace") {
+        e.preventDefault();
+        applyBackspace();
+      }
+    });
+
+    // File Upload
+    document.getElementById("fileInput").onchange = (e) => {
+      const file = e.target.files?.[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (evt) => {
+          loadKeymap(evt.target.result);
+          document.getElementById("uploadText").textContent = `✅ ${file.name}`;
+        };
+        reader.readAsText(file);
+      }
+    };
+
+    document.getElementById("btnCopy").onclick = () => {
+      navigator.clipboard.writeText(editor.value);
+      alert("Copied to clipboard!");
+    };
+    document.getElementById("btnClear").onclick = () => {
+      editor.value = "";
+      if (engine) engine.reset();
+      lblBuffer.textContent = "";
+      editor.focus();
+    };
+
+    initKeymaps();
+  </script>
+</body>
+</html>

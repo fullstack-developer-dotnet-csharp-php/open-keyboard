@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Table>
+	<Header>
+		<Language>Hindi</Language>
+		<Encoding>Unicode</Encoding>
+		<Keyboard>Phonetic</Keyboard>
+		<Author>Open Keyboard Community</Author>
+		<Description>Hindi Devanagari Phonetic Transliteration</Description>
+	</Header>
+<Data>
+<Map><Character>0905</Character><Keys>61</Keys></Map>
+<Map><Character>0906</Character><Keys>6161</Keys></Map>
+<Map><Character>0907</Character><Keys>69</Keys></Map>
+<Map><Character>0908</Character><Keys>6969</Keys></Map>
+<Map><Character>0908</Character><Keys>6565</Keys></Map>
+<Map><Character>0909</Character><Keys>75</Keys></Map>
+<Map><Character>090A</Character><Keys>7575</Keys></Map>
+<Map><Character>090A</Character><Keys>6F6F</Keys></Map>
+<Map><Character>090F</Character><Keys>65</Keys></Map>
+<Map><Character>0910</Character><Keys>6169</Keys></Map>
+<Map><Character>0913</Character><Keys>6F</Keys></Map>
+<Map><Character>0914</Character><Keys>6175</Keys></Map>
+<Map><Character>0915094D</Character><Keys>6B</Keys></Map>
+<Map><Character>0915</Character><Keys>6B61</Keys></Map>
+<Map><Character>0915093E</Character><Keys>6B6161</Keys></Map>
+<Map><Character>0915093F</Character><Keys>6B69</Keys></Map>
+<Map><Character>09150940</Character><Keys>6B6969</Keys></Map>
+<Map><Character>09150941</Character><Keys>6B75</Keys></Map>
+<Map><Character>09150942</Character><Keys>6B7575</Keys></Map>
+<Map><Character>09150947</Character><Keys>6B65</Keys></Map>
+<Map><Character>0915094B</Character><Keys>6B6F</Keys></Map>
+<Map><Character>0916094D</Character><Keys>6B68</Keys></Map>
+<Map><Character>0916</Character><Keys>6B6861</Keys></Map>
+<Map><Character>0917094D</Character><Keys>67</Keys></Map>
+<Map><Character>0917</Character><Keys>6761</Keys></Map>
+<Map><Character>0918094D</Character><Keys>6768</Keys></Map>
+<Map><Character>0918</Character><Keys>676861</Keys></Map>
+<Map><Character>091A094D</Character><Keys>6368</Keys></Map>
+<Map><Character>091A</Character><Keys>636861</Keys></Map>
+<Map><Character>091C094D</Character><Keys>6A</Keys></Map>
+<Map><Character>091C</Character><Keys>6A61</Keys></Map>
+<Map><Character>0924094D</Character><Keys>74</Keys></Map>
+<Map><Character>0924</Character><Keys>7461</Keys></Map>
+<Map><Character>0925094D</Character><Keys>7468</Keys></Map>
+<Map><Character>0925</Character><Keys>746861</Keys></Map>
+<Map><Character>0926094D</Character><Keys>64</Keys></Map>
+<Map><Character>0926</Character><Keys>6461</Keys></Map>
+<Map><Character>0927094D</Character><Keys>6468</Keys></Map>
+<Map><Character>0927</Character><Keys>646861</Keys></Map>
+<Map><Character>0928094D</Character><Keys>6E</Keys></Map>
+<Map><Character>0928</Character><Keys>6E61</Keys></Map>
+<Map><Character>092A094D</Character><Keys>70</Keys></Map>
+<Map><Character>092A</Character><Keys>7061</Keys></Map>
+<Map><Character>092C094D</Character><Keys>62</Keys></Map>
+<Map><Character>092C</Character><Keys>6261</Keys></Map>
+<Map><Character>092E094D</Character><Keys>6D</Keys></Map>
+<Map><Character>092E</Character><Keys>6D61</Keys></Map>
+<Map><Character>092F094D</Character><Keys>79</Keys></Map>
+<Map><Character>092F</Character><Keys>7961</Keys></Map>
+<Map><Character>0930094D</Character><Keys>72</Keys></Map>
+<Map><Character>0930</Character><Keys>7261</Keys></Map>
+<Map><Character>0932094D</Character><Keys>6C</Keys></Map>
+<Map><Character>0932</Character><Keys>6C61</Keys></Map>
+<Map><Character>0935094D</Character><Keys>76</Keys></Map>
+<Map><Character>0935</Character><Keys>7661</Keys></Map>
+<Map><Character>0935094D</Character><Keys>77</Keys></Map>
+<Map><Character>0935</Character><Keys>7761</Keys></Map>
+<Map><Character>0938094D</Character><Keys>73</Keys></Map>
+<Map><Character>0938</Character><Keys>7361</Keys></Map>
+<Map><Character>0936094D</Character><Keys>7368</Keys></Map>
+<Map><Character>0936</Character><Keys>736861</Keys></Map>
+<Map><Character>0939094D</Character><Keys>68</Keys></Map>
+<Map><Character>0939</Character><Keys>6861</Keys></Map>
+<Map><Character>0928092E0938094D09240947</Character><Keys>6E616D61737465</Keys></Map>
+</Data>
+</Table>

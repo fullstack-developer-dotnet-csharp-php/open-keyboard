@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Table>
+	<Header>
+		<Language>Telugu</Language>
+		<Encoding>Unicode</Encoding>
+		<Keyboard>Phonetic</Keyboard>
+		<Author>Open Keyboard Community</Author>
+		<Description>Telugu Phonetic Transliteration</Description>
+	</Header>
+<Data>
+<Map><Character>0C05</Character><Keys>61</Keys></Map>
+<Map><Character>0C06</Character><Keys>6161</Keys></Map>
+<Map><Character>0C07</Character><Keys>69</Keys></Map>
+<Map><Character>0C08</Character><Keys>6969</Keys></Map>
+<Map><Character>0C09</Character><Keys>75</Keys></Map>
+<Map><Character>0C0A</Character><Keys>7575</Keys></Map>
+<Map><Character>0C0E</Character><Keys>65</Keys></Map>
+<Map><Character>0C0F</Character><Keys>6565</Keys></Map>
+<Map><Character>0C10</Character><Keys>6169</Keys></Map>
+<Map><Character>0C12</Character><Keys>6F</Keys></Map>
+<Map><Character>0C13</Character><Keys>6F6F</Keys></Map>
+<Map><Character>0C14</Character><Keys>6175</Keys></Map>
+<Map><Character>0C150C4D</Character><Keys>6B</Keys></Map>
+<Map><Character>0C15</Character><Keys>6B61</Keys></Map>
+<Map><Character>0C150C3E</Character><Keys>6B6161</Keys></Map>
+<Map><Character>0C240C4D</Character><Keys>74</Keys></Map>
+<Map><Character>0C24</Character><Keys>7461</Keys></Map>
+<Map><Character>0C280C4D</Character><Keys>6E</Keys></Map>
+<Map><Character>0C28</Character><Keys>6E61</Keys></Map>
+<Map><Character>0C2E0C4D</Character><Keys>6D</Keys></Map>
+<Map><Character>0C2E</Character><Keys>6D61</Keys></Map>
+<Map><Character>0C300C4D</Character><Keys>72</Keys></Map>
+<Map><Character>0C30</Character><Keys>7261</Keys></Map>
+<Map><Character>0C320C4D</Character><Keys>6C</Keys></Map>
+<Map><Character>0C32</Character><Keys>6C61</Keys></Map>
+<Map><Character>0C350C4D</Character><Keys>76</Keys></Map>
+<Map><Character>0C35</Character><Keys>7661</Keys></Map>
+<Map><Character>0C280C2E0C380C4D0C150C3E0C300C02</Character><Keys>6E616D61736B6172616D</Keys></Map>
+</Data>
+</Table>

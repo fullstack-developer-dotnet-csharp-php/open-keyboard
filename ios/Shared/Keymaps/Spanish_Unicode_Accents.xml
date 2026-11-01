@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Table>
+	<Header>
+		<Language>Spanish</Language>
+		<Encoding>Unicode</Encoding>
+		<Keyboard>Accents</Keyboard>
+		<Author>Open Keyboard Community</Author>
+		<Description>Spanish Accents and Inverted Punctuation</Description>
+	</Header>
+<Data>
+<Map><Character>00E1</Character><Keys>6127</Keys></Map>
+<Map><Character>00E9</Character><Keys>6527</Keys></Map>
+<Map><Character>00ED</Character><Keys>6927</Keys></Map>
+<Map><Character>00F3</Character><Keys>6F27</Keys></Map>
+<Map><Character>00FA</Character><Keys>7527</Keys></Map>
+<Map><Character>00F1</Character><Keys>6E7E</Keys></Map>
+<Map><Character>00D1</Character><Keys>4E7E</Keys></Map>
+<Map><Character>00FC</Character><Keys>753A</Keys></Map>
+<Map><Character>00BF</Character><Keys>3F3F</Keys></Map>
+<Map><Character>00A1</Character><Keys>2121</Keys></Map>
+</Data>
+</Table>

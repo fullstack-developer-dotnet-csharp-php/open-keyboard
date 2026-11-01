@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Table>
+	<Header>
+		<Language>German</Language>
+		<Encoding>Unicode</Encoding>
+		<Keyboard>Umlauts</Keyboard>
+		<Author>Open Keyboard Community</Author>
+		<Description>German Umlauts & Eszett</Description>
+	</Header>
+<Data>
+<Map><Character>00E4</Character><Keys>6165</Keys></Map>
+<Map><Character>00C4</Character><Keys>4165</Keys></Map>
+<Map><Character>00F6</Character><Keys>6F65</Keys></Map>
+<Map><Character>00D6</Character><Keys>4F65</Keys></Map>
+<Map><Character>00FC</Character><Keys>7565</Keys></Map>
+<Map><Character>00DC</Character><Keys>5565</Keys></Map>
+<Map><Character>00DF</Character><Keys>7373</Keys></Map>
+</Data>
+</Table>
