@@ -692,14 +692,15 @@
 <Map Layer="SmallEnglish"><Display>y</Display><Character>0079</Character><Keys>79</Keys></Map>
 <Map Layer="SmallEnglish"><Display>z</Display><Character>007A</Character><Keys>7A</Keys></Map>
 
-<!-- Sanskrit / Grantha Long-Press Mappings & Kaladi Desktop Style -->
-<Map Layer="LongPress"><Display>0BB7</Display><Character>0BB7</Character><Keys>61</Keys></Map>
-<Map Layer="LongPress"><Display>0BB8</Display><Character>0BB8</Character><Keys>73</Keys></Map>
-<Map Layer="LongPress"><Display>0BB9</Display><Character>0BB9</Character><Keys>64</Keys></Map>
-<Map Layer="LongPress"><Display>0B9C</Display><Character>0B9C</Character><Keys>66</Keys></Map>
-<Map Layer="LongPress"><Display>0BB80BCD0BB00BC0</Display><Character>0BB80BCD0BB00BC0</Character><Keys>7A</Keys></Map>
-<Map Layer="LongPress"><Display>0BD0</Display><Character>0BD0</Character><Keys>78</Keys></Map>
-<Map Layer="LongPress"><Display>0B950BCD0BB7</Display><Character>0B950BCD0BB7</Character><Keys>63</Keys></Map>
-<Map Layer="LongPress"><Display>0BB6</Display><Character>0BB6</Character><Keys>76</Keys></Map>
+<!-- Sanskrit / Grantha Long-Press Mappings on Row 1 (Kaladi Desktop Standard: q=ஸ்ரீ, w=க்ஷ, e=ஹ, r=ஷ, t=ஸ, y=ஜ, u=ஶ, i=ௐ, m=ஃ) -->
+<Map Layer="LongPress"><Display>0BB80BCD0BB00BC0</Display><Character>0BB80BCD0BB00BC0</Character><Keys>71</Keys></Map>
+<Map Layer="LongPress"><Display>0B950BCD0BB7</Display><Character>0B950BCD0BB7</Character><Keys>77</Keys></Map>
+<Map Layer="LongPress"><Display>0BB9</Display><Character>0BB9</Character><Keys>65</Keys></Map>
+<Map Layer="LongPress"><Display>0BB7</Display><Character>0BB7</Character><Keys>72</Keys></Map>
+<Map Layer="LongPress"><Display>0BB8</Display><Character>0BB8</Character><Keys>74</Keys></Map>
+<Map Layer="LongPress"><Display>0B9C</Display><Character>0B9C</Character><Keys>79</Keys></Map>
+<Map Layer="LongPress"><Display>0BB6</Display><Character>0BB6</Character><Keys>75</Keys></Map>
+<Map Layer="LongPress"><Display>0BD0</Display><Character>0BD0</Character><Keys>69</Keys></Map>
+<Map Layer="LongPress"><Display>0B83</Display><Character>0B83</Character><Keys>6D</Keys></Map>
 </Data>
 </Table>
