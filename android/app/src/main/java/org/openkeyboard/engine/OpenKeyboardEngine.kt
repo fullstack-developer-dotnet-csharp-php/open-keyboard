@@ -42,11 +42,15 @@ class OpenKeyboardEngine(val parsedKeymap: ParsedKeymap) {
     }
 
     private fun getRootForLayer(layer: String): TrieNode {
-        return layerRoots[layer] ?: rootDefault
+        return layerRoots[layer]
+            ?: if (layer.equals("Base", ignoreCase = true) ||
+                   layer.equals("Default", ignoreCase = true) ||
+                   layer.equals(parsedKeymap.info.language, ignoreCase = true)) rootDefault
+               else rootDefault
     }
 
     @Synchronized
-    fun handleKeyPress(char: Char, layer: String = "Tamil"): EngineResult {
+    fun handleKeyPress(char: Char, layer: String = "Base"): EngineResult {
         // Handle English bypass if no custom Trie rules exist
         if (layer.equals("CapsEnglish", ignoreCase = true) && !layerRoots.containsKey("CapsEnglish")) {
             reset()
@@ -124,7 +128,7 @@ class OpenKeyboardEngine(val parsedKeymap: ParsedKeymap) {
     }
 
     @Synchronized
-    fun handleBackspace(layer: String = "Tamil"): EngineResult {
+    fun handleBackspace(layer: String = "Base"): EngineResult {
         if (layer.equals("CapsEnglish", ignoreCase = true) || layer.equals("SmallEnglish", ignoreCase = true)) {
             reset()
             return EngineResult(
@@ -186,15 +190,19 @@ class OpenKeyboardEngine(val parsedKeymap: ParsedKeymap) {
         return curr.mappedValue
     }
 
-    fun hasKeyMapping(keySeq: String, layer: String = "Tamil"): Boolean {
+    fun hasKeyMapping(keySeq: String, layer: String = "Base"): Boolean {
         val root = getRootForLayer(layer)
         return getExactMatch(root, keySeq) != null
     }
 
-    fun getBadgeForChar(key: Char, layer: String = "Tamil"): String? {
+    fun getBadgeForChar(key: Char, layer: String = "Base"): String? {
         val layerBadgeMap = parsedKeymap.layerBadges[layer]
         if (layerBadgeMap != null && layerBadgeMap.containsKey(key.toString())) {
             return layerBadgeMap[key.toString()]
+        }
+        val langBadgeMap = parsedKeymap.layerBadges[parsedKeymap.info.language]
+        if (langBadgeMap != null && langBadgeMap.containsKey(key.toString())) {
+            return langBadgeMap[key.toString()]
         }
         return parsedKeymap.singleCharBadges[key.toString()]
     }

@@ -10,7 +10,7 @@ data class KeymapInfo(
     val description: String,
     val isBuiltIn: Boolean,
     val ruleCount: Int,
-    val shiftCycle: List<String> = listOf("Tamil", "CapsEnglish", "SmallEnglish"),
+    val shiftCycle: List<String> = listOf("Base", "CapsEnglish", "SmallEnglish"),
     val smallShiftSymbol: String = "★"
 ) {
     val displayName: String
@@ -21,7 +21,7 @@ data class KeyMapping(
     val keySequence: String,
     val targetCharacters: String,
     val displayCharacters: String? = null,
-    val layer: String = "Tamil"
+    val layer: String = "Base"
 )
 
 data class EngineResult(

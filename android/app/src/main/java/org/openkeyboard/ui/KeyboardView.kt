@@ -89,15 +89,15 @@ class KeyboardView @JvmOverloads constructor(
     private val langKeyRect = RectF()
 
     // Shift Modes:
-    // English layout: Standard Shift toggle (TAMIL = lowercase a-z, CAPS_ENGLISH = uppercase A-Z)
-    // Tamil layout: 3-Stage cycle (TAMIL -> CAPS_ENGLISH -> SMALL_ENGLISH ★ -> TAMIL)
+    // English layout: Standard Shift toggle (BASE = lowercase a-z, CAPS_ENGLISH = uppercase A-Z)
+    // Non-English layouts: 3-Stage cycle (BASE -> CAPS_ENGLISH -> SMALL_ENGLISH ★ -> BASE)
     enum class ShiftMode {
-        TAMIL,          // Normal native / lowercase English mode
+        BASE,           // Normal native / lowercase English mode
         CAPS_ENGLISH,   // 1st press: CAPS English (A, B, C...)
-        SMALL_ENGLISH   // 2nd press (Tamil mode): small English (a, b, c...) with star symbol
+        SMALL_ENGLISH   // 2nd press: small English (a, b, c...) with star symbol
     }
 
-    var shiftMode = ShiftMode.TAMIL
+    var shiftMode = ShiftMode.BASE
         private set
 
     // Gboard Action Key Types (Enter vs Search vs Go vs Send etc.)
@@ -351,12 +351,12 @@ class KeyboardView @JvmOverloads constructor(
         if (isDropdownOpen) isDropdownOpen = false
         if (isEmoji) isEmoji = false
         if (isEnglishLayout) {
-            shiftMode = if (shiftMode == ShiftMode.CAPS_ENGLISH) ShiftMode.TAMIL else ShiftMode.CAPS_ENGLISH
+            shiftMode = if (shiftMode == ShiftMode.CAPS_ENGLISH) ShiftMode.BASE else ShiftMode.CAPS_ENGLISH
         } else {
             shiftMode = when (shiftMode) {
-                ShiftMode.TAMIL -> ShiftMode.CAPS_ENGLISH
+                ShiftMode.BASE -> ShiftMode.CAPS_ENGLISH
                 ShiftMode.CAPS_ENGLISH -> ShiftMode.SMALL_ENGLISH
-                ShiftMode.SMALL_ENGLISH -> ShiftMode.TAMIL
+                ShiftMode.SMALL_ENGLISH -> ShiftMode.BASE
             }
         }
         computeKeyLayout()
@@ -364,7 +364,7 @@ class KeyboardView @JvmOverloads constructor(
     }
 
     fun resetShift() {
-        shiftMode = ShiftMode.TAMIL
+        shiftMode = ShiftMode.BASE
         isEmoji = false
         isSymbols = false
         isDropdownOpen = false
@@ -465,7 +465,7 @@ class KeyboardView @JvmOverloads constructor(
                 if (shiftMode == ShiftMode.CAPS_ENGLISH) "\u25B2" else "\u21E7" // ▲ (CAPS) or ⇧ (lowercase)
             } else {
                 when (shiftMode) {
-                    ShiftMode.TAMIL -> "\u21E7"          // ⇧
+                    ShiftMode.BASE -> "\u21E7"          // ⇧
                     ShiftMode.CAPS_ENGLISH -> "\u25B2"   // ▲ (CAPS)
                     ShiftMode.SMALL_ENGLISH -> smallShiftSymbol // Star sign ★ by default, or XML-specified!
                 }
@@ -555,13 +555,13 @@ class KeyboardView @JvmOverloads constructor(
         // Suggestions or Live Buffer
         val displaySuggestions = if (currentSuggestions.isNotEmpty()) {
             currentSuggestions
-        } else if (shiftMode == ShiftMode.TAMIL && currentBufferText.isNotEmpty()) {
+        } else if (shiftMode == ShiftMode.BASE && currentBufferText.isNotEmpty()) {
             listOf("", "[$currentBufferText]", "")
         } else {
             val modeSuffix = when {
                 isEmoji -> " [Emoji]"
                 isEnglishLayout -> if (shiftMode == ShiftMode.CAPS_ENGLISH) " [CAPS]" else ""
-                shiftMode == ShiftMode.TAMIL -> ""
+                shiftMode == ShiftMode.BASE -> ""
                 shiftMode == ShiftMode.CAPS_ENGLISH -> " [CAPS]"
                 shiftMode == ShiftMode.SMALL_ENGLISH -> " [$smallShiftSymbol]"
                 else -> ""
@@ -641,7 +641,7 @@ class KeyboardView @JvmOverloads constructor(
                     val displayLayout = when {
                         isEmoji -> "Emojis 😊"
                         isEnglishLayout -> if (shiftMode == ShiftMode.CAPS_ENGLISH) "English (CAPS)" else "English"
-                        shiftMode == ShiftMode.TAMIL -> layoutName
+                        shiftMode == ShiftMode.BASE -> layoutName
                         shiftMode == ShiftMode.CAPS_ENGLISH -> "English (CAPS)"
                         shiftMode == ShiftMode.SMALL_ENGLISH -> "English ($smallShiftSymbol)"
                         else -> layoutName
@@ -671,20 +671,27 @@ class KeyboardView @JvmOverloads constructor(
                     val fontSize = if (isEmoji) dp(20f) else dp(17.5f)
                     textPaint.textSize = fontSize
 
-                    val isTamilMode = !isEnglishLayout && shiftMode == ShiftMode.TAMIL && !isSymbols && !isEmoji && k.code.length == 1
-                    val primaryLabel = if (isTamilMode) {
-                        engine?.getBadgeForChar(k.code[0], "Tamil") ?: k.label
-                    } else {
-                        k.label
+                    val isBaseMode = (shiftMode == ShiftMode.BASE)
+                    val xmlBadge = if (isBaseMode && !isSymbols && !isEmoji && k.code.length == 1) {
+                        engine?.getBadgeForChar(k.code[0], "Base")
+                    } else null
+                    val hasXmlMapping = (xmlBadge != null && xmlBadge != k.code)
+
+                    val primaryLabel = when {
+                        isEmoji || isSymbols -> k.label
+                        shiftMode == ShiftMode.CAPS_ENGLISH -> k.code.uppercase()
+                        shiftMode == ShiftMode.SMALL_ENGLISH -> k.code.lowercase()
+                        hasXmlMapping -> xmlBadge ?: k.label
+                        else -> k.label
                     }
 
                     // Position center label with dedicated vertical space below top badges
-                    val yOffset = if (isTamilMode) dp(3.5f) else dp(1.5f)
+                    val yOffset = if (hasXmlMapping) dp(3.5f) else dp(1.5f)
                     val y = k.rect.centerY() - (textPaint.descent() + textPaint.ascent()) / 2 + yOffset
                     canvas.drawText(primaryLabel, k.rect.centerX(), y, textPaint)
 
-                    // Secondary key badge (English reference letter in Tamil mode, top-right)
-                    if (isTamilMode) {
+                    // Secondary key badge (reference ASCII key letter, top-right, whenever there is an XML mapping!)
+                    if (hasXmlMapping) {
                         badgePaint.color = Color.parseColor("#8E918F")
                         badgePaint.textSize = dp(9f)
                         val badgeX = k.rect.right - dp(4f)
@@ -692,18 +699,18 @@ class KeyboardView @JvmOverloads constructor(
                         canvas.drawText(k.code.lowercase(), badgeX, badgeY, badgePaint)
                     }
 
-                    // 3rd Text (Dedicated Top-Left corner space): Sanskrit in Tamil mode, or Number/Symbol hints
+                    // 3rd Text (Dedicated Top-Left corner space): XML-defined LongPress / 3rd character or Number/Symbol hints
                     if (showThirdText && !isSymbols && !isEmoji && k.code.length == 1) {
-                        val sanskrit = engine?.getLongPressChar(k.code[0])
+                        val customLongPress = engine?.getLongPressChar(k.code[0])
                         val thirdText = when {
-                            !isEnglishLayout && sanskrit != null -> sanskrit
+                            !isEnglishLayout && customLongPress != null -> customLongPress
                             else -> thirdTextMap[k.code.lowercase()]
                         }
                         if (thirdText != null) {
-                            val isSanskrit = (!isEnglishLayout && sanskrit != null)
-                            thirdTextPaint.color = if (isSanskrit) Color.parseColor("#FFD54F") else Color.parseColor("#8E918F")
+                            val isCustomLongPress = (!isEnglishLayout && customLongPress != null)
+                            thirdTextPaint.color = if (isCustomLongPress) Color.parseColor("#FFD54F") else Color.parseColor("#8E918F")
                             // Sizing with dedicated room: multi-char glyphs (e.g. ஸ்ரீ, க்ஷ) use 9dp so they never collide with center
-                            thirdTextPaint.textSize = if (isSanskrit && thirdText.length > 1) dp(9f) else if (isSanskrit) dp(10f) else dp(9f)
+                            thirdTextPaint.textSize = if (isCustomLongPress && thirdText.length > 1) dp(9f) else if (isCustomLongPress) dp(10f) else dp(9f)
                             val tX = k.rect.left + dp(4f)
                             val tY = k.rect.top + dp(10.5f)
                             canvas.drawText(thirdText, tX, tY, thirdTextPaint)
@@ -728,10 +735,16 @@ class KeyboardView @JvmOverloads constructor(
                 canvas.drawRoundRect(popRect, popRadius, popRadius, popupBgPaint)
 
                 popupTextPaint.textSize = dp(24f)
-                val previewText = if (!isEnglishLayout && shiftMode == ShiftMode.TAMIL && !isSymbols && !isEmoji) {
-                    engine?.getBadgeForChar(pk.code[0], "Tamil") ?: pk.label
-                } else {
-                    pk.label
+                val isBaseMode = (shiftMode == ShiftMode.BASE)
+                val xmlBadge = if (isBaseMode && !isSymbols && !isEmoji && pk.code.length == 1) {
+                    engine?.getBadgeForChar(pk.code[0], "Base")
+                } else null
+                val previewText = when {
+                    isEmoji || isSymbols -> pk.label
+                    shiftMode == ShiftMode.CAPS_ENGLISH -> pk.code.uppercase()
+                    shiftMode == ShiftMode.SMALL_ENGLISH -> pk.code.lowercase()
+                    xmlBadge != null && xmlBadge != pk.code -> xmlBadge
+                    else -> pk.label
                 }
                 val popTextY = popRect.centerY() - (popupTextPaint.descent() + popupTextPaint.ascent()) / 2
                 canvas.drawText(previewText, popRect.centerX(), popTextY, popupTextPaint)
@@ -787,14 +800,14 @@ class KeyboardView @JvmOverloads constructor(
         canvas.drawLine(dropdownMenuRect.left + dp(8f), divY, dropdownMenuRect.right - dp(8f), divY, dropdownDividerPaint)
         yTop += dp(4f)
 
-        // 1. Toggle 3rd Text Hints (Sanskrit / Symbols)
+        // 1. Toggle 3rd Text Hints (Generic XML LongPress / Symbols)
         val thirdRect = RectF(dropdownMenuRect.left + dp(4f), yTop, dropdownMenuRect.right - dp(4f), yTop + itemH)
         if (pressedDropdownIndex == enabledKeymaps.size) {
             canvas.drawRoundRect(thirdRect, dp(6f), dp(6f), dropdownPressedBgPaint)
         }
         val thirdMark = if (showThirdText) "[✓] " else "[  ] "
         val thirdY = thirdRect.centerY() - (dropdownSubTextPaint.descent() + dropdownSubTextPaint.ascent()) / 2
-        canvas.drawText("$thirdMark\uD83D\uDD24 3rd Text (Sanskrit)", thirdRect.left + dp(10f), thirdY, dropdownSubTextPaint)
+        canvas.drawText("$thirdMark\uD83D\uDD24 3rd Text Hints", thirdRect.left + dp(10f), thirdY, dropdownSubTextPaint)
         yTop += itemH
 
         // 2. Toggle Word Suggestions
@@ -910,7 +923,7 @@ class KeyboardView @JvmOverloads constructor(
                     if (isSuggestionsEnabled) {
                         val displaySuggestions = if (currentSuggestions.isNotEmpty()) {
                             currentSuggestions
-                        } else if (shiftMode == ShiftMode.TAMIL && currentBufferText.isNotEmpty()) {
+                        } else if (shiftMode == ShiftMode.BASE && currentBufferText.isNotEmpty()) {
                             listOf("", "[$currentBufferText]", "")
                         } else {
                             listOf(",", "", ".")
@@ -1034,7 +1047,7 @@ class KeyboardView @JvmOverloads constructor(
                     when (shiftMode) {
                         ShiftMode.CAPS_ENGLISH -> listener?.onKeyText(key.code.uppercase())
                         ShiftMode.SMALL_ENGLISH -> listener?.onKeyText(key.code.lowercase())
-                        ShiftMode.TAMIL -> listener?.onKeyText(key.code)
+                        ShiftMode.BASE -> listener?.onKeyText(key.code)
                     }
                 }
             }

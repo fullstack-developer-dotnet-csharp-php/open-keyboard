@@ -336,7 +336,7 @@
       <p>Google Keyboard (Gboard) Material Design • XML-Driven Engine</p>
       <div class="badge-bar">
         <span class="badge">English Default</span>
-        <span class="badge">SIVA Tamil26ADN</span>
+        <span class="badge">XML-Driven Keycaps</span>
         <span class="badge">All Indian & European Languages</span>
         <span class="badge">Gboard Compact Height (235dp)</span>
       </div>
@@ -552,7 +552,7 @@
 
     let currentParsed = null;
     let engine = null;
-    let shiftMode = 'TAMIL'; // 'TAMIL', 'CAPS_ENGLISH', 'SMALL_ENGLISH'
+    let shiftMode = 'BASE'; // 'BASE', 'CAPS_ENGLISH', 'SMALL_ENGLISH'
     let isSymbols = false;
     let isEmoji = false;
 
@@ -713,7 +713,7 @@
       // 4. Space
       const spaceKey = document.createElement("div");
       spaceKey.className = "gboard-key space";
-      spaceKey.textContent = isEmoji ? "Emojis 😊" : (currentParsed.keyboard.includes("Tamil26") ? "தமிழ் • Tamil26ADN" : currentParsed.keyboard);
+      spaceKey.textContent = isEmoji ? "Emojis 😊" : currentParsed.keyboard;
       spaceKey.onclick = () => applyChar(" ");
       r4Div.appendChild(spaceKey);
 
@@ -730,14 +730,6 @@
       keyboardBody.appendChild(r4Div);
     }
 
-    const defaultSanskritMap = {
-      "a": "ஷ", "s": "ஸ", "d": "ஹ", "f": "ஜ",
-      "z": "ஸ்ரீ", "x": "ௐ", "c": "க்ஷ", "v": "ஶ",
-      "q": "௧", "w": "௨", "e": "௩", "r": "௪", "t": "௫",
-      "y": "௬", "u": "௭", "i": "௮", "o": "௯", "p": "௦",
-      "h": "௰", "j": "௱", "k": "௲", "l": "௹",
-      "b": "௳", "n": "௴", "m": "௵"
-    };
     const thirdTextSymbols = {
       "q": "1", "w": "2", "e": "3", "r": "4", "t": "5",
       "y": "6", "u": "7", "i": "8", "o": "9", "p": "0",
@@ -753,31 +745,34 @@
       const displayChar = isEmoji ? char : (isShift ? char.toUpperCase() : char.toLowerCase());
 
       const isEnglish = (currentParsed && (currentParsed.language === "English" || currentParsed.keyboard === "English"));
-      const isTamil = !isEmoji && !isEnglish && !isShift && char.length === 1;
+      const isBaseMode = !isEmoji && !isShift && char.length === 1;
 
-      const mainText = (isTamil && currentParsed && currentParsed.singleCharBadges.has(displayChar))
+      const xmlBadge = (isBaseMode && currentParsed && currentParsed.singleCharBadges)
         ? currentParsed.singleCharBadges.get(displayChar)
-        : displayChar;
+        : null;
+      const hasXmlMapping = (xmlBadge && xmlBadge !== displayChar);
+
+      const mainText = hasXmlMapping ? xmlBadge : displayChar;
 
       const span = document.createElement("span");
       span.className = "key-main-text";
       span.textContent = mainText;
       keyDiv.appendChild(span);
 
-      // Top-right English reference badge
-      if (isTamil) {
+      // Top-right English reference badge when layout has custom mapping
+      if (hasXmlMapping) {
         const badge = document.createElement("span");
         badge.className = "key-hint-badge";
         badge.textContent = displayChar;
         keyDiv.appendChild(badge);
       }
 
-      // Top-left Sanskrit / number 3rd text badge
+      // Top-left Sanskrit / number / custom 3rd text badge
       if (!isEmoji && char.length === 1) {
-        const sanskrit = (currentParsed && currentParsed.longPressMappings)
+        const customLong = (currentParsed && currentParsed.longPressMappings)
           ? currentParsed.longPressMappings.get(char.toLowerCase())
-          : defaultSanskritMap[char.toLowerCase()];
-        const third = (!isEnglish && sanskrit) ? sanskrit : thirdTextSymbols[char.toLowerCase()];
+          : null;
+        const third = (!isEnglish && customLong) ? customLong : thirdTextSymbols[char.toLowerCase()];
         if (third) {
           const thirdSpan = document.createElement("span");
           thirdSpan.className = "key-third-text";
@@ -793,10 +788,10 @@
         longPressed = false;
         pressTimer = setTimeout(() => {
           longPressed = true;
-          const sanskrit = (currentParsed && currentParsed.longPressMappings)
+          const customLong = (currentParsed && currentParsed.longPressMappings)
             ? currentParsed.longPressMappings.get(char.toLowerCase())
-            : defaultSanskritMap[char.toLowerCase()];
-          if (!isEnglish && sanskrit) {
+            : null;
+          if (!isEnglish && customLong) {
             applyChar(char.toUpperCase());
           } else if (thirdTextSymbols[char.toLowerCase()]) {
             applyChar(thirdTextSymbols[char.toLowerCase()]);

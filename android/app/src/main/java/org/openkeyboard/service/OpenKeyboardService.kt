@@ -197,7 +197,7 @@ class OpenKeyboardService : InputMethodService(), KeyboardView.OnKeyboardActionL
         val currentLayer = when (keyboardView?.shiftMode) {
             KeyboardView.ShiftMode.CAPS_ENGLISH -> "CapsEnglish"
             KeyboardView.ShiftMode.SMALL_ENGLISH -> "SmallEnglish"
-            else -> "Tamil"
+            else -> "Base"
         }
 
         for (ch in text) {
@@ -231,7 +231,7 @@ class OpenKeyboardService : InputMethodService(), KeyboardView.OnKeyboardActionL
         val currentLayer = when (keyboardView?.shiftMode) {
             KeyboardView.ShiftMode.CAPS_ENGLISH -> "CapsEnglish"
             KeyboardView.ShiftMode.SMALL_ENGLISH -> "SmallEnglish"
-            else -> "Tamil"
+            else -> "Base"
         }
 
         val res = eng.handleBackspace(currentLayer)
