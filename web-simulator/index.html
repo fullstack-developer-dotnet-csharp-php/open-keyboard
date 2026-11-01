@@ -372,13 +372,13 @@
     <!-- Gboard Mockup -->
     <div class="gboard-container" style="position:relative;">
       <!-- Top Suggestion Strip (Dedicated for Text Suggestions!) -->
-      <div class="gboard-header" id="suggestionStrip" style="display:flex; justify-content:space-around; align-items:center; position:relative;">
+      <div class="gboard-header" id="suggestionStrip" style="display:flex; justify-content:space-around; align-items:center;">
         <span class="suggestion-chip" id="sug1" style="flex:1; text-align:center; color:#c4c7c5; font-size:13px; cursor:pointer;">,</span>
         <span class="suggestion-chip center" id="sug2" style="flex:1; text-align:center; color:#A8C7FA; font-size:14px; font-weight:bold; cursor:pointer;">English</span>
         <span class="suggestion-chip" id="sug3" style="flex:1; text-align:center; color:#c4c7c5; font-size:13px; cursor:pointer;">.</span>
-        <!-- Floating Dropdown Menu (pops up above bottom row) -->
-        <div id="layoutDropdown" class="layout-dropdown-menu" style="display:none; bottom:48px; top:auto; left:65px;"></div>
       </div>
+      <!-- Floating Dropdown Menu (pops up above bottom row next to 🔄) -->
+      <div id="layoutDropdown" class="layout-dropdown-menu" style="display:none; position:absolute; bottom:52px; left:75px; z-index:999;"></div>
       <div class="gboard-body" id="keyboardBody"></div>
     </div>
   </div>
@@ -413,8 +413,8 @@
             const displayHex = displayNode ? displayNode.textContent.trim() : charHex;
 
             const keyStr = OpenXmlParser.hexToKeys(keysHex);
-            const charStr = OpenXmlParser.hexToChar(charHex);
-            const displayStr = OpenXmlParser.hexToChar(displayHex);
+            const charStr = OpenXmlParser.parseDisplayOrChar(charHex);
+            const displayStr = OpenXmlParser.parseDisplayOrChar(displayHex);
 
             if (layerAttr.toLowerCase() === "longpress") {
               longPressMappings.set(keyStr.toLowerCase(), charStr);
@@ -451,6 +451,14 @@
         const step = (hex.length % 4 === 0) ? 4 : 2;
         for (let i = 0; i < hex.length; i += step) {
           str += String.fromCharCode(parseInt(hex.substr(i, step), 16));
+        }
+        return str;
+      }
+
+      static parseDisplayOrChar(str) {
+        if (!str) return "";
+        if (str.length >= 2 && str.length % 2 === 0 && /^[0-9a-fA-F]+$/.test(str)) {
+          return OpenXmlParser.hexToChar(str);
         }
         return str;
       }
@@ -555,6 +563,7 @@
     let shiftMode = 'BASE'; // 'BASE', 'CAPS_ENGLISH', 'SMALL_ENGLISH'
     let isSymbols = false;
     let isEmoji = false;
+    let isShift = false;
 
     const editor = document.getElementById("editor");
     const keymapSelect = document.getElementById("keymapSelect");
@@ -575,13 +584,14 @@
     const emojiRow3 = ["🤝", "🙌", "💐", "💯", "💪", "🤔", "👌"];
 
     function initKeymaps() {
-      if (!window.BUNDLED_KEYMAPS) return;
-      const keys = Object.keys(window.BUNDLED_KEYMAPS);
+      const maps = window.BUNDLED_KEYMAPS || (typeof BUNDLED_KEYMAPS !== 'undefined' ? BUNDLED_KEYMAPS : null);
+      if (!maps) return;
+      const keys = Object.keys(maps);
       keys.sort((a, b) => (a === "English.xml" ? -1 : b === "English.xml" ? 1 : a === "Tamil26ADN.xml" ? -1 : b === "Tamil26ADN.xml" ? 1 : a.localeCompare(b)));
 
       keymapSelect.innerHTML = "";
       keys.forEach(k => {
-        const item = window.BUNDLED_KEYMAPS[k];
+        const item = maps[k];
         const opt = document.createElement("option");
         opt.value = k;
         opt.textContent = `[${item.language}] ${item.keyboard} - ${item.author}`;
@@ -590,7 +600,7 @@
 
       const def = keys.find(k => k === "English.xml") || keys.find(k => k === "Tamil26ADN.xml") || keys[0];
       keymapSelect.value = def;
-      loadKeymap(window.BUNDLED_KEYMAPS[def].xml);
+      loadKeymap(maps[def].xml);
     }
 
     function loadKeymap(xml) {
@@ -624,12 +634,31 @@
 
       // Shift / ABC
       const shiftKey = document.createElement("div");
-      shiftKey.className = "gboard-key special shift" + (isShift ? " active" : "");
-      shiftKey.textContent = (isSymbols || isEmoji) ? "ABC" : (isShift ? "⇪" : "⇧");
+      const isEnglish = (currentParsed && (currentParsed.language === "English" || currentParsed.keyboard === "English"));
+      shiftKey.className = "gboard-key special shift" + (shiftMode === 'CAPS_ENGLISH' || shiftMode === 'SMALL_ENGLISH' ? " active" : "");
+      let shiftLabel = "⇧";
+      if (isSymbols || isEmoji) {
+        shiftLabel = "ABC";
+      } else if (isEnglish) {
+        shiftLabel = (shiftMode === 'CAPS_ENGLISH') ? "▲" : "⇧";
+      } else {
+        if (shiftMode === 'BASE') shiftLabel = "⇧";
+        else if (shiftMode === 'CAPS_ENGLISH') shiftLabel = "▲";
+        else if (shiftMode === 'SMALL_ENGLISH') shiftLabel = "★";
+      }
+      shiftKey.textContent = shiftLabel;
       shiftKey.onclick = () => { 
         if (isEmoji) isEmoji = false;
         else if (isSymbols) isSymbols = false; 
-        else isShift = !isShift; 
+        else {
+          if (isEnglish) {
+            shiftMode = (shiftMode === 'CAPS_ENGLISH') ? 'BASE' : 'CAPS_ENGLISH';
+          } else {
+            if (shiftMode === 'BASE') shiftMode = 'CAPS_ENGLISH';
+            else if (shiftMode === 'CAPS_ENGLISH') shiftMode = 'SMALL_ENGLISH';
+            else shiftMode = 'BASE';
+          }
+        }
         renderGboard(); 
       };
       r3Div.appendChild(shiftKey);
@@ -713,7 +742,11 @@
       // 4. Space
       const spaceKey = document.createElement("div");
       spaceKey.className = "gboard-key space";
-      spaceKey.textContent = isEmoji ? "Emojis 😊" : currentParsed.keyboard;
+      const displayLayout = isEmoji ? "Emojis 😊" :
+        (isEnglish ? (shiftMode === 'CAPS_ENGLISH' ? "English (CAPS)" : "English") :
+        (shiftMode === 'CAPS_ENGLISH' ? "English (CAPS)" :
+        (shiftMode === 'SMALL_ENGLISH' ? "English (★)" : currentParsed.keyboard)));
+      spaceKey.textContent = displayLayout;
       spaceKey.onclick = () => applyChar(" ");
       r4Div.appendChild(spaceKey);
 
@@ -742,33 +775,43 @@
     function createKey(char) {
       const keyDiv = document.createElement("div");
       keyDiv.className = "gboard-key";
-      const displayChar = isEmoji ? char : (isShift ? char.toUpperCase() : char.toLowerCase());
 
       const isEnglish = (currentParsed && (currentParsed.language === "English" || currentParsed.keyboard === "English"));
-      const isBaseMode = !isEmoji && !isShift && char.length === 1;
+      const isBaseMode = (shiftMode === 'BASE');
 
-      const xmlBadge = (isBaseMode && currentParsed && currentParsed.singleCharBadges)
-        ? currentParsed.singleCharBadges.get(displayChar)
+      const xmlBadge = (isBaseMode && !isEmoji && !isSymbols && currentParsed && currentParsed.singleCharBadges)
+        ? currentParsed.singleCharBadges.get(char.toLowerCase())
         : null;
-      const hasXmlMapping = (xmlBadge && xmlBadge !== displayChar);
+      const hasXmlMapping = (xmlBadge && xmlBadge !== char.toLowerCase());
 
-      const mainText = hasXmlMapping ? xmlBadge : displayChar;
+      let mainText = char;
+      if (isEmoji || isSymbols) {
+        mainText = char;
+      } else if (shiftMode === 'CAPS_ENGLISH') {
+        mainText = char.toUpperCase();
+      } else if (shiftMode === 'SMALL_ENGLISH') {
+        mainText = char.toLowerCase();
+      } else if (hasXmlMapping) {
+        mainText = xmlBadge;
+      } else {
+        mainText = char.toLowerCase();
+      }
 
       const span = document.createElement("span");
       span.className = "key-main-text";
       span.textContent = mainText;
       keyDiv.appendChild(span);
 
-      // Top-right English reference badge when layout has custom mapping
-      if (hasXmlMapping) {
+      // Top-right English reference badge when layout has custom mapping (BASE mode only)
+      if (hasXmlMapping && isBaseMode) {
         const badge = document.createElement("span");
         badge.className = "key-hint-badge";
-        badge.textContent = displayChar;
+        badge.textContent = char.toLowerCase();
         keyDiv.appendChild(badge);
       }
 
       // Top-left Sanskrit / number / custom 3rd text badge
-      if (!isEmoji && char.length === 1) {
+      if (!isEmoji && !isSymbols && char.length === 1) {
         const customLong = (currentParsed && currentParsed.longPressMappings)
           ? currentParsed.longPressMappings.get(char.toLowerCase())
           : null;
@@ -792,7 +835,7 @@
             ? currentParsed.longPressMappings.get(char.toLowerCase())
             : null;
           if (!isEnglish && customLong) {
-            applyChar(char.toUpperCase());
+            applyChar(customLong);
           } else if (thirdTextSymbols[char.toLowerCase()]) {
             applyChar(thirdTextSymbols[char.toLowerCase()]);
           }
@@ -801,7 +844,15 @@
       const endPress = (e) => {
         clearTimeout(pressTimer);
         if (!longPressed) {
-          applyChar(displayChar);
+          if (isEmoji || isSymbols) {
+            applyChar(char);
+          } else if (shiftMode === 'CAPS_ENGLISH') {
+            applyChar(char.toUpperCase());
+          } else if (shiftMode === 'SMALL_ENGLISH') {
+            applyChar(char.toLowerCase());
+          } else {
+            applyChar(char.toLowerCase());
+          }
         }
       };
 
@@ -814,7 +865,7 @@
 
     function applyChar(ch) {
       const isEnglish = (currentParsed && (currentParsed.language === "English" || currentParsed.keyboard === "English"));
-      if (isEmoji || isEnglish) {
+      if (isEmoji || isEnglish || shiftMode === 'CAPS_ENGLISH' || shiftMode === 'SMALL_ENGLISH') {
         if (engine) engine.reset();
         insertText(0, ch);
         lblBuffer.textContent = "";

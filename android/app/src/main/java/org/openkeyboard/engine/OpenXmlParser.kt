@@ -93,8 +93,8 @@ object OpenXmlParser {
                         if (currentKeysHex.isNotEmpty() && targetHex.isNotEmpty()) {
                             try {
                                 val keyStr = hexToKeyString(currentKeysHex)
-                                val charStr = hexToCharString(targetHex)
-                                val displayStr = if (currentDisplayHex.isNotEmpty()) hexToCharString(currentDisplayHex) else charStr
+                                val charStr = parseDisplayOrChar(targetHex)
+                                val displayStr = if (currentDisplayHex.isNotEmpty()) parseDisplayOrChar(currentDisplayHex) else charStr
 
                                 val effectiveLayer = if (currentLayer.isNotEmpty()) currentLayer else language
 
@@ -182,6 +182,18 @@ object OpenXmlParser {
             i += 2
         }
         return sb.toString()
+    }
+
+    fun parseDisplayOrChar(hexOrLiteral: String): String {
+        val trimmed = hexOrLiteral.trim()
+        if (trimmed.length >= 2 && trimmed.length % 2 == 0 && trimmed.all { it in '0'..'9' || it in 'a'..'f' || it in 'A'..'F' }) {
+            return try {
+                hexToCharString(trimmed)
+            } catch (_: Exception) {
+                trimmed
+            }
+        }
+        return trimmed
     }
 
     fun hexToCharString(hex: String): String {

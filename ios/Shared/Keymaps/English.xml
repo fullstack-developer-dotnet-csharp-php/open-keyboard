@@ -10,59 +10,59 @@
 	</Header>
 	<Data>
 		<!-- Lowercase Letters (a-z) -->
-		<Map><Display>a</Display><Character>0061</Character><Keys>61</Keys></Map>
-		<Map><Display>b</Display><Character>0062</Character><Keys>62</Keys></Map>
-		<Map><Display>c</Display><Character>0063</Character><Keys>63</Keys></Map>
-		<Map><Display>d</Display><Character>0064</Character><Keys>64</Keys></Map>
-		<Map><Display>e</Display><Character>0065</Character><Keys>65</Keys></Map>
-		<Map><Display>f</Display><Character>0066</Character><Keys>66</Keys></Map>
-		<Map><Display>g</Display><Character>0067</Character><Keys>67</Keys></Map>
-		<Map><Display>h</Display><Character>0068</Character><Keys>68</Keys></Map>
-		<Map><Display>i</Display><Character>0069</Character><Keys>69</Keys></Map>
-		<Map><Display>j</Display><Character>006A</Character><Keys>6A</Keys></Map>
-		<Map><Display>k</Display><Character>006B</Character><Keys>6B</Keys></Map>
-		<Map><Display>l</Display><Character>006C</Character><Keys>6C</Keys></Map>
-		<Map><Display>m</Display><Character>006D</Character><Keys>6D</Keys></Map>
-		<Map><Display>n</Display><Character>006E</Character><Keys>6E</Keys></Map>
-		<Map><Display>o</Display><Character>006F</Character><Keys>6F</Keys></Map>
-		<Map><Display>p</Display><Character>0070</Character><Keys>70</Keys></Map>
-		<Map><Display>q</Display><Character>0071</Character><Keys>71</Keys></Map>
-		<Map><Display>r</Display><Character>0072</Character><Keys>72</Keys></Map>
-		<Map><Display>s</Display><Character>0073</Character><Keys>73</Keys></Map>
-		<Map><Display>t</Display><Character>0074</Character><Keys>74</Keys></Map>
-		<Map><Display>u</Display><Character>0075</Character><Keys>75</Keys></Map>
-		<Map><Display>v</Display><Character>0076</Character><Keys>76</Keys></Map>
-		<Map><Display>w</Display><Character>0077</Character><Keys>77</Keys></Map>
-		<Map><Display>x</Display><Character>0078</Character><Keys>78</Keys></Map>
-		<Map><Display>y</Display><Character>0079</Character><Keys>79</Keys></Map>
-		<Map><Display>z</Display><Character>007A</Character><Keys>7A</Keys></Map>
+		<Map><Display>0061</Display><Character>0061</Character><Keys>61</Keys></Map>
+		<Map><Display>0062</Display><Character>0062</Character><Keys>62</Keys></Map>
+		<Map><Display>0063</Display><Character>0063</Character><Keys>63</Keys></Map>
+		<Map><Display>0064</Display><Character>0064</Character><Keys>64</Keys></Map>
+		<Map><Display>0065</Display><Character>0065</Character><Keys>65</Keys></Map>
+		<Map><Display>0066</Display><Character>0066</Character><Keys>66</Keys></Map>
+		<Map><Display>0067</Display><Character>0067</Character><Keys>67</Keys></Map>
+		<Map><Display>0068</Display><Character>0068</Character><Keys>68</Keys></Map>
+		<Map><Display>0069</Display><Character>0069</Character><Keys>69</Keys></Map>
+		<Map><Display>006A</Display><Character>006A</Character><Keys>6A</Keys></Map>
+		<Map><Display>006B</Display><Character>006B</Character><Keys>6B</Keys></Map>
+		<Map><Display>006C</Display><Character>006C</Character><Keys>6C</Keys></Map>
+		<Map><Display>006D</Display><Character>006D</Character><Keys>6D</Keys></Map>
+		<Map><Display>006E</Display><Character>006E</Character><Keys>6E</Keys></Map>
+		<Map><Display>006F</Display><Character>006F</Character><Keys>6F</Keys></Map>
+		<Map><Display>0070</Display><Character>0070</Character><Keys>70</Keys></Map>
+		<Map><Display>0071</Display><Character>0071</Character><Keys>71</Keys></Map>
+		<Map><Display>0072</Display><Character>0072</Character><Keys>72</Keys></Map>
+		<Map><Display>0073</Display><Character>0073</Character><Keys>73</Keys></Map>
+		<Map><Display>0074</Display><Character>0074</Character><Keys>74</Keys></Map>
+		<Map><Display>0075</Display><Character>0075</Character><Keys>75</Keys></Map>
+		<Map><Display>0076</Display><Character>0076</Character><Keys>76</Keys></Map>
+		<Map><Display>0077</Display><Character>0077</Character><Keys>77</Keys></Map>
+		<Map><Display>0078</Display><Character>0078</Character><Keys>78</Keys></Map>
+		<Map><Display>0079</Display><Character>0079</Character><Keys>79</Keys></Map>
+		<Map><Display>007A</Display><Character>007A</Character><Keys>7A</Keys></Map>
 
 		<!-- Uppercase Letters (A-Z) -->
-		<Map Layer="CapsEnglish"><Display>A</Display><Character>0041</Character><Keys>41</Keys></Map>
-		<Map Layer="CapsEnglish"><Display>B</Display><Character>0042</Character><Keys>42</Keys></Map>
-		<Map Layer="CapsEnglish"><Display>C</Display><Character>0043</Character><Keys>43</Keys></Map>
-		<Map Layer="CapsEnglish"><Display>D</Display><Character>0044</Character><Keys>44</Keys></Map>
-		<Map Layer="CapsEnglish"><Display>E</Display><Character>0045</Character><Keys>45</Keys></Map>
-		<Map Layer="CapsEnglish"><Display>F</Display><Character>0046</Character><Keys>46</Keys></Map>
-		<Map Layer="CapsEnglish"><Display>G</Display><Character>0047</Character><Keys>47</Keys></Map>
-		<Map Layer="CapsEnglish"><Display>H</Display><Character>0048</Character><Keys>48</Keys></Map>
-		<Map Layer="CapsEnglish"><Display>I</Display><Character>0049</Character><Keys>49</Keys></Map>
-		<Map Layer="CapsEnglish"><Display>J</Display><Character>004A</Character><Keys>4A</Keys></Map>
-		<Map Layer="CapsEnglish"><Display>K</Display><Character>004B</Character><Keys>4B</Keys></Map>
-		<Map Layer="CapsEnglish"><Display>L</Display><Character>004C</Character><Keys>4C</Keys></Map>
-		<Map Layer="CapsEnglish"><Display>M</Display><Character>004D</Character><Keys>4D</Keys></Map>
-		<Map Layer="CapsEnglish"><Display>N</Display><Character>004E</Character><Keys>4E</Keys></Map>
-		<Map Layer="CapsEnglish"><Display>O</Display><Character>004F</Character><Keys>4F</Keys></Map>
-		<Map Layer="CapsEnglish"><Display>P</Display><Character>0050</Character><Keys>50</Keys></Map>
-		<Map Layer="CapsEnglish"><Display>Q</Display><Character>0051</Character><Keys>51</Keys></Map>
-		<Map Layer="CapsEnglish"><Display>R</Display><Character>0052</Character><Keys>52</Keys></Map>
-		<Map Layer="CapsEnglish"><Display>S</Display><Character>0053</Character><Keys>53</Keys></Map>
-		<Map Layer="CapsEnglish"><Display>T</Display><Character>0054</Character><Keys>54</Keys></Map>
-		<Map Layer="CapsEnglish"><Display>U</Display><Character>0055</Character><Keys>55</Keys></Map>
-		<Map Layer="CapsEnglish"><Display>V</Display><Character>0056</Character><Keys>56</Keys></Map>
-		<Map Layer="CapsEnglish"><Display>W</Display><Character>0057</Character><Keys>57</Keys></Map>
-		<Map Layer="CapsEnglish"><Display>X</Display><Character>0058</Character><Keys>58</Keys></Map>
-		<Map Layer="CapsEnglish"><Display>Y</Display><Character>0059</Character><Keys>59</Keys></Map>
-		<Map Layer="CapsEnglish"><Display>Z</Display><Character>005A</Character><Keys>5A</Keys></Map>
+		<Map Layer="CapsEnglish"><Display>0041</Display><Character>0041</Character><Keys>41</Keys></Map>
+		<Map Layer="CapsEnglish"><Display>0042</Display><Character>0042</Character><Keys>42</Keys></Map>
+		<Map Layer="CapsEnglish"><Display>0043</Display><Character>0043</Character><Keys>43</Keys></Map>
+		<Map Layer="CapsEnglish"><Display>0044</Display><Character>0044</Character><Keys>44</Keys></Map>
+		<Map Layer="CapsEnglish"><Display>0045</Display><Character>0045</Character><Keys>45</Keys></Map>
+		<Map Layer="CapsEnglish"><Display>0046</Display><Character>0046</Character><Keys>46</Keys></Map>
+		<Map Layer="CapsEnglish"><Display>0047</Display><Character>0047</Character><Keys>47</Keys></Map>
+		<Map Layer="CapsEnglish"><Display>0048</Display><Character>0048</Character><Keys>48</Keys></Map>
+		<Map Layer="CapsEnglish"><Display>0049</Display><Character>0049</Character><Keys>49</Keys></Map>
+		<Map Layer="CapsEnglish"><Display>004A</Display><Character>004A</Character><Keys>4A</Keys></Map>
+		<Map Layer="CapsEnglish"><Display>004B</Display><Character>004B</Character><Keys>4B</Keys></Map>
+		<Map Layer="CapsEnglish"><Display>004C</Display><Character>004C</Character><Keys>4C</Keys></Map>
+		<Map Layer="CapsEnglish"><Display>004D</Display><Character>004D</Character><Keys>4D</Keys></Map>
+		<Map Layer="CapsEnglish"><Display>004E</Display><Character>004E</Character><Keys>4E</Keys></Map>
+		<Map Layer="CapsEnglish"><Display>004F</Display><Character>004F</Character><Keys>4F</Keys></Map>
+		<Map Layer="CapsEnglish"><Display>0050</Display><Character>0050</Character><Keys>50</Keys></Map>
+		<Map Layer="CapsEnglish"><Display>0051</Display><Character>0051</Character><Keys>51</Keys></Map>
+		<Map Layer="CapsEnglish"><Display>0052</Display><Character>0052</Character><Keys>52</Keys></Map>
+		<Map Layer="CapsEnglish"><Display>0053</Display><Character>0053</Character><Keys>53</Keys></Map>
+		<Map Layer="CapsEnglish"><Display>0054</Display><Character>0054</Character><Keys>54</Keys></Map>
+		<Map Layer="CapsEnglish"><Display>0055</Display><Character>0055</Character><Keys>55</Keys></Map>
+		<Map Layer="CapsEnglish"><Display>0056</Display><Character>0056</Character><Keys>56</Keys></Map>
+		<Map Layer="CapsEnglish"><Display>0057</Display><Character>0057</Character><Keys>57</Keys></Map>
+		<Map Layer="CapsEnglish"><Display>0058</Display><Character>0058</Character><Keys>58</Keys></Map>
+		<Map Layer="CapsEnglish"><Display>0059</Display><Character>0059</Character><Keys>59</Keys></Map>
+		<Map Layer="CapsEnglish"><Display>005A</Display><Character>005A</Character><Keys>5A</Keys></Map>
 	</Data>
 </Table>
