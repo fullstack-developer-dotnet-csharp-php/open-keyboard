@@ -18,3 +18,5 @@ captures/
 .cxx
 *.apk
 server.js
+
+.github/
