@@ -407,7 +407,7 @@ class KeyboardView @JvmOverloads constructor(
         val delKeyRect = RectF(currentX, y3Top, totalW - margin, y3Bottom)
         keyRects.add(KeyRect(delKeyRect, "DEL", "\u232B", KeyType.DEL))
 
-        // Row 4 (Bottom Bar): ?123, Smiley 😊, Keyboard 🌐 ▾ (next to smilys!), Space, Period, Enter/Search
+        // Row 4 (Bottom Bar): ?123, Smiley 😊, Keyboard 🔄 (Sync symbol, next to smilys!), Space, Period, Enter/Search
         val y4Top = y3Bottom + margin
         val y4Bottom = y4Top + rowH
         val symW = r1KeyW * 1.22f
@@ -427,9 +427,9 @@ class KeyboardView @JvmOverloads constructor(
         keyRects.add(KeyRect(RectF(x4, y4Top, x4 + smileyW, y4Bottom), "SMILEY", smileyLabel, KeyType.SMILEY))
         x4 += smileyW + margin
 
-        // 3. Keyboard Selection Dropdown button 🌐 (Next to Smilys!)
+        // 3. Keyboard Selection Dropdown button 🔄 (Sync symbol next to Smilys!)
         langKeyRect.set(x4, y4Top, x4 + langW, y4Bottom)
-        keyRects.add(KeyRect(RectF(x4, y4Top, x4 + langW, y4Bottom), "LANG", "\uD83C\uDF10", KeyType.LANG))
+        keyRects.add(KeyRect(RectF(x4, y4Top, x4 + langW, y4Bottom), "LANG", "\uD83D\uDD04", KeyType.LANG))
         x4 += langW + margin
 
         // 4. Spacebar
