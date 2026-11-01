@@ -691,5 +691,14 @@
 <Map Layer="SmallEnglish"><Display>x</Display><Character>0078</Character><Keys>78</Keys></Map>
 <Map Layer="SmallEnglish"><Display>y</Display><Character>0079</Character><Keys>79</Keys></Map>
 <Map Layer="SmallEnglish"><Display>z</Display><Character>007A</Character><Keys>7A</Keys></Map>
+
+<!-- Sanskrit / Grantha Long-Press Mappings & Space -->
+<Map Layer="LongPress"><Display>0BB8</Display><Character>0BB8</Character><Keys>73</Keys></Map>
+<Map Layer="LongPress"><Display>0BB7</Display><Character>0BB7</Character><Keys>61</Keys></Map>
+<Map Layer="LongPress"><Display>0B9C</Display><Character>0B9C</Character><Keys>6A</Keys></Map>
+<Map Layer="LongPress"><Display>0BB9</Display><Character>0BB9</Character><Keys>68</Keys></Map>
+<Map Layer="LongPress"><Display>0B950BCD0BB7</Display><Character>0B950BCD0BB7</Character><Keys>6B</Keys></Map>
+<Map Layer="LongPress"><Display>0BB80BCD0BB00BC0</Display><Character>0BB80BCD0BB00BC0</Character><Keys>72</Keys></Map>
+<Map Layer="LongPress"><Display>0BB6</Display><Character>0BB6</Character><Keys>67</Keys></Map>
 </Data>
 </Table>

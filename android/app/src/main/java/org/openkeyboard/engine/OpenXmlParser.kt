@@ -11,7 +11,8 @@ class ParsedKeymap(
     val mappings: Map<String, String>,
     val singleCharBadges: Map<String, String>,
     val layerMappings: Map<String, Map<String, String>> = emptyMap(),
-    val layerBadges: Map<String, Map<String, String>> = emptyMap()
+    val layerBadges: Map<String, Map<String, String>> = emptyMap(),
+    val longPressMappings: Map<String, String> = emptyMap()
 )
 
 object OpenXmlParser {
@@ -45,6 +46,7 @@ object OpenXmlParser {
         val singleCharBadges = HashMap<String, String>()
         val layerMappings = HashMap<String, HashMap<String, String>>()
         val layerBadges = HashMap<String, HashMap<String, String>>()
+        val longPressMappings = HashMap<String, String>()
 
         var currentTag = ""
         var currentCharacterHex = ""
@@ -96,22 +98,26 @@ object OpenXmlParser {
 
                                 val effectiveLayer = if (currentLayer.isNotEmpty()) currentLayer else language
 
-                                val mapForLayer = layerMappings.getOrPut(effectiveLayer) { HashMap() }
-                                mapForLayer[keyStr] = charStr
+                                if (effectiveLayer.equals("LongPress", ignoreCase = true)) {
+                                    longPressMappings[keyStr] = charStr
+                                } else {
+                                    val mapForLayer = layerMappings.getOrPut(effectiveLayer) { HashMap() }
+                                    mapForLayer[keyStr] = charStr
 
-                                if (keyStr.length == 1) {
-                                    val badgesForLayer = layerBadges.getOrPut(effectiveLayer) { HashMap() }
-                                    if (!badgesForLayer.containsKey(keyStr)) {
-                                        badgesForLayer[keyStr] = displayStr
+                                    if (keyStr.length == 1) {
+                                        val badgesForLayer = layerBadges.getOrPut(effectiveLayer) { HashMap() }
+                                        if (!badgesForLayer.containsKey(keyStr)) {
+                                            badgesForLayer[keyStr] = displayStr
+                                        }
                                     }
-                                }
 
-                                if (effectiveLayer.equals(language, ignoreCase = true) ||
-                                    effectiveLayer.equals("default", ignoreCase = true) ||
-                                    effectiveLayer.equals("Tamil", ignoreCase = true)) {
-                                    mappings[keyStr] = charStr
-                                    if (keyStr.length == 1 && !singleCharBadges.containsKey(keyStr)) {
-                                        singleCharBadges[keyStr] = displayStr
+                                    if (effectiveLayer.equals(language, ignoreCase = true) ||
+                                        effectiveLayer.equals("default", ignoreCase = true) ||
+                                        effectiveLayer.equals("Tamil", ignoreCase = true)) {
+                                        mappings[keyStr] = charStr
+                                        if (keyStr.length == 1 && !singleCharBadges.containsKey(keyStr)) {
+                                            singleCharBadges[keyStr] = displayStr
+                                        }
                                     }
                                 }
                             } catch (_: Exception) {
@@ -152,7 +158,17 @@ object OpenXmlParser {
             smallShiftSymbol = smallShiftSymbol
         )
 
-        return ParsedKeymap(info, mappings, singleCharBadges, layerMappings, layerBadges)
+        if (longPressMappings.isEmpty() && language.equals("Tamil", ignoreCase = true)) {
+            longPressMappings["s"] = "\u0BB8" // ஸ (SA)
+            longPressMappings["a"] = "\u0BB7" // ஷ (SSA)
+            longPressMappings["j"] = "\u0B9C" // ஜ (JA)
+            longPressMappings["h"] = "\u0BB9" // ஹ (HA)
+            longPressMappings["k"] = "\u0B95\u0BCD\u0BB7" // க்ஷ (KSSA)
+            longPressMappings["r"] = "\u0BB8\u0BCD\u0BB0\u0BC0" // ஸ்ரீ (SRII)
+            longPressMappings["g"] = "\u0BB6" // ஶ (SHA)
+        }
+
+        return ParsedKeymap(info, mappings, singleCharBadges, layerMappings, layerBadges, longPressMappings)
     }
 
     fun hexToKeyString(hex: String): String {

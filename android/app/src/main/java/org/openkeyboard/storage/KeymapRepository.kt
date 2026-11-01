@@ -34,6 +34,9 @@ class KeymapRepository(private val context: Context) {
         private const val PREF_ACTIVE_KEYMAP_ID = "active_keymap_id"
         private const val PREF_ENABLED_KEYMAP_IDS = "enabled_keymap_ids"
         private const val PREF_ENABLED_KEYMAP_ORDER_LIST = "enabled_keymap_order_list"
+        private const val PREF_SHOW_THIRD_TEXT = "pref_show_third_text"
+        private const val PREF_GLOBAL_SUGGESTIONS = "pref_global_suggestions"
+        private const val PREF_PREFIX_SUGGESTIONS_KEYMAP = "pref_suggestions_keymap_"
         private const val DEFAULT_KEYMAP_ID = "English"
 
         @Volatile
@@ -243,5 +246,52 @@ class KeymapRepository(private val context: Context) {
 
     fun createActiveEngine(): OpenKeyboardEngine {
         return OpenKeyboardEngine(loadActiveKeymap())
+    }
+
+    // --- 3rd Text & Suggestions Preferences ---
+
+    fun isThirdTextEnabled(): Boolean {
+        return prefs.getBoolean(PREF_SHOW_THIRD_TEXT, true)
+    }
+
+    fun setThirdTextEnabled(enabled: Boolean) {
+        prefs.edit().putBoolean(PREF_SHOW_THIRD_TEXT, enabled).apply()
+    }
+
+    fun isGlobalSuggestionsEnabled(): Boolean {
+        return prefs.getBoolean(PREF_GLOBAL_SUGGESTIONS, true)
+    }
+
+    fun setGlobalSuggestionsEnabled(enabled: Boolean) {
+        prefs.edit().putBoolean(PREF_GLOBAL_SUGGESTIONS, enabled).apply()
+    }
+
+    /**
+     * Checks if suggestions are enabled for a specific keymap.
+     * Sanskrit / Sanscrit keymaps avoid suggestions by default unless explicitly enabled.
+     */
+    fun isSuggestionsEnabled(keymapId: String, language: String = ""): Boolean {
+        if (!isGlobalSuggestionsEnabled()) return false
+
+        // Check explicit user preference for this keymap
+        val prefKey = PREF_PREFIX_SUGGESTIONS_KEYMAP + keymapId
+        if (prefs.contains(prefKey)) {
+            return prefs.getBoolean(prefKey, true)
+        }
+
+        // Default behavior: Sanskrit avoids suggestions; English and Tamil have suggestions enabled
+        val idLower = keymapId.lowercase()
+        val langLower = language.lowercase()
+        if (idLower.contains("sans") || idLower.contains("sanskrit") ||
+            langLower.contains("sans") || langLower.contains("sanskrit")) {
+            return false // Avoid text suggestions for Sanskrit by default
+        }
+
+        return true
+    }
+
+    fun setSuggestionsEnabled(keymapId: String, enabled: Boolean) {
+        val prefKey = PREF_PREFIX_SUGGESTIONS_KEYMAP + keymapId
+        prefs.edit().putBoolean(prefKey, enabled).apply()
     }
 }

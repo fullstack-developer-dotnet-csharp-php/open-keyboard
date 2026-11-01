@@ -193,4 +193,9 @@ class OpenKeyboardEngine(val parsedKeymap: ParsedKeymap) {
         }
         return parsedKeymap.singleCharBadges[key.toString()]
     }
+
+    fun getLongPressChar(key: Char): String? {
+        return parsedKeymap.longPressMappings[key.toString()]
+            ?: parsedKeymap.longPressMappings[key.lowercaseChar().toString()]
+    }
 }

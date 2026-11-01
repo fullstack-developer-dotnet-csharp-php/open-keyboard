@@ -2,6 +2,8 @@ package org.openkeyboard.ui
 
 import android.content.Context
 import android.graphics.*
+import android.os.Handler
+import android.os.Looper
 import android.util.AttributeSet
 import android.view.HapticFeedbackConstants
 import android.view.MotionEvent
@@ -24,6 +26,8 @@ class KeyboardView @JvmOverloads constructor(
         fun onOpenSettings()
         fun onSearch()
         fun onSuggestion(suggestion: String)
+        fun onToggleThirdText(enabled: Boolean)
+        fun onToggleSuggestions(enabled: Boolean)
     }
 
     data class DropdownItem(val id: String, val displayName: String, val isActive: Boolean)
@@ -187,6 +191,69 @@ class KeyboardView @JvmOverloads constructor(
         typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
     }
 
+    // 3rd Text Paint (Top-Left corner space for Sanskrit / Number hints)
+    private val thirdTextPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        color = Color.parseColor("#FFD54F") // Distinct warm amber for Sanskrit
+        textAlign = Paint.Align.LEFT
+        typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
+    }
+
+    var showThirdText: Boolean = true
+        set(value) {
+            field = value
+            invalidate()
+        }
+
+    var isSuggestionsEnabled: Boolean = true
+        set(value) {
+            field = value
+            invalidate()
+        }
+
+    private val thirdTextMap = mapOf(
+        "q" to "1", "w" to "2", "e" to "3", "r" to "4", "t" to "5",
+        "y" to "6", "u" to "7", "i" to "8", "o" to "9", "p" to "0",
+        "a" to "@", "s" to "#", "d" to "$", "f" to "%", "g" to "&",
+        "h" to "-", "j" to "+", "k" to "(", "l" to ")",
+        "z" to "*", "x" to "\"", "c" to "'", "v" to ":", "b" to ";",
+        "n" to "!", "m" to "?"
+    )
+
+    private val keyHandler = Handler(Looper.getMainLooper())
+    private var isDelRepeating = false
+    private var isLongPressTriggered = false
+    private var downX = 0f
+    private var downY = 0f
+
+    private val delRepeatRunnable = object : Runnable {
+        override fun run() {
+            if (pressedKey?.type == KeyType.DEL) {
+                isDelRepeating = true
+                performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+                listener?.onBackspace()
+                keyHandler.postDelayed(this, 50)
+            }
+        }
+    }
+
+    private val keyLongPressRunnable = Runnable {
+        pressedKey?.let { pk ->
+            if (pk.type == KeyType.NORMAL && pk.code.length == 1) {
+                val sanskrit = engine?.getLongPressChar(pk.code[0])
+                val longChar = when {
+                    sanskrit != null && !isEnglishLayout -> sanskrit
+                    else -> thirdTextMap[pk.code.lowercase()]
+                }
+                if (longChar != null) {
+                    isLongPressTriggered = true
+                    performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+                    listener?.onKeyText(longChar)
+                    invalidate()
+                }
+            }
+        }
+    }
+
     // Vector Stroke Paint for Gboard Search Magnifying Glass
     private val iconStrokePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
@@ -298,10 +365,10 @@ class KeyboardView @JvmOverloads constructor(
     }
 
     private fun computeDropdownMenuRect() {
-        val itemH = dp(38f)
-        val totalItems = (enabledKeymaps.size + 1).coerceAtLeast(1)
-        val menuH = totalItems * itemH + dp(8f)
-        val menuW = dp(220f).coerceAtMost(width - dp(16f))
+        val itemH = dp(36f)
+        val totalItems = (enabledKeymaps.size + 3).coerceAtLeast(1)
+        val menuH = (totalItems * itemH + dp(12f)).coerceAtMost(height - dp(HEADER_HEIGHT_DP) - dp(8f))
+        val menuW = dp(235f).coerceAtMost(width - dp(16f))
         val left = langKeyRect.left.coerceAtMost(width - menuW - dp(8f)).coerceAtLeast(dp(8f))
         val top = (langKeyRect.top - dp(6f) - menuH).coerceAtLeast(dp(HEADER_HEIGHT_DP) + dp(4f))
         val bottom = langKeyRect.top - dp(4f)
@@ -603,6 +670,23 @@ class KeyboardView @JvmOverloads constructor(
                             canvas.drawText(badge, badgeX, badgeY, badgePaint)
                         }
                     }
+
+                    // 3rd Text (Top-Left corner space): Sanskrit in Tamil mode, or Number/Symbol hints
+                    if (showThirdText && !isSymbols && !isEmoji && k.code.length == 1) {
+                        val sanskrit = engine?.getLongPressChar(k.code[0])
+                        val thirdText = when {
+                            !isEnglishLayout && sanskrit != null -> sanskrit
+                            else -> thirdTextMap[k.code.lowercase()]
+                        }
+                        if (thirdText != null) {
+                            val isSanskrit = (!isEnglishLayout && sanskrit != null)
+                            thirdTextPaint.color = if (isSanskrit) Color.parseColor("#FFD54F") else Color.parseColor("#8E918F")
+                            thirdTextPaint.textSize = if (isSanskrit) dp(10.5f) else dp(9f)
+                            val tX = k.rect.left + dp(4.5f)
+                            val tY = k.rect.top + dp(11f)
+                            canvas.drawText(thirdText, tX, tY, thirdTextPaint)
+                        }
+                    }
                 }
             }
         }
@@ -670,19 +754,39 @@ class KeyboardView @JvmOverloads constructor(
             yTop += itemH
         }
 
-        // Divider above Manage Keyboards
+        // Divider above Toggles & Manage Keyboards
         val divY = yTop + dp(2f)
         dropdownDividerPaint.strokeWidth = dp(1f)
         canvas.drawLine(dropdownMenuRect.left + dp(8f), divY, dropdownMenuRect.right - dp(8f), divY, dropdownDividerPaint)
         yTop += dp(4f)
 
-        // Manage Keyboards option
-        val manageRect = RectF(dropdownMenuRect.left + dp(4f), yTop, dropdownMenuRect.right - dp(4f), yTop + itemH)
+        // 1. Toggle 3rd Text Hints (Sanskrit / Symbols)
+        val thirdRect = RectF(dropdownMenuRect.left + dp(4f), yTop, dropdownMenuRect.right - dp(4f), yTop + itemH)
         if (pressedDropdownIndex == enabledKeymaps.size) {
+            canvas.drawRoundRect(thirdRect, dp(6f), dp(6f), dropdownPressedBgPaint)
+        }
+        val thirdMark = if (showThirdText) "[✓] " else "[  ] "
+        val thirdY = thirdRect.centerY() - (dropdownSubTextPaint.descent() + dropdownSubTextPaint.ascent()) / 2
+        canvas.drawText("$thirdMark\uD83D\uDD24 3rd Text (Sanskrit)", thirdRect.left + dp(10f), thirdY, dropdownSubTextPaint)
+        yTop += itemH
+
+        // 2. Toggle Word Suggestions
+        val sugRect = RectF(dropdownMenuRect.left + dp(4f), yTop, dropdownMenuRect.right - dp(4f), yTop + itemH)
+        if (pressedDropdownIndex == enabledKeymaps.size + 1) {
+            canvas.drawRoundRect(sugRect, dp(6f), dp(6f), dropdownPressedBgPaint)
+        }
+        val sugMark = if (isSuggestionsEnabled) "[✓] " else "[  ] "
+        val sugY = sugRect.centerY() - (dropdownSubTextPaint.descent() + dropdownSubTextPaint.ascent()) / 2
+        canvas.drawText("$sugMark\uD83D\uDCA1 Word Suggestions", sugRect.left + dp(10f), sugY, dropdownSubTextPaint)
+        yTop += itemH
+
+        // 3. Manage Keyboards option
+        val manageRect = RectF(dropdownMenuRect.left + dp(4f), yTop, dropdownMenuRect.right - dp(4f), yTop + itemH)
+        if (pressedDropdownIndex == enabledKeymaps.size + 2) {
             canvas.drawRoundRect(manageRect, dp(6f), dp(6f), dropdownPressedBgPaint)
         }
         val manageY = manageRect.centerY() - (dropdownSubTextPaint.descent() + dropdownSubTextPaint.ascent()) / 2
-        canvas.drawText("\u2699 Manage Keyboards...", manageRect.left + dp(12f), manageY, dropdownSubTextPaint)
+        canvas.drawText("\u2699 Manage Keyboards...", manageRect.left + dp(10f), manageY, dropdownSubTextPaint)
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
@@ -697,10 +801,10 @@ class KeyboardView @JvmOverloads constructor(
                         return true
                     }
                     if (dropdownMenuRect.contains(event.x, event.y)) {
-                        val itemH = dp(38f)
+                        val itemH = dp(36f)
                         val relY = event.y - (dropdownMenuRect.top + dp(4f))
                         val idx = (relY / itemH).toInt()
-                        val maxIdx = enabledKeymaps.size
+                        val maxIdx = enabledKeymaps.size + 2
                         pressedDropdownIndex = if (idx in 0..maxIdx) idx else -1
                         invalidate()
                         return true
@@ -713,10 +817,10 @@ class KeyboardView @JvmOverloads constructor(
                 }
                 MotionEvent.ACTION_MOVE -> {
                     if (dropdownMenuRect.contains(event.x, event.y)) {
-                        val itemH = dp(38f)
+                        val itemH = dp(36f)
                         val relY = event.y - (dropdownMenuRect.top + dp(4f))
                         val idx = (relY / itemH).toInt()
-                        val maxIdx = enabledKeymaps.size
+                        val maxIdx = enabledKeymaps.size + 2
                         if (pressedDropdownIndex != idx && idx in 0..maxIdx) {
                             pressedDropdownIndex = idx
                             invalidate()
@@ -738,6 +842,14 @@ class KeyboardView @JvmOverloads constructor(
                         listener?.onSelectKeymap(selected.id)
                     } else if (idx == enabledKeymaps.size) {
                         performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+                        showThirdText = !showThirdText
+                        listener?.onToggleThirdText(showThirdText)
+                    } else if (idx == enabledKeymaps.size + 1) {
+                        performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+                        isSuggestionsEnabled = !isSuggestionsEnabled
+                        listener?.onToggleSuggestions(isSuggestionsEnabled)
+                    } else if (idx == enabledKeymaps.size + 2) {
+                        performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
                         listener?.onOpenSettings()
                     }
                     return true
@@ -755,6 +867,11 @@ class KeyboardView @JvmOverloads constructor(
         // Standard Touch Handling when Dropdown is closed
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
+                downX = event.x
+                downY = event.y
+                isDelRepeating = false
+                isLongPressTriggered = false
+
                 // Check if tapped on Suggestion Strip
                 if (event.y <= dp(HEADER_HEIGHT_DP)) {
                     if (searchHeaderRect.contains(event.x, event.y) && actionKeyType == ActionKeyType.SEARCH) {
@@ -763,21 +880,23 @@ class KeyboardView @JvmOverloads constructor(
                         return true
                     }
 
-                    val displaySuggestions = if (currentSuggestions.isNotEmpty()) {
-                        currentSuggestions
-                    } else if (shiftMode == ShiftMode.TAMIL && currentBufferText.isNotEmpty()) {
-                        listOf("", "[$currentBufferText]", "")
-                    } else {
-                        listOf(",", "", ".")
-                    }
+                    if (isSuggestionsEnabled) {
+                        val displaySuggestions = if (currentSuggestions.isNotEmpty()) {
+                            currentSuggestions
+                        } else if (shiftMode == ShiftMode.TAMIL && currentBufferText.isNotEmpty()) {
+                            listOf("", "[$currentBufferText]", "")
+                        } else {
+                            listOf(",", "", ".")
+                        }
 
-                    for (i in 0 until 3.coerceAtMost(displaySuggestions.size)) {
-                        if (suggestionRects[i].contains(event.x, event.y)) {
-                            val word = displaySuggestions[i]
-                            if (word.isNotEmpty() && !word.startsWith("[")) {
-                                performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
-                                listener?.onSuggestion(word)
-                                return true
+                        for (i in 0 until 3.coerceAtMost(displaySuggestions.size)) {
+                            if (suggestionRects[i].contains(event.x, event.y)) {
+                                val word = displaySuggestions[i]
+                                if (word.isNotEmpty() && !word.startsWith("[")) {
+                                    performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+                                    listener?.onSuggestion(word)
+                                    return true
+                                }
                             }
                         }
                     }
@@ -789,13 +908,32 @@ class KeyboardView @JvmOverloads constructor(
                     pressedKey = key
                     key.isPressed = true
                     performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+
+                    if (key.type == KeyType.DEL) {
+                        // Continuous Gboard backspace: Delete 1 immediately on down
+                        listener?.onBackspace()
+                        // Start repeating continuous deletion after 380ms
+                        keyHandler.postDelayed(delRepeatRunnable, 380)
+                    } else if (key.type == KeyType.NORMAL && key.code.length == 1) {
+                        // Start long-press timer for Sanskrit / Number / Symbol hints
+                        keyHandler.postDelayed(keyLongPressRunnable, 400)
+                    }
+
                     invalidate()
                 }
                 return true
             }
             MotionEvent.ACTION_MOVE -> {
+                if (Math.abs(event.x - downX) > dp(14f) || Math.abs(event.y - downY) > dp(14f)) {
+                    keyHandler.removeCallbacks(keyLongPressRunnable)
+                }
+
                 val key = findKeyAt(event.x, event.y)
                 if (key != pressedKey) {
+                    if (pressedKey?.type == KeyType.DEL) {
+                        keyHandler.removeCallbacks(delRepeatRunnable)
+                    }
+                    keyHandler.removeCallbacks(keyLongPressRunnable)
                     pressedKey?.isPressed = false
                     pressedKey = key
                     key?.isPressed = true
@@ -804,17 +942,28 @@ class KeyboardView @JvmOverloads constructor(
                 return true
             }
             MotionEvent.ACTION_UP -> {
+                keyHandler.removeCallbacks(delRepeatRunnable)
+                keyHandler.removeCallbacks(keyLongPressRunnable)
+
                 pressedKey?.let { k ->
                     k.isPressed = false
-                    handleKeyAction(k)
+                    if (k.type == KeyType.DEL) {
+                        // Continuous delete already executed on down & repeating
+                    } else if (!isLongPressTriggered) {
+                        handleKeyAction(k)
+                    }
                     pressedKey = null
+                    isLongPressTriggered = false
                     invalidate()
                 }
                 return true
             }
             MotionEvent.ACTION_CANCEL -> {
+                keyHandler.removeCallbacks(delRepeatRunnable)
+                keyHandler.removeCallbacks(keyLongPressRunnable)
                 pressedKey?.isPressed = false
                 pressedKey = null
+                isLongPressTriggered = false
                 invalidate()
                 return true
             }
@@ -838,7 +987,7 @@ class KeyboardView @JvmOverloads constructor(
                 computeDropdownMenuRect()
                 invalidate()
             }
-            KeyType.DEL -> listener?.onBackspace()
+            KeyType.DEL -> { /* Already executed on ACTION_DOWN and repeat handler */ }
             KeyType.SPACE -> listener?.onSpace()
             KeyType.ENTER -> {
                 if (actionKeyType == ActionKeyType.SEARCH) {

@@ -9,18 +9,21 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import org.openkeyboard.engine.OpenKeyboardEngine
 import org.openkeyboard.storage.KeymapRepository
+import org.openkeyboard.suggestions.SuggestionManager
 import org.openkeyboard.ui.KeyboardView
 import org.openkeyboard.ui.MainActivity
 
 class OpenKeyboardService : InputMethodService(), KeyboardView.OnKeyboardActionListener {
 
     private lateinit var repository: KeymapRepository
+    private lateinit var suggestionManager: SuggestionManager
     private var engine: OpenKeyboardEngine? = null
     private var keyboardView: KeyboardView? = null
 
     override fun onCreate() {
         super.onCreate()
         repository = KeymapRepository.getInstance(this)
+        suggestionManager = SuggestionManager(this)
     }
 
     override fun onCreateInputView(): View {
@@ -84,8 +87,12 @@ class OpenKeyboardService : InputMethodService(), KeyboardView.OnKeyboardActionL
             kv.layoutName = activeParsed.info.keyboard
             kv.currentBufferText = ""
             kv.resetShift()
+            kv.showThirdText = repository.isThirdTextEnabled()
+            kv.isSuggestionsEnabled = repository.isSuggestionsEnabled(activeParsed.info.id, activeParsed.info.language)
             updateKeyboardLayoutList()
         }
+        currentWordPrefix.clear()
+        keyboardView?.currentSuggestions = emptyList()
     }
 
     private fun updateKeyboardLayoutList() {
@@ -102,36 +109,33 @@ class OpenKeyboardService : InputMethodService(), KeyboardView.OnKeyboardActionL
 
     private var currentWordPrefix = StringBuilder()
 
-    private val commonEnglishWords = listOf(
-        "the", "be", "to", "of", "and", "a", "in", "that", "have", "I",
-        "it", "for", "not", "on", "with", "he", "as", "you", "do", "at",
-        "this", "but", "his", "by", "from", "they", "we", "say", "her", "she",
-        "or", "an", "will", "my", "one", "all", "would", "there", "their", "what",
-        "so", "up", "out", "if", "about", "who", "get", "which", "go", "me",
-        "when", "make", "can", "like", "time", "no", "just", "him", "know", "take",
-        "people", "into", "year", "your", "good", "some", "could", "them", "see", "other",
-        "than", "then", "now", "look", "only", "come", "its", "over", "think", "also",
-        "back", "after", "use", "two", "how", "our", "work", "first", "well", "way"
-    )
-
     private fun updateSuggestions() {
-        val prefix = currentWordPrefix.toString().lowercase()
-        if (prefix.isEmpty()) {
-            keyboardView?.currentSuggestions = emptyList()
+        val kv = keyboardView ?: return
+        if (!kv.isSuggestionsEnabled) {
+            kv.currentSuggestions = emptyList()
             return
         }
-        if (keyboardView?.isEnglishLayout == true) {
-            val matches = commonEnglishWords.filter { it.startsWith(prefix) }.take(3)
-            val result = when (matches.size) {
-                0 -> listOf(prefix, prefix.replaceFirstChar { it.uppercase() }, "")
-                1 -> listOf("", matches[0], "")
-                2 -> listOf(matches[0], matches[1], "")
-                else -> listOf(matches[0], matches[1], matches[2])
-            }
-            keyboardView?.currentSuggestions = result
-        } else {
-            keyboardView?.currentSuggestions = emptyList()
+
+        val prefix = currentWordPrefix.toString().trim()
+        if (prefix.isEmpty()) {
+            kv.currentSuggestions = emptyList()
+            return
         }
+
+        val activeKeymap = repository.loadActiveKeymap()
+        val avoid = !repository.isSuggestionsEnabled(activeKeymap.info.id, activeKeymap.info.language)
+        if (avoid) {
+            kv.currentSuggestions = emptyList()
+            return
+        }
+
+        val results = suggestionManager.getSuggestions(
+            prefix = prefix,
+            language = activeKeymap.info.language,
+            isEnglishLayout = kv.isEnglishLayout,
+            avoidSuggestions = avoid
+        )
+        kv.currentSuggestions = results
     }
 
     override fun onSuggestion(suggestion: String) {
@@ -143,6 +147,22 @@ class OpenKeyboardService : InputMethodService(), KeyboardView.OnKeyboardActionL
         ic.commitText(suggestion + " ", 1)
         currentWordPrefix.clear()
         keyboardView?.currentSuggestions = emptyList()
+    }
+
+    override fun onToggleThirdText(enabled: Boolean) {
+        repository.setThirdTextEnabled(enabled)
+        keyboardView?.showThirdText = enabled
+    }
+
+    override fun onToggleSuggestions(enabled: Boolean) {
+        val activeId = repository.getActiveKeymapId()
+        repository.setSuggestionsEnabled(activeId, enabled)
+        keyboardView?.isSuggestionsEnabled = enabled
+        if (!enabled) {
+            keyboardView?.currentSuggestions = emptyList()
+        } else {
+            updateSuggestions()
+        }
     }
 
     override fun onKeyText(text: String) {
@@ -184,12 +204,17 @@ class OpenKeyboardService : InputMethodService(), KeyboardView.OnKeyboardActionL
             val res = eng.handleKeyPress(ch, currentLayer)
             if (res.deleteCount > 0) {
                 ic.deleteSurroundingText(res.deleteCount, 0)
+                if (currentWordPrefix.length >= res.deleteCount) {
+                    currentWordPrefix.delete(currentWordPrefix.length - res.deleteCount, currentWordPrefix.length)
+                }
             }
             if (res.insertText.isNotEmpty()) {
                 ic.commitText(res.insertText, 1)
+                currentWordPrefix.append(res.insertText)
             }
             keyboardView?.currentBufferText = res.currentBuffer
         }
+        updateSuggestions()
     }
 
     override fun onBackspace() {
