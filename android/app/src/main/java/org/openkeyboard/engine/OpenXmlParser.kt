@@ -99,7 +99,8 @@ object OpenXmlParser {
                                 val effectiveLayer = if (currentLayer.isNotEmpty()) currentLayer else language
 
                                 if (effectiveLayer.equals("LongPress", ignoreCase = true)) {
-                                    longPressMappings[keyStr] = charStr
+                                    longPressMappings[keyStr.lowercase()] = charStr
+                                    longPressMappings[keyStr.uppercase()] = charStr
                                 } else {
                                     val mapForLayer = layerMappings.getOrPut(effectiveLayer) { HashMap() }
                                     mapForLayer[keyStr] = charStr
@@ -115,8 +116,18 @@ object OpenXmlParser {
                                         effectiveLayer.equals("default", ignoreCase = true) ||
                                         effectiveLayer.equals("Tamil", ignoreCase = true)) {
                                         mappings[keyStr] = charStr
-                                        if (keyStr.length == 1 && !singleCharBadges.containsKey(keyStr)) {
-                                            singleCharBadges[keyStr] = displayStr
+                                        if (keyStr.length == 1) {
+                                            if (!singleCharBadges.containsKey(keyStr)) {
+                                                singleCharBadges[keyStr] = displayStr
+                                            }
+                                            // Auto-detect Kaladi desktop Shift keys:
+                                            // When keyStr is uppercase ASCII ('A'..'Z') and charStr is non-ASCII (Tamil/Sanskrit/numerals)
+                                            if (keyStr[0] in 'A'..'Z' && charStr.isNotEmpty() && charStr[0].code > 127) {
+                                                val lowerKey = keyStr.lowercase()
+                                                if (!longPressMappings.containsKey(lowerKey)) {
+                                                    longPressMappings[lowerKey] = charStr
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -159,13 +170,35 @@ object OpenXmlParser {
         )
 
         if (longPressMappings.isEmpty() && language.equals("Tamil", ignoreCase = true)) {
-            longPressMappings["s"] = "\u0BB8" // ஸ (SA)
+            // Home Row Sanskrit (Kaladi original standard)
             longPressMappings["a"] = "\u0BB7" // ஷ (SSA)
-            longPressMappings["j"] = "\u0B9C" // ஜ (JA)
-            longPressMappings["h"] = "\u0BB9" // ஹ (HA)
-            longPressMappings["k"] = "\u0B95\u0BCD\u0BB7" // க்ஷ (KSSA)
-            longPressMappings["r"] = "\u0BB8\u0BCD\u0BB0\u0BC0" // ஸ்ரீ (SRII)
-            longPressMappings["g"] = "\u0BB6" // ஶ (SHA)
+            longPressMappings["s"] = "\u0BB8" // ஸ (SA)
+            longPressMappings["d"] = "\u0BB9" // ஹ (HA)
+            longPressMappings["f"] = "\u0B9C" // ஜ (JA)
+            // Bottom Row Sanskrit (Kaladi original standard)
+            longPressMappings["z"] = "\u0BB8\u0BCD\u0BB0\u0BC0" // ஸ்ரீ (SRII)
+            longPressMappings["x"] = "\u0BD0" // ௐ (OM)
+            longPressMappings["c"] = "\u0B95\u0BCD\u0BB7" // க்ஷ (KSSA)
+            longPressMappings["v"] = "\u0BB6" // ஶ (SHA)
+            // Top Row Tamil Numerals (Kaladi original standard)
+            longPressMappings["q"] = "\u0BE7" // ௧ (1)
+            longPressMappings["w"] = "\u0BE8" // ௨ (2)
+            longPressMappings["e"] = "\u0BE9" // ௩ (3)
+            longPressMappings["r"] = "\u0BEA" // ௪ (4)
+            longPressMappings["t"] = "\u0BEB" // ௫ (5)
+            longPressMappings["y"] = "\u0BEC" // ௬ (6)
+            longPressMappings["u"] = "\u0BED" // ௭ (7)
+            longPressMappings["i"] = "\u0BEE" // ௮ (8)
+            longPressMappings["o"] = "\u0BEF" // ௯ (9)
+            longPressMappings["p"] = "\u0BE6" // ௦ (0)
+            // Tamil Special Signs (Kaladi original standard)
+            longPressMappings["h"] = "\u0BF0" // ௰ (10)
+            longPressMappings["j"] = "\u0BF1" // ௱ (100)
+            longPressMappings["k"] = "\u0BF2" // ௲ (1000)
+            longPressMappings["l"] = "\u0BF9" // ௹ (Rupee)
+            longPressMappings["b"] = "\u0BF3" // ௳ (Day)
+            longPressMappings["n"] = "\u0BF4" // ௴ (Month)
+            longPressMappings["m"] = "\u0BF5" // ௵ (Year)
         }
 
         return ParsedKeymap(info, mappings, singleCharBadges, layerMappings, layerBadges, longPressMappings)

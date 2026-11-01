@@ -235,11 +235,15 @@ class OpenKeyboardService : InputMethodService(), KeyboardView.OnKeyboardActionL
         }
 
         val res = eng.handleBackspace(currentLayer)
-        if (res.deleteCount > 0) {
-            ic.deleteSurroundingText(res.deleteCount, 0)
-        }
-        if (res.insertText.isNotEmpty()) {
-            ic.commitText(res.insertText, 1)
+        if (res.deleteCount > 0 && res.insertText.isEmpty()) {
+            sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL)
+        } else {
+            if (res.deleteCount > 0) {
+                ic.deleteSurroundingText(res.deleteCount, 0)
+            }
+            if (res.insertText.isNotEmpty()) {
+                ic.commitText(res.insertText, 1)
+            }
         }
         keyboardView?.currentBufferText = res.currentBuffer
     }

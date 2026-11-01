@@ -250,12 +250,20 @@
       font-weight: 400;
     }
     .key-hint-badge {
-      font-size: 9.5px;
-      font-weight: bold;
-      color: var(--gboard-hint-cyan);
+      font-size: 9px;
+      font-weight: 500;
+      color: #8e918f;
       position: absolute;
       top: 2px;
       right: 4px;
+    }
+    .key-third-text {
+      font-size: 9.5px;
+      font-weight: bold;
+      color: #ffd54f;
+      position: absolute;
+      top: 2px;
+      left: 4px;
     }
     .gboard-key.special {
       background: var(--gboard-key-special);
@@ -391,11 +399,13 @@
         const mapNodes = xmlDoc.getElementsByTagName("Map");
         const mappings = new Map();
         const singleCharBadges = new Map();
+        const longPressMappings = new Map();
 
         for (let i = 0; i < mapNodes.length; i++) {
           const charNode = mapNodes[i].getElementsByTagName("Character")[0];
           const displayNode = mapNodes[i].getElementsByTagName("Display")[0];
           const keysNode = mapNodes[i].getElementsByTagName("Keys")[0];
+          const layerAttr = mapNodes[i].getAttribute("Layer") || mapNodes[i].getAttribute("layer") || "";
 
           if (keysNode && (charNode || displayNode)) {
             const keysHex = keysNode.textContent.trim();
@@ -406,14 +416,26 @@
             const charStr = OpenXmlParser.hexToChar(charHex);
             const displayStr = OpenXmlParser.hexToChar(displayHex);
 
-            mappings.set(keyStr, charStr);
-            if (keyStr.length === 1 && !singleCharBadges.has(keyStr)) {
-              singleCharBadges.set(keyStr, displayStr);
+            if (layerAttr.toLowerCase() === "longpress") {
+              longPressMappings.set(keyStr.toLowerCase(), charStr);
+            } else {
+              mappings.set(keyStr, charStr);
+              if (keyStr.length === 1) {
+                if (!singleCharBadges.has(keyStr)) {
+                  singleCharBadges.set(keyStr, displayStr);
+                }
+                // Auto-detect Kaladi desktop Shift keys: uppercase letter -> non-ASCII target
+                if (keyStr >= 'A' && keyStr <= 'Z' && charStr.charCodeAt(0) > 127) {
+                  if (!longPressMappings.has(keyStr.toLowerCase())) {
+                    longPressMappings.set(keyStr.toLowerCase(), charStr);
+                  }
+                }
+              }
             }
           }
         }
 
-        return { language, encoding, keyboard, author, mappings, singleCharBadges };
+        return { language, encoding, keyboard, author, mappings, singleCharBadges, longPressMappings };
       }
 
       static hexToKeys(hex) {
@@ -617,9 +639,36 @@
 
       // Del
       const delKey = document.createElement("div");
-      delKey.className = "gboard-key special";
+      delKey.className = "gboard-key special del";
       delKey.textContent = "⌫";
-      delKey.onclick = () => applyBackspace();
+      let delTimer = null;
+      let delInterval = null;
+      let delCount = 0;
+      const startDel = (e) => {
+        e.preventDefault();
+        delCount = 0;
+        applyBackspace();
+        delTimer = setTimeout(() => {
+          delInterval = setInterval(() => {
+            delCount++;
+            applyBackspace();
+            if (delCount > 20 && delInterval) {
+              clearInterval(delInterval);
+              delInterval = setInterval(() => applyBackspace(), 30);
+            }
+          }, 50);
+        }, 380);
+      };
+      const stopDel = () => {
+        clearTimeout(delTimer);
+        clearInterval(delInterval);
+        delCount = 0;
+      };
+      delKey.onmousedown = startDel;
+      delKey.onmouseup = stopDel;
+      delKey.onmouseleave = stopDel;
+      delKey.ontouchstart = startDel;
+      delKey.ontouchend = stopDel;
       r3Div.appendChild(delKey);
 
       keyboardBody.appendChild(r3Div);
@@ -681,24 +730,90 @@
       keyboardBody.appendChild(r4Div);
     }
 
+    const defaultSanskritMap = {
+      "a": "ஷ", "s": "ஸ", "d": "ஹ", "f": "ஜ",
+      "z": "ஸ்ரீ", "x": "ௐ", "c": "க்ஷ", "v": "ஶ",
+      "q": "௧", "w": "௨", "e": "௩", "r": "௪", "t": "௫",
+      "y": "௬", "u": "௭", "i": "௮", "o": "௯", "p": "௦",
+      "h": "௰", "j": "௱", "k": "௲", "l": "௹",
+      "b": "௳", "n": "௴", "m": "௵"
+    };
+    const thirdTextSymbols = {
+      "q": "1", "w": "2", "e": "3", "r": "4", "t": "5",
+      "y": "6", "u": "7", "i": "8", "o": "9", "p": "0",
+      "a": "@", "s": "#", "d": "$", "f": "%", "g": "&",
+      "h": "-", "j": "+", "k": "(", "l": ")",
+      "z": "*", "x": "\"", "c": "'", "v": ":", "b": ";",
+      "n": "!", "m": "?"
+    };
+
     function createKey(char) {
       const keyDiv = document.createElement("div");
       keyDiv.className = "gboard-key";
       const displayChar = isEmoji ? char : (isShift ? char.toUpperCase() : char.toLowerCase());
 
+      const isEnglish = (currentParsed && (currentParsed.language === "English" || currentParsed.keyboard === "English"));
+      const isTamil = !isEmoji && !isEnglish && !isShift && char.length === 1;
+
+      const mainText = (isTamil && currentParsed && currentParsed.singleCharBadges.has(displayChar))
+        ? currentParsed.singleCharBadges.get(displayChar)
+        : displayChar;
+
       const span = document.createElement("span");
       span.className = "key-main-text";
-      span.textContent = displayChar;
+      span.textContent = mainText;
       keyDiv.appendChild(span);
 
-      if (!isEmoji && currentParsed && currentParsed.singleCharBadges.has(displayChar)) {
+      // Top-right English reference badge
+      if (isTamil) {
         const badge = document.createElement("span");
         badge.className = "key-hint-badge";
-        badge.textContent = currentParsed.singleCharBadges.get(displayChar);
+        badge.textContent = displayChar;
         keyDiv.appendChild(badge);
       }
 
-      keyDiv.onclick = () => applyChar(displayChar);
+      // Top-left Sanskrit / number 3rd text badge
+      if (!isEmoji && char.length === 1) {
+        const sanskrit = (currentParsed && currentParsed.longPressMappings)
+          ? currentParsed.longPressMappings.get(char.toLowerCase())
+          : defaultSanskritMap[char.toLowerCase()];
+        const third = (!isEnglish && sanskrit) ? sanskrit : thirdTextSymbols[char.toLowerCase()];
+        if (third) {
+          const thirdSpan = document.createElement("span");
+          thirdSpan.className = "key-third-text";
+          thirdSpan.textContent = third;
+          keyDiv.appendChild(thirdSpan);
+        }
+      }
+
+      // Long press support
+      let pressTimer = null;
+      let longPressed = false;
+      const startPress = (e) => {
+        longPressed = false;
+        pressTimer = setTimeout(() => {
+          longPressed = true;
+          const sanskrit = (currentParsed && currentParsed.longPressMappings)
+            ? currentParsed.longPressMappings.get(char.toLowerCase())
+            : defaultSanskritMap[char.toLowerCase()];
+          if (!isEnglish && sanskrit) {
+            applyChar(char.toUpperCase());
+          } else if (thirdTextSymbols[char.toLowerCase()]) {
+            applyChar(thirdTextSymbols[char.toLowerCase()]);
+          }
+        }, 400);
+      };
+      const endPress = (e) => {
+        clearTimeout(pressTimer);
+        if (!longPressed) {
+          applyChar(displayChar);
+        }
+      };
+
+      keyDiv.onmousedown = startPress;
+      keyDiv.onmouseup = endPress;
+      keyDiv.ontouchstart = startPress;
+      keyDiv.ontouchend = endPress;
       return keyDiv;
     }
 

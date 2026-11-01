@@ -186,6 +186,11 @@ class OpenKeyboardEngine(val parsedKeymap: ParsedKeymap) {
         return curr.mappedValue
     }
 
+    fun hasKeyMapping(keySeq: String, layer: String = "Tamil"): Boolean {
+        val root = getRootForLayer(layer)
+        return getExactMatch(root, keySeq) != null
+    }
+
     fun getBadgeForChar(key: Char, layer: String = "Tamil"): String? {
         val layerBadgeMap = parsedKeymap.layerBadges[layer]
         if (layerBadgeMap != null && layerBadgeMap.containsKey(key.toString())) {

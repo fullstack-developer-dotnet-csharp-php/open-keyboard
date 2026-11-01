@@ -225,13 +225,18 @@ class KeyboardView @JvmOverloads constructor(
     private var downX = 0f
     private var downY = 0f
 
+    private var delRepeatCount = 0
+
     private val delRepeatRunnable = object : Runnable {
         override fun run() {
             if (pressedKey?.type == KeyType.DEL) {
                 isDelRepeating = true
+                delRepeatCount++
                 performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
                 listener?.onBackspace()
-                keyHandler.postDelayed(this, 50)
+                // Gboard continuous repeat deletion: starts at 50ms, accelerates to 30ms after 20 deletions
+                val interval = if (delRepeatCount > 20) 30L else 50L
+                keyHandler.postDelayed(this, interval)
             }
         }
     }
@@ -241,7 +246,14 @@ class KeyboardView @JvmOverloads constructor(
             if (pk.type == KeyType.NORMAL && pk.code.length == 1) {
                 val sanskrit = engine?.getLongPressChar(pk.code[0])
                 val longChar = when {
-                    sanskrit != null && !isEnglishLayout -> sanskrit
+                    sanskrit != null && !isEnglishLayout -> {
+                        val upper = pk.code.uppercase()
+                        if (engine?.hasKeyMapping(upper) == true) {
+                            upper
+                        } else {
+                            sanskrit
+                        }
+                    }
                     else -> thirdTextMap[pk.code.lowercase()]
                 }
                 if (longChar != null) {
@@ -656,22 +668,31 @@ class KeyboardView @JvmOverloads constructor(
                     canvas.drawText(k.label, k.rect.centerX(), y, tPaint)
                 }
                 KeyType.NORMAL -> {
-                    val fontSize = if (isEmoji) dp(20f) else dp(18f)
+                    val fontSize = if (isEmoji) dp(20f) else dp(17.5f)
                     textPaint.textSize = fontSize
-                    val y = k.rect.centerY() - (textPaint.descent() + textPaint.ascent()) / 2 + dp(1.5f)
-                    canvas.drawText(k.label, k.rect.centerX(), y, textPaint)
 
-                    // Secondary XML letter badge (Shown ONLY in Tamil mode and NOT in English or Emoji mode!)
-                    if (!isEnglishLayout && shiftMode == ShiftMode.TAMIL && !isSymbols && !isEmoji && k.code.length == 1) {
-                        val badge = engine?.getBadgeForChar(k.code[0], "Tamil")
-                        if (badge != null) {
-                            val badgeX = k.rect.right - dp(4.5f)
-                            val badgeY = k.rect.top + dp(11f)
-                            canvas.drawText(badge, badgeX, badgeY, badgePaint)
-                        }
+                    val isTamilMode = !isEnglishLayout && shiftMode == ShiftMode.TAMIL && !isSymbols && !isEmoji && k.code.length == 1
+                    val primaryLabel = if (isTamilMode) {
+                        engine?.getBadgeForChar(k.code[0], "Tamil") ?: k.label
+                    } else {
+                        k.label
                     }
 
-                    // 3rd Text (Top-Left corner space): Sanskrit in Tamil mode, or Number/Symbol hints
+                    // Position center label with dedicated vertical space below top badges
+                    val yOffset = if (isTamilMode) dp(3.5f) else dp(1.5f)
+                    val y = k.rect.centerY() - (textPaint.descent() + textPaint.ascent()) / 2 + yOffset
+                    canvas.drawText(primaryLabel, k.rect.centerX(), y, textPaint)
+
+                    // Secondary key badge (English reference letter in Tamil mode, top-right)
+                    if (isTamilMode) {
+                        badgePaint.color = Color.parseColor("#8E918F")
+                        badgePaint.textSize = dp(9f)
+                        val badgeX = k.rect.right - dp(4f)
+                        val badgeY = k.rect.top + dp(10.5f)
+                        canvas.drawText(k.code.lowercase(), badgeX, badgeY, badgePaint)
+                    }
+
+                    // 3rd Text (Dedicated Top-Left corner space): Sanskrit in Tamil mode, or Number/Symbol hints
                     if (showThirdText && !isSymbols && !isEmoji && k.code.length == 1) {
                         val sanskrit = engine?.getLongPressChar(k.code[0])
                         val thirdText = when {
@@ -681,9 +702,10 @@ class KeyboardView @JvmOverloads constructor(
                         if (thirdText != null) {
                             val isSanskrit = (!isEnglishLayout && sanskrit != null)
                             thirdTextPaint.color = if (isSanskrit) Color.parseColor("#FFD54F") else Color.parseColor("#8E918F")
-                            thirdTextPaint.textSize = if (isSanskrit) dp(10.5f) else dp(9f)
-                            val tX = k.rect.left + dp(4.5f)
-                            val tY = k.rect.top + dp(11f)
+                            // Sizing with dedicated room: multi-char glyphs (e.g. ஸ்ரீ, க்ஷ) use 9dp so they never collide with center
+                            thirdTextPaint.textSize = if (isSanskrit && thirdText.length > 1) dp(9f) else if (isSanskrit) dp(10f) else dp(9f)
+                            val tX = k.rect.left + dp(4f)
+                            val tY = k.rect.top + dp(10.5f)
                             canvas.drawText(thirdText, tX, tY, thirdTextPaint)
                         }
                     }
@@ -706,8 +728,13 @@ class KeyboardView @JvmOverloads constructor(
                 canvas.drawRoundRect(popRect, popRadius, popRadius, popupBgPaint)
 
                 popupTextPaint.textSize = dp(24f)
+                val previewText = if (!isEnglishLayout && shiftMode == ShiftMode.TAMIL && !isSymbols && !isEmoji) {
+                    engine?.getBadgeForChar(pk.code[0], "Tamil") ?: pk.label
+                } else {
+                    pk.label
+                }
                 val popTextY = popRect.centerY() - (popupTextPaint.descent() + popupTextPaint.ascent()) / 2
-                canvas.drawText(pk.label, popRect.centerX(), popTextY, popupTextPaint)
+                canvas.drawText(previewText, popRect.centerX(), popTextY, popupTextPaint)
             }
         }
 
@@ -910,6 +937,7 @@ class KeyboardView @JvmOverloads constructor(
                     performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
 
                     if (key.type == KeyType.DEL) {
+                        delRepeatCount = 0
                         // Continuous Gboard backspace: Delete 1 immediately on down
                         listener?.onBackspace()
                         // Start repeating continuous deletion after 380ms

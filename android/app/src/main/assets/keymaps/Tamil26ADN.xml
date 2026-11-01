@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" ?>
+<?xml version="1.0" ?>
 <Table>
 	<Header>
 		<Language>Tamil</Language>
@@ -692,13 +692,31 @@
 <Map Layer="SmallEnglish"><Display>y</Display><Character>0079</Character><Keys>79</Keys></Map>
 <Map Layer="SmallEnglish"><Display>z</Display><Character>007A</Character><Keys>7A</Keys></Map>
 
-<!-- Sanskrit / Grantha Long-Press Mappings & Space -->
-<Map Layer="LongPress"><Display>0BB8</Display><Character>0BB8</Character><Keys>73</Keys></Map>
+<!-- Sanskrit / Grantha Long-Press Mappings & Kaladi Desktop Style -->
 <Map Layer="LongPress"><Display>0BB7</Display><Character>0BB7</Character><Keys>61</Keys></Map>
-<Map Layer="LongPress"><Display>0B9C</Display><Character>0B9C</Character><Keys>6A</Keys></Map>
-<Map Layer="LongPress"><Display>0BB9</Display><Character>0BB9</Character><Keys>68</Keys></Map>
-<Map Layer="LongPress"><Display>0B950BCD0BB7</Display><Character>0B950BCD0BB7</Character><Keys>6B</Keys></Map>
-<Map Layer="LongPress"><Display>0BB80BCD0BB00BC0</Display><Character>0BB80BCD0BB00BC0</Character><Keys>72</Keys></Map>
-<Map Layer="LongPress"><Display>0BB6</Display><Character>0BB6</Character><Keys>67</Keys></Map>
+<Map Layer="LongPress"><Display>0BB8</Display><Character>0BB8</Character><Keys>73</Keys></Map>
+<Map Layer="LongPress"><Display>0BB9</Display><Character>0BB9</Character><Keys>64</Keys></Map>
+<Map Layer="LongPress"><Display>0B9C</Display><Character>0B9C</Character><Keys>66</Keys></Map>
+<Map Layer="LongPress"><Display>0BB80BCD0BB00BC0</Display><Character>0BB80BCD0BB00BC0</Character><Keys>7A</Keys></Map>
+<Map Layer="LongPress"><Display>0BD0</Display><Character>0BD0</Character><Keys>78</Keys></Map>
+<Map Layer="LongPress"><Display>0B950BCD0BB7</Display><Character>0B950BCD0BB7</Character><Keys>63</Keys></Map>
+<Map Layer="LongPress"><Display>0BB6</Display><Character>0BB6</Character><Keys>76</Keys></Map>
+<Map Layer="LongPress"><Display>0BE7</Display><Character>0BE7</Character><Keys>71</Keys></Map>
+<Map Layer="LongPress"><Display>0BE8</Display><Character>0BE8</Character><Keys>77</Keys></Map>
+<Map Layer="LongPress"><Display>0BE9</Display><Character>0BE9</Character><Keys>65</Keys></Map>
+<Map Layer="LongPress"><Display>0BEA</Display><Character>0BEA</Character><Keys>72</Keys></Map>
+<Map Layer="LongPress"><Display>0BEB</Display><Character>0BEB</Character><Keys>74</Keys></Map>
+<Map Layer="LongPress"><Display>0BEC</Display><Character>0BEC</Character><Keys>79</Keys></Map>
+<Map Layer="LongPress"><Display>0BED</Display><Character>0BED</Character><Keys>75</Keys></Map>
+<Map Layer="LongPress"><Display>0BEE</Display><Character>0BEE</Character><Keys>69</Keys></Map>
+<Map Layer="LongPress"><Display>0BEF</Display><Character>0BEF</Character><Keys>6F</Keys></Map>
+<Map Layer="LongPress"><Display>0BE6</Display><Character>0BE6</Character><Keys>70</Keys></Map>
+<Map Layer="LongPress"><Display>0BF0</Display><Character>0BF0</Character><Keys>68</Keys></Map>
+<Map Layer="LongPress"><Display>0BF1</Display><Character>0BF1</Character><Keys>6A</Keys></Map>
+<Map Layer="LongPress"><Display>0BF2</Display><Character>0BF2</Character><Keys>6B</Keys></Map>
+<Map Layer="LongPress"><Display>0BF9</Display><Character>0BF9</Character><Keys>6C</Keys></Map>
+<Map Layer="LongPress"><Display>0BF3</Display><Character>0BF3</Character><Keys>62</Keys></Map>
+<Map Layer="LongPress"><Display>0BF4</Display><Character>0BF4</Character><Keys>6E</Keys></Map>
+<Map Layer="LongPress"><Display>0BF5</Display><Character>0BF5</Character><Keys>6D</Keys></Map>
 </Data>
 </Table>

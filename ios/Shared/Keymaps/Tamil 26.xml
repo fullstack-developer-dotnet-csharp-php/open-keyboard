@@ -466,38 +466,111 @@
 <Map><Display>0028</Display><Character>0028</Character><Keys>28</Keys></Map>
 <Map><Display>002D</Display><Character>002D</Character><Keys>2D</Keys></Map>
 <Map><Display>003D</Display><Character>003D</Character><Keys>3D</Keys></Map>
-<Map><Display>0051</Display><Character>0051</Character><Keys>51</Keys></Map>
-<Map><Display>0057</Display><Character>0057</Character><Keys>57</Keys></Map>
-<Map><Display>0045</Display><Character>0045</Character><Keys>45</Keys></Map>
-<Map><Display>0052</Display><Character>0052</Character><Keys>52</Keys></Map>
-<Map><Display>0054</Display><Character>0054</Character><Keys>54</Keys></Map>
-<Map><Display>0059</Display><Character>0059</Character><Keys>59</Keys></Map>
-<Map><Display>0055</Display><Character>0055</Character><Keys>55</Keys></Map>
-<Map><Display>0049</Display><Character>0049</Character><Keys>49</Keys></Map>
-<Map><Display>004F</Display><Character>004F</Character><Keys>4F</Keys></Map>
-<Map><Display>0050</Display><Character>0050</Character><Keys>50</Keys></Map>
+<!-- Sanskrit / Grantha Mappings (Kaladi Desktop Standard: A=ஷ, S=ஸ, D=ஹ, F=ஜ, Z=ஸ்ரீ, X=ௐ, C=க்ஷ, V=ஶ) -->
+<Map><Display>0BB7</Display><Character>0BB7</Character><Keys>41</Keys></Map>
+<Map><Display>0BB70BCD</Display><Character>0BB70BCD</Character><Keys>4167</Keys></Map>
+<Map><Display>0BB70BBE</Display><Character>0BB70BBE</Character><Keys>4168</Keys></Map>
+<Map><Display>0BB70BBF</Display><Character>0BB70BBF</Character><Keys>416A</Keys></Map>
+<Map><Display>0BB70BC0</Display><Character>0BB70BC0</Character><Keys>416A6A</Keys></Map>
+<Map><Display>0BB70BC1</Display><Character>0BB70BC1</Character><Keys>416B</Keys></Map>
+<Map><Display>0BB70BC2</Display><Character>0BB70BC2</Character><Keys>416B6B</Keys></Map>
+<Map><Display>0BB70BC6</Display><Character>0BB70BC6</Character><Keys>416C</Keys></Map>
+<Map><Display>0BB70BC7</Display><Character>0BB70BC7</Character><Keys>416C6C</Keys></Map>
+<Map><Display>0BB70BC8</Display><Character>0BB70BC8</Character><Keys>4179</Keys></Map>
+<Map><Display>0BB70BCC</Display><Character>0BB70BCC</Character><Keys>416D</Keys></Map>
+<Map><Display>0BB70BCA</Display><Character>0BB70BCA</Character><Keys>416E</Keys></Map>
+<Map><Display>0BB70BCB</Display><Character>0BB70BCB</Character><Keys>416E6E</Keys></Map>
+<Map><Display>0BB8</Display><Character>0BB8</Character><Keys>53</Keys></Map>
+<Map><Display>0BB80BCD</Display><Character>0BB80BCD</Character><Keys>5367</Keys></Map>
+<Map><Display>0BB80BBE</Display><Character>0BB80BBE</Character><Keys>5368</Keys></Map>
+<Map><Display>0BB80BBF</Display><Character>0BB80BBF</Character><Keys>536A</Keys></Map>
+<Map><Display>0BB80BC0</Display><Character>0BB80BC0</Character><Keys>536A6A</Keys></Map>
+<Map><Display>0BB80BC1</Display><Character>0BB80BC1</Character><Keys>536B</Keys></Map>
+<Map><Display>0BB80BC2</Display><Character>0BB80BC2</Character><Keys>536B6B</Keys></Map>
+<Map><Display>0BB80BC6</Display><Character>0BB80BC6</Character><Keys>536C</Keys></Map>
+<Map><Display>0BB80BC7</Display><Character>0BB80BC7</Character><Keys>536C6C</Keys></Map>
+<Map><Display>0BB80BC8</Display><Character>0BB80BC8</Character><Keys>5379</Keys></Map>
+<Map><Display>0BB80BCC</Display><Character>0BB80BCC</Character><Keys>536D</Keys></Map>
+<Map><Display>0BB80BCA</Display><Character>0BB80BCA</Character><Keys>536E</Keys></Map>
+<Map><Display>0BB80BCB</Display><Character>0BB80BCB</Character><Keys>536E6E</Keys></Map>
+<Map><Display>0BB9</Display><Character>0BB9</Character><Keys>44</Keys></Map>
+<Map><Display>0BB90BCD</Display><Character>0BB90BCD</Character><Keys>4467</Keys></Map>
+<Map><Display>0BB90BBE</Display><Character>0BB90BBE</Character><Keys>4468</Keys></Map>
+<Map><Display>0BB90BBF</Display><Character>0BB90BBF</Character><Keys>446A</Keys></Map>
+<Map><Display>0BB90BC0</Display><Character>0BB90BC0</Character><Keys>446A6A</Keys></Map>
+<Map><Display>0BB90BC1</Display><Character>0BB90BC1</Character><Keys>446B</Keys></Map>
+<Map><Display>0BB90BC2</Display><Character>0BB90BC2</Character><Keys>446B6B</Keys></Map>
+<Map><Display>0BB90BC6</Display><Character>0BB90BC6</Character><Keys>446C</Keys></Map>
+<Map><Display>0BB90BC7</Display><Character>0BB90BC7</Character><Keys>446C6C</Keys></Map>
+<Map><Display>0BB90BC8</Display><Character>0BB90BC8</Character><Keys>4479</Keys></Map>
+<Map><Display>0BB90BCC</Display><Character>0BB90BCC</Character><Keys>446D</Keys></Map>
+<Map><Display>0BB90BCA</Display><Character>0BB90BCA</Character><Keys>446E</Keys></Map>
+<Map><Display>0BB90BCB</Display><Character>0BB90BCB</Character><Keys>446E6E</Keys></Map>
+<Map><Display>0B9C</Display><Character>0B9C</Character><Keys>46</Keys></Map>
+<Map><Display>0B9C0BCD</Display><Character>0B9C0BCD</Character><Keys>4667</Keys></Map>
+<Map><Display>0B9C0BBE</Display><Character>0B9C0BBE</Character><Keys>4668</Keys></Map>
+<Map><Display>0B9C0BBF</Display><Character>0B9C0BBF</Character><Keys>466A</Keys></Map>
+<Map><Display>0B9C0BC0</Display><Character>0B9C0BC0</Character><Keys>466A6A</Keys></Map>
+<Map><Display>0B9C0BC1</Display><Character>0B9C0BC1</Character><Keys>466B</Keys></Map>
+<Map><Display>0B9C0BC2</Display><Character>0B9C0BC2</Character><Keys>466B6B</Keys></Map>
+<Map><Display>0B9C0BC6</Display><Character>0B9C0BC6</Character><Keys>466C</Keys></Map>
+<Map><Display>0B9C0BC7</Display><Character>0B9C0BC7</Character><Keys>466C6C</Keys></Map>
+<Map><Display>0B9C0BC8</Display><Character>0B9C0BC8</Character><Keys>4679</Keys></Map>
+<Map><Display>0B9C0BCC</Display><Character>0B9C0BCC</Character><Keys>466D</Keys></Map>
+<Map><Display>0B9C0BCA</Display><Character>0B9C0BCA</Character><Keys>466E</Keys></Map>
+<Map><Display>0B9C0BCB</Display><Character>0B9C0BCB</Character><Keys>466E6E</Keys></Map>
+<Map><Display>0BB80BCD0BB00BC0</Display><Character>0BB80BCD0BB00BC0</Character><Keys>5A</Keys></Map>
+<Map><Display>0BD0</Display><Character>0BD0</Character><Keys>58</Keys></Map>
+<Map><Display>0B950BCD0BB7</Display><Character>0B950BCD0BB7</Character><Keys>43</Keys></Map>
+<Map><Display>0B950BCD0BB70BCD</Display><Character>0B950BCD0BB70BCD</Character><Keys>4367</Keys></Map>
+<Map><Display>0B950BCD0BB70BBE</Display><Character>0B950BCD0BB70BBE</Character><Keys>4368</Keys></Map>
+<Map><Display>0B950BCD0BB70BBF</Display><Character>0B950BCD0BB70BBF</Character><Keys>436A</Keys></Map>
+<Map><Display>0B950BCD0BB70BC0</Display><Character>0B950BCD0BB70BC0</Character><Keys>436A6A</Keys></Map>
+<Map><Display>0B950BCD0BB70BC1</Display><Character>0B950BCD0BB70BC1</Character><Keys>436B</Keys></Map>
+<Map><Display>0B950BCD0BB70BC2</Display><Character>0B950BCD0BB70BC2</Character><Keys>436B6B</Keys></Map>
+<Map><Display>0B950BCD0BB70BC6</Display><Character>0B950BCD0BB70BC6</Character><Keys>436c</Keys></Map>
+<Map><Display>0B950BCD0BB70BC7</Display><Character>0B950BCD0BB70BC7</Character><Keys>436c6c</Keys></Map>
+<Map><Display>0B950BCD0BB70BC8</Display><Character>0B950BCD0BB70BC8</Character><Keys>4379</Keys></Map>
+<Map><Display>0B950BCD0BB70BCA</Display><Character>0B950BCD0BB70BCA</Character><Keys>436E</Keys></Map>
+<Map><Display>0B950BCD0BB70BCB</Display><Character>0B950BCD0BB70BCB</Character><Keys>436E6E</Keys></Map>
+<Map><Display>0B950BCD0BB70BCC</Display><Character>0B950BCD0BB70BCC</Character><Keys>436D</Keys></Map>
+<Map><Display>0BB6</Display><Character>0BB6</Character><Keys>56</Keys></Map>
+<Map><Display>0BB60BCD</Display><Character>0BB60BCD</Character><Keys>5667</Keys></Map>
+<Map><Display>0BB60BBE</Display><Character>0BB60BBE</Character><Keys>5668</Keys></Map>
+<Map><Display>0BB60BBF</Display><Character>0BB60BBF</Character><Keys>566A</Keys></Map>
+<Map><Display>0BB60BC0</Display><Character>0BB60BC0</Character><Keys>566A6A</Keys></Map>
+<Map><Display>0BB60BC1</Display><Character>0BB60BC1</Character><Keys>566B</Keys></Map>
+<Map><Display>0BB60BC2</Display><Character>0BB60BC2</Character><Keys>566B6B</Keys></Map>
+<Map><Display>0BB60BC6</Display><Character>0BB60BC6</Character><Keys>566C</Keys></Map>
+<Map><Display>0BB60BC7</Display><Character>0BB60BC7</Character><Keys>566C6C</Keys></Map>
+<Map><Display>0BB60BC8</Display><Character>0BB60BC8</Character><Keys>5679</Keys></Map>
+<Map><Display>0BB60BCC</Display><Character>0BB60BCC</Character><Keys>566D</Keys></Map>
+<Map><Display>0BB60BCA</Display><Character>0BB60BCA</Character><Keys>566E</Keys></Map>
+<Map><Display>0BB60BCB</Display><Character>0BB60BCB</Character><Keys>566E6E</Keys></Map>
+<Map><Display>0be7</Display><Character>0be7</Character><Keys>51</Keys></Map>
+<Map><Display>0be8</Display><Character>0be8</Character><Keys>57</Keys></Map>
+<Map><Display>0be9</Display><Character>0be9</Character><Keys>45</Keys></Map>
+<Map><Display>0bea</Display><Character>0bea</Character><Keys>52</Keys></Map>
+<Map><Display>0beb</Display><Character>0beb</Character><Keys>54</Keys></Map>
+<Map><Display>0bec</Display><Character>0bec</Character><Keys>59</Keys></Map>
+<Map><Display>0bed</Display><Character>0bed</Character><Keys>55</Keys></Map>
+<Map><Display>0bee</Display><Character>0bee</Character><Keys>49</Keys></Map>
+<Map><Display>0bef</Display><Character>0bef</Character><Keys>4F</Keys></Map>
+<Map><Display>0be6</Display><Character>0be6</Character><Keys>50</Keys></Map>
+<Map><Display>0bf0</Display><Character>0bf0</Character><Keys>48</Keys></Map>
+<Map><Display>0bf1</Display><Character>0bf1</Character><Keys>4A</Keys></Map>
+<Map><Display>0bf2</Display><Character>0bf2</Character><Keys>4B</Keys></Map>
+<Map><Display>0bf9</Display><Character>0bf9</Character><Keys>4C</Keys></Map>
+<Map><Display>0bf3</Display><Character>0bf3</Character><Keys>42</Keys></Map>
+<Map><Display>0bf4</Display><Character>0bf4</Character><Keys>4E</Keys></Map>
+<Map><Display>0bf5</Display><Character>0bf5</Character><Keys>4D</Keys></Map>
 <Map><Display>007B</Display><Character>007B</Character><Keys>7B</Keys></Map>
 <Map><Display>007D</Display><Character>007D</Character><Keys>7D</Keys></Map>
-<Map><Display>0041</Display><Character>0041</Character><Keys>41</Keys></Map>
-<Map><Display>0053</Display><Character>0053</Character><Keys>53</Keys></Map>
-<Map><Display>0044</Display><Character>0044</Character><Keys>44</Keys></Map>
-<Map><Display>0046</Display><Character>0046</Character><Keys>46</Keys></Map>
 <Map><Display>0047</Display><Character>0047</Character><Keys>47</Keys></Map>
-<Map><Display>0048</Display><Character>0048</Character><Keys>48</Keys></Map>
-<Map><Display>004A</Display><Character>004A</Character><Keys>4A</Keys></Map>
-<Map><Display>004B</Display><Character>004B</Character><Keys>4B</Keys></Map>
-<Map><Display>004C</Display><Character>004C</Character><Keys>4C</Keys></Map>
 <Map><Display>003A</Display><Character>003A</Character><Keys>3A</Keys></Map>
 <Map><Display>0022</Display><Character>0022</Character><Keys>22</Keys></Map>
 <Map><Display>007E</Display><Character>007E</Character><Keys>7E</Keys></Map>
 <Map><Display>007C</Display><Character>007C</Character><Keys>7C</Keys></Map>
-<Map><Display>005A</Display><Character>005A</Character><Keys>5A</Keys></Map>
-<Map><Display>0058</Display><Character>0058</Character><Keys>58</Keys></Map>
-<Map><Display>0043</Display><Character>0043</Character><Keys>43</Keys></Map>
-<Map><Display>0056</Display><Character>0056</Character><Keys>56</Keys></Map>
-<Map><Display>0042</Display><Character>0042</Character><Keys>42</Keys></Map>
-<Map><Display>004E</Display><Character>004E</Character><Keys>4E</Keys></Map>
-<Map><Display>004D</Display><Character>004D</Character><Keys>4D</Keys></Map>
 <Map><Display>003C</Display><Character>003C</Character><Keys>3C</Keys></Map>
 <Map><Display>003E</Display><Character>003E</Character><Keys>3E</Keys></Map>
 <Map><Display>003F</Display><Character>003F</Character><Keys>3F</Keys></Map>
@@ -651,13 +724,31 @@
 <Map><Display>0BA90BCD0BA90BC8</Display><Character>0BA90BCD0BA90BC8</Character><Keys>747479</Keys></Map>
 <Map><Display>0BA90BCD0BA90BC8</Display><Character>0BA90BCD0BA90BC8</Character><Keys>74746879</Keys></Map>
 
-<!-- Sanskrit / Grantha Long-Press Mappings & y combinations -->
-<Map Layer="LongPress"><Display>0BB8</Display><Character>0BB8</Character><Keys>73</Keys></Map>
+<!-- Sanskrit / Grantha Long-Press Mappings & Kaladi Desktop Style -->
 <Map Layer="LongPress"><Display>0BB7</Display><Character>0BB7</Character><Keys>61</Keys></Map>
-<Map Layer="LongPress"><Display>0B9C</Display><Character>0B9C</Character><Keys>6A</Keys></Map>
-<Map Layer="LongPress"><Display>0BB9</Display><Character>0BB9</Character><Keys>68</Keys></Map>
-<Map Layer="LongPress"><Display>0B950BCD0BB7</Display><Character>0B950BCD0BB7</Character><Keys>6B</Keys></Map>
-<Map Layer="LongPress"><Display>0BB80BCD0BB00BC0</Display><Character>0BB80BCD0BB00BC0</Character><Keys>72</Keys></Map>
-<Map Layer="LongPress"><Display>0BB6</Display><Character>0BB6</Character><Keys>67</Keys></Map>
+<Map Layer="LongPress"><Display>0BB8</Display><Character>0BB8</Character><Keys>73</Keys></Map>
+<Map Layer="LongPress"><Display>0BB9</Display><Character>0BB9</Character><Keys>64</Keys></Map>
+<Map Layer="LongPress"><Display>0B9C</Display><Character>0B9C</Character><Keys>66</Keys></Map>
+<Map Layer="LongPress"><Display>0BB80BCD0BB00BC0</Display><Character>0BB80BCD0BB00BC0</Character><Keys>7A</Keys></Map>
+<Map Layer="LongPress"><Display>0BD0</Display><Character>0BD0</Character><Keys>78</Keys></Map>
+<Map Layer="LongPress"><Display>0B950BCD0BB7</Display><Character>0B950BCD0BB7</Character><Keys>63</Keys></Map>
+<Map Layer="LongPress"><Display>0BB6</Display><Character>0BB6</Character><Keys>76</Keys></Map>
+<Map Layer="LongPress"><Display>0BE7</Display><Character>0BE7</Character><Keys>71</Keys></Map>
+<Map Layer="LongPress"><Display>0BE8</Display><Character>0BE8</Character><Keys>77</Keys></Map>
+<Map Layer="LongPress"><Display>0BE9</Display><Character>0BE9</Character><Keys>65</Keys></Map>
+<Map Layer="LongPress"><Display>0BEA</Display><Character>0BEA</Character><Keys>72</Keys></Map>
+<Map Layer="LongPress"><Display>0BEB</Display><Character>0BEB</Character><Keys>74</Keys></Map>
+<Map Layer="LongPress"><Display>0BEC</Display><Character>0BEC</Character><Keys>79</Keys></Map>
+<Map Layer="LongPress"><Display>0BED</Display><Character>0BED</Character><Keys>75</Keys></Map>
+<Map Layer="LongPress"><Display>0BEE</Display><Character>0BEE</Character><Keys>69</Keys></Map>
+<Map Layer="LongPress"><Display>0BEF</Display><Character>0BEF</Character><Keys>6F</Keys></Map>
+<Map Layer="LongPress"><Display>0BE6</Display><Character>0BE6</Character><Keys>70</Keys></Map>
+<Map Layer="LongPress"><Display>0BF0</Display><Character>0BF0</Character><Keys>68</Keys></Map>
+<Map Layer="LongPress"><Display>0BF1</Display><Character>0BF1</Character><Keys>6A</Keys></Map>
+<Map Layer="LongPress"><Display>0BF2</Display><Character>0BF2</Character><Keys>6B</Keys></Map>
+<Map Layer="LongPress"><Display>0BF9</Display><Character>0BF9</Character><Keys>6C</Keys></Map>
+<Map Layer="LongPress"><Display>0BF3</Display><Character>0BF3</Character><Keys>62</Keys></Map>
+<Map Layer="LongPress"><Display>0BF4</Display><Character>0BF4</Character><Keys>6E</Keys></Map>
+<Map Layer="LongPress"><Display>0BF5</Display><Character>0BF5</Character><Keys>6D</Keys></Map>
 </Data>
 </Table>
