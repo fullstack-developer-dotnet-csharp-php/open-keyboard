@@ -144,6 +144,6 @@ struct ContentView: View {
     }
 
     private var activeKeymapName: String {
-        store.availableKeymaps.first(where: { $0.id == store.activeKeymapId })?.displayName ?? "Tamil - Unicode (Tamil26ADN)"
+        store.availableKeymaps.first(where: { $0.id == store.activeKeymapId })?.displayName ?? "Tamil - Unicode (Tamil 26)"
     }
 }

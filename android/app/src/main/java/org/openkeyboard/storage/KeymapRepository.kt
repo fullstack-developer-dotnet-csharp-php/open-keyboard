@@ -67,14 +67,14 @@ class KeymapRepository(private val context: Context) {
     fun getEnabledOrderedList(): List<String> {
         val raw = prefs.getString(PREF_ENABLED_KEYMAP_ORDER_LIST, null)
         if (!raw.isNullOrBlank()) {
-            val list = raw.split(",").map { it.trim() }.filter { it.isNotEmpty() }.toMutableList()
+            val list = raw.split(",").map { it.trim() }.filter { it.isNotEmpty() && it != "Tamil26ADN" }.toMutableList()
             if (!list.contains("English")) {
                 list.add(0, "English")
                 saveEnabledOrderedList(list)
             }
             return list
         }
-        val defaults = listOf("English", "Tamil26ADN", "Tamil 26")
+        val defaults = listOf("English", "Tamil 26")
         saveEnabledOrderedList(defaults)
         return defaults
     }
@@ -137,7 +137,7 @@ class KeymapRepository(private val context: Context) {
     }
 
     fun resetToDefaultKeymaps() {
-        val defaults = listOf("English", "Tamil26ADN", "Tamil 26")
+        val defaults = listOf("English", "Tamil 26")
         saveEnabledOrderedList(defaults)
         prefs.edit().putString(PREF_ACTIVE_KEYMAP_ID, "English").apply()
     }
@@ -171,9 +171,8 @@ class KeymapRepository(private val context: Context) {
             } catch (_: Exception) {}
         }
 
-        // Sort priority: Tamil26ADN first (SIVA), then Tamil 26, then rest
+        // Sort priority: Tamil 26 first (SIVA), then rest
         return list.sortedWith(compareBy(
-            { it.id != "Tamil26ADN" },
             { it.id != "Tamil 26" },
             { !it.id.contains("Hindi") },
             { !it.id.contains("Telugu") },
@@ -234,10 +233,10 @@ class KeymapRepository(private val context: Context) {
             }
         } catch (_: Exception) {}
 
-        // Fallback to Tamil26ADN
+        // Fallback to Tamil 26
         return try {
-            context.assets.open("keymaps/Tamil26ADN.xml").use { stream ->
-                OpenXmlParser.parse(stream, "Tamil26ADN.xml", isBuiltIn = true)
+            context.assets.open("keymaps/Tamil 26.xml").use { stream ->
+                OpenXmlParser.parse(stream, "Tamil 26.xml", isBuiltIn = true)
             }
         } catch (_: Exception) {
             OpenXmlParser.parse("<Table><Header><Language>Universal</Language></Header><Data></Data></Table>", "fallback.xml")

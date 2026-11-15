@@ -117,8 +117,6 @@ class MainActivity : AppCompatActivity() {
             when {
                 a.id == "English" -> -1
                 b.id == "English" -> 1
-                a.id == "Tamil26ADN" -> -1
-                b.id == "Tamil26ADN" -> 1
                 a.id == "Tamil 26" -> -1
                 b.id == "Tamil 26" -> 1
                 else -> a.keyboard.compareTo(b.keyboard, ignoreCase = true)

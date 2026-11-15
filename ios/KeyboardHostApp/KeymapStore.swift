@@ -6,7 +6,7 @@ public class KeymapStore: ObservableObject {
 
     public static let appGroupId = "group.org.openkeyboard"
     private static let activeKeymapPref = "active_keymap_id"
-    private static let defaultKeymapId = "Tamil26ADN"
+    private static let defaultKeymapId = "Tamil 26"
 
     @Published public var availableKeymaps: [KeymapInfo] = []
     @Published public var activeKeymapId: String = defaultKeymapId
@@ -74,10 +74,8 @@ public class KeymapStore: ObservableObject {
             }
         }
 
-        // Sort: Tamil26ADN (SIVA) first, then Hindi, Telugu, French, German, Spanish, Russian, then rest
+        // Sort: Tamil 26 (SIVA) first, then Hindi, Telugu, French, German, Spanish, Russian, then rest
         result.sort { (a, b) -> Bool in
-            if a.id == "Tamil26ADN" { return true }
-            if b.id == "Tamil26ADN" { return false }
             if a.id == "Tamil 26" { return true }
             if b.id == "Tamil 26" { return false }
             if a.id.contains("Hindi") { return true }
@@ -140,9 +138,9 @@ public class KeymapStore: ObservableObject {
             return parsed
         }
 
-        if let bundleUrl = Bundle.main.url(forResource: "Tamil26ADN", withExtension: "xml"),
+        if let bundleUrl = Bundle.main.url(forResource: "Tamil 26", withExtension: "xml"),
            let data = try? Data(contentsOf: bundleUrl),
-           let parsed = OpenXmlParser.parse(data: data, filename: "Tamil26ADN.xml", isBuiltIn: true) {
+           let parsed = OpenXmlParser.parse(data: data, filename: "Tamil 26.xml", isBuiltIn: true) {
             return parsed
         }
 

@@ -13,7 +13,7 @@ class OpenKeyboardEngineTest {
             <Header>
                 <Language>Tamil</Language>
                 <Encoding>Unicode</Encoding>
-                <Keyboard>Tamil26ADN</Keyboard>
+                <Keyboard>Tamil26</Keyboard>
                 <Author>SIVA</Author>
                 <Description>SIVA 26-Key layout test</Description>
             </Header>
@@ -30,17 +30,17 @@ class OpenKeyboardEngineTest {
 
     @Test
     fun testXmlParsing() {
-        val parsed = OpenXmlParser.parse(sampleXml, "Tamil26ADN.xml")
+        val parsed = OpenXmlParser.parse(sampleXml, "Tamil 26.xml")
         assertEquals("Tamil", parsed.info.language)
         assertEquals("Unicode", parsed.info.encoding)
-        assertEquals("Tamil26ADN", parsed.info.keyboard)
+        assertEquals("Tamil26", parsed.info.keyboard)
         assertEquals("SIVA", parsed.info.author)
         assertEquals(6, parsed.info.ruleCount)
     }
 
     @Test
-    fun testTamil26ADNComposition() {
-        val parsed = OpenXmlParser.parse(sampleXml, "Tamil26ADN.xml")
+    fun testTamil26Composition() {
+        val parsed = OpenXmlParser.parse(sampleXml, "Tamil 26.xml")
         val engine = OpenKeyboardEngine(parsed)
 
         // Type 'a' (61) -> "த"
@@ -54,8 +54,8 @@ class OpenKeyboardEngineTest {
     }
 
     @Test
-    fun testTamil26ADNPulliAndVowel() {
-        val parsed = OpenXmlParser.parse(sampleXml, "Tamil26ADN.xml")
+    fun testTamil26PulliAndVowel() {
+        val parsed = OpenXmlParser.parse(sampleXml, "Tamil 26.xml")
         val engine = OpenKeyboardEngine(parsed)
 
         // Type 'a' (61) -> "த"

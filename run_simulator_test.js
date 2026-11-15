@@ -133,87 +133,17 @@ async function typeKeySequence(page, keys) {
     renderGboard();
   });
 
-  // 3. Tamil26ADN Layout Test
-  console.log('\n3. Testing: Tamil26ADN Layout');
-  await page.selectOption('#keymapSelect', 'Tamil26ADN.xml');
-  await page.waitForTimeout(400);
+  // Verify Tamil26ADN is completely removed from the dropdown
+  console.log('\n3. Verifying: Tamil26ADN is completely removed');
+  const hasADN = await page.evaluate(() => {
+    const opts = Array.from(document.querySelectorAll('#keymapSelect option'));
+    return opts.some(o => o.value.includes('ADN') || o.textContent.includes('ADN'));
+  });
+  console.log('Does dropdown contain Tamil26ADN? (expected false):', hasADN);
+  if (hasADN) throw new Error('Tamil26ADN was found in keymap dropdown, but should be removed!');
+  console.log('✓ Verified Tamil26ADN is completely removed from the keymap options');
 
-  // Verify Sanskrit modifier (+ g) in Tamil26ADN (same as Tamil 26!):
-  // q + g -> ஸ்ரீ
-  await page.click('#btnClear');
-  await typeKeySequence(page, ['q', 'g']);
-  cur = await page.inputValue('#editor');
-  console.log('Tamil26ADN: q + g ->', cur, '(expected ஸ்ரீ)');
-  if (cur !== 'ஸ்ரீ') throw new Error(`Expected 'ஸ்ரீ', got '${cur}'`);
-
-  // t + g -> ஸ், + h -> ஸ
-  await page.click('#btnClear');
-  await typeKeySequence(page, ['t', 'g']);
-  cur = await page.inputValue('#editor');
-  console.log('Tamil26ADN: t + g ->', cur, '(expected ஸ்)');
-  if (cur !== 'ஸ்') throw new Error(`Expected 'ஸ்', got '${cur}'`);
-
-  await typeKeySequence(page, ['h']);
-  cur = await page.inputValue('#editor');
-  console.log('Tamil26ADN: t + g + h ->', cur, '(expected ஸ)');
-  if (cur !== 'ஸ') throw new Error(`Expected 'ஸ', got '${cur}'`);
-
-  // y + g -> ஜ், + h -> ஜ
-  await page.click('#btnClear');
-  await typeKeySequence(page, ['y', 'g']);
-  cur = await page.inputValue('#editor');
-  console.log('Tamil26ADN: y + g ->', cur, '(expected ஜ்)');
-  if (cur !== 'ஜ்') throw new Error(`Expected 'ஜ்', got '${cur}'`);
-
-  await typeKeySequence(page, ['h']);
-  cur = await page.inputValue('#editor');
-  console.log('Tamil26ADN: y + g + h ->', cur, '(expected ஜ)');
-  if (cur !== 'ஜ') throw new Error(`Expected 'ஜ', got '${cur}'`);
-
-  // e + g -> ஹ், + h -> ஹ
-  await page.click('#btnClear');
-  await typeKeySequence(page, ['e', 'g']);
-  cur = await page.inputValue('#editor');
-  console.log('Tamil26ADN: e + g ->', cur, '(expected ஹ்)');
-  if (cur !== 'ஹ்') throw new Error(`Expected 'ஹ்', got '${cur}'`);
-
-  await typeKeySequence(page, ['h']);
-  cur = await page.inputValue('#editor');
-  console.log('Tamil26ADN: e + g + h ->', cur, '(expected ஹ)');
-  if (cur !== 'ஹ') throw new Error(`Expected 'ஹ', got '${cur}'`);
-
-  // w + g -> க்ஷ், + h -> க்ஷ
-  await page.click('#btnClear');
-  await typeKeySequence(page, ['w', 'g']);
-  cur = await page.inputValue('#editor');
-  console.log('Tamil26ADN: w + g ->', cur, '(expected க்ஷ்)');
-  if (cur !== 'க்ஷ்') throw new Error(`Expected 'க்ஷ்', got '${cur}'`);
-
-  await typeKeySequence(page, ['h']);
-  cur = await page.inputValue('#editor');
-  console.log('Tamil26ADN: w + g + h ->', cur, '(expected க்ஷ)');
-  if (cur !== 'க்ஷ') throw new Error(`Expected 'க்ஷ', got '${cur}'`);
-
-  // r + g -> ஷ், + h -> ஷ
-  await page.click('#btnClear');
-  await typeKeySequence(page, ['r', 'g']);
-  cur = await page.inputValue('#editor');
-  console.log('Tamil26ADN: r + g ->', cur, '(expected ஷ்)');
-  if (cur !== 'ஷ்') throw new Error(`Expected 'ஷ்', got '${cur}'`);
-
-  await typeKeySequence(page, ['h']);
-  cur = await page.inputValue('#editor');
-  console.log('Tamil26ADN: r + g + h ->', cur, '(expected ஷ)');
-  if (cur !== 'ஷ') throw new Error(`Expected 'ஷ', got '${cur}'`);
-
-  // m + g -> ஃ
-  await page.click('#btnClear');
-  await typeKeySequence(page, ['m', 'g']);
-  cur = await page.inputValue('#editor');
-  console.log('Tamil26ADN: m + g ->', cur, '(expected ஃ)');
-  if (cur !== 'ஃ') throw new Error(`Expected 'ஃ', got '${cur}'`);
-
-  // Verify Shift + A, S, D, F in Tamil26ADN produces capital English letters, NOT Sanskrit!
+  // Verify full Tamil 26 Shift + A-Z typing produces standard uppercase English
   const lettersToTest = ['a', 's', 'd', 'f', 'z', 'x', 'c', 'v'];
   for (const l of lettersToTest) {
     await page.click('#btnClear');
@@ -227,43 +157,18 @@ async function typeKeySequence(page, keys) {
     await page.waitForTimeout(100);
     cur = await page.inputValue('#editor');
     const expectedLetter = l.toUpperCase();
-    console.log(`Tamil26ADN: Shift + ${l} -> ${cur} (expected ${expectedLetter})`);
+    console.log(`Tamil 26: Shift + ${l} -> ${cur} (expected ${expectedLetter})`);
     if (cur !== expectedLetter) throw new Error(`Expected '${expectedLetter}', got '${cur}'`);
   }
   await page.evaluate(() => {
     shiftMode = 'BASE';
     renderGboard();
   });
-  console.log('✓ Verified Shift + A/S/D/F/Z/X/C/V strictly type standard uppercase English in Tamil26ADN!');
+  console.log('✓ Verified Shift + A/S/D/F/Z/X/C/V strictly type standard uppercase English in Tamil 26!');
 
-  // Verify Tamil26ADN double consonants (e.g. s+s -> க்க, s+s+h -> க்கா, a+a -> த்த, a+a+h -> த்தா)
-  await page.click('#btnClear');
-  await typeKeySequence(page, ['s', 's']);
-  cur = await page.inputValue('#editor');
-  console.log('Tamil26ADN: s + s ->', cur, '(expected க்க)');
-  if (cur !== 'க்க') throw new Error(`Expected 'க்க', got '${cur}'`);
-
-  await page.click('#btnClear');
-  await typeKeySequence(page, ['s', 's', 'h']);
-  cur = await page.inputValue('#editor');
-  console.log('Tamil26ADN: s + s + h ->', cur, '(expected க்கா)');
-  if (cur !== 'க்கா') throw new Error(`Expected 'க்கா', got '${cur}'`);
-
-  await page.click('#btnClear');
-  await typeKeySequence(page, ['a', 'a']);
-  cur = await page.inputValue('#editor');
-  console.log('Tamil26ADN: a + a ->', cur, '(expected த்த)');
-  if (cur !== 'த்த') throw new Error(`Expected 'த்த', got '${cur}'`);
-
-  await page.click('#btnClear');
-  await typeKeySequence(page, ['a', 'a', 'h']);
-  cur = await page.inputValue('#editor');
-  console.log('Tamil26ADN: a + a + h ->', cur, '(expected த்தா)');
-  if (cur !== 'த்தா') throw new Error(`Expected 'த்தா', got '${cur}'`);
-
-  await page.screenshot({ path: path.join(artDir, 'test_tamil26adn_verified.png') });
-  console.log('Saved test_tamil26adn_verified.png');
+  await page.screenshot({ path: path.join(artDir, 'test_tamil26_only_verified.png') });
+  console.log('Saved test_tamil26_only_verified.png');
 
   await browser.close();
-  console.log('\n--- ALL SIMULATOR TESTS PASSED 100% SUCCESSFULLY! ---');
+  console.log('\n--- ALL SIMULATOR TESTS PASSED 100% (TAMIL 26 ONLY)! ---');
 })();

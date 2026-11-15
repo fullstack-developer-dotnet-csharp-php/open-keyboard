@@ -587,7 +587,7 @@
       const maps = window.BUNDLED_KEYMAPS || (typeof BUNDLED_KEYMAPS !== 'undefined' ? BUNDLED_KEYMAPS : null);
       if (!maps) return;
       const keys = Object.keys(maps);
-      keys.sort((a, b) => (a === "English.xml" ? -1 : b === "English.xml" ? 1 : a === "Tamil26ADN.xml" ? -1 : b === "Tamil26ADN.xml" ? 1 : a.localeCompare(b)));
+      keys.sort((a, b) => (a === "English.xml" ? -1 : b === "English.xml" ? 1 : a === "Tamil 26.xml" ? -1 : b === "Tamil 26.xml" ? 1 : a.localeCompare(b)));
 
       keymapSelect.innerHTML = "";
       keys.forEach(k => {
@@ -598,7 +598,7 @@
         keymapSelect.appendChild(opt);
       });
 
-      const def = keys.find(k => k === "English.xml") || keys.find(k => k === "Tamil26ADN.xml") || keys[0];
+      const def = keys.find(k => k === "English.xml") || keys.find(k => k === "Tamil 26.xml") || keys[0];
       keymapSelect.value = def;
       loadKeymap(maps[def].xml);
     }
@@ -919,7 +919,7 @@
       const dd = document.getElementById("layoutDropdown");
       dd.innerHTML = "";
       const keys = Object.keys(window.BUNDLED_KEYMAPS);
-      keys.sort((a, b) => (a === "English.xml" ? -1 : b === "English.xml" ? 1 : a === "Tamil26ADN.xml" ? -1 : b === "Tamil26ADN.xml" ? 1 : a.localeCompare(b)));
+      keys.sort((a, b) => (a === "English.xml" ? -1 : b === "English.xml" ? 1 : a === "Tamil 26.xml" ? -1 : b === "Tamil 26.xml" ? 1 : a.localeCompare(b)));
 
       keys.forEach(k => {
         const item = window.BUNDLED_KEYMAPS[k];
