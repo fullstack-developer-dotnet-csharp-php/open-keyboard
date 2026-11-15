@@ -604,6 +604,9 @@
     }
 
     function loadKeymap(xml) {
+      shiftMode = 'BASE';
+      isSymbols = false;
+      isEmoji = false;
       currentParsed = OpenXmlParser.parse(xml);
       engine = new OpenKeyboardEngine(currentParsed);
       const sug2 = document.getElementById("sug2");
@@ -815,7 +818,7 @@
         const customLong = (currentParsed && currentParsed.longPressMappings)
           ? currentParsed.longPressMappings.get(char.toLowerCase())
           : null;
-        const third = (!isEnglish) ? customLong : thirdTextSymbols[char.toLowerCase()];
+        const third = customLong || thirdTextSymbols[char.toLowerCase()];
         if (third) {
           const thirdSpan = document.createElement("span");
           thirdSpan.className = "key-third-text";
@@ -834,8 +837,8 @@
           const customLong = (currentParsed && currentParsed.longPressMappings)
             ? currentParsed.longPressMappings.get(char.toLowerCase())
             : null;
-          if (!isEnglish) {
-            if (customLong) applyChar(customLong);
+          if (customLong) {
+            applyChar(customLong);
           } else if (thirdTextSymbols[char.toLowerCase()]) {
             applyChar(thirdTextSymbols[char.toLowerCase()]);
           }
