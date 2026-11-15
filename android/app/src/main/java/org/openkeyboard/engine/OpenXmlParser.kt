@@ -155,7 +155,7 @@ object OpenXmlParser {
             }
         }
 
-        val totalRules = mappings.size + layerMappings.values.sumOf { it.size }
+        val totalRules = if (layerMappings.isNotEmpty()) layerMappings.values.sumOf { it.size } else mappings.size
         val info = KeymapInfo(
             id = filename.removeSuffix(".xml"),
             filename = filename,
