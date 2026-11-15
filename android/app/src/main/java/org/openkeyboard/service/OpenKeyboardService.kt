@@ -53,6 +53,13 @@ class OpenKeyboardService : InputMethodService(), KeyboardView.OnKeyboardActionL
         keyboardView?.actionKeyType = actionType
     }
 
+    private fun isWhatsApp(info: EditorInfo?): Boolean {
+        if (info == null) return false
+        val pkg = info.packageName ?: return false
+        return pkg.equals("com.whatsapp", ignoreCase = true) ||
+               pkg.equals("com.whatsapp.w4b", ignoreCase = true)
+    }
+
     private fun isSearchField(info: EditorInfo?): Boolean {
         if (info == null) return false
         val action = info.imeOptions and EditorInfo.IME_MASK_ACTION
@@ -68,6 +75,13 @@ class OpenKeyboardService : InputMethodService(), KeyboardView.OnKeyboardActionL
     private fun getActionType(info: EditorInfo?): KeyboardView.ActionKeyType {
         if (info == null) return KeyboardView.ActionKeyType.ENTER
         if (isSearchField(info)) return KeyboardView.ActionKeyType.SEARCH
+
+        // In WhatsApp, multiline text fields, or fields specifying NO_ENTER_ACTION, always stay ENTER
+        val hasNoEnterActionFlag = (info.imeOptions and EditorInfo.IME_FLAG_NO_ENTER_ACTION) != 0
+        val isMultiLine = (info.inputType and InputType.TYPE_TEXT_FLAG_MULTI_LINE) != 0
+        if (isWhatsApp(info) || hasNoEnterActionFlag || isMultiLine) {
+            return KeyboardView.ActionKeyType.ENTER
+        }
 
         val action = info.imeOptions and EditorInfo.IME_MASK_ACTION
         return when (action) {
@@ -270,11 +284,18 @@ class OpenKeyboardService : InputMethodService(), KeyboardView.OnKeyboardActionL
             return
         }
 
+        val hasNoEnterActionFlag = info != null && (info.imeOptions and EditorInfo.IME_FLAG_NO_ENTER_ACTION) != 0
+        val isMultiLine = info != null && (info.inputType and InputType.TYPE_TEXT_FLAG_MULTI_LINE) != 0
+        if (isWhatsApp(info) || hasNoEnterActionFlag || isMultiLine) {
+            sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER)
+            return
+        }
+
         val action = if (info != null) info.imeOptions and EditorInfo.IME_MASK_ACTION else EditorInfo.IME_ACTION_NONE
         if (action != EditorInfo.IME_ACTION_NONE && action != EditorInfo.IME_ACTION_UNSPECIFIED) {
             ic.performEditorAction(action)
         } else {
-            sendKeyChar('\n')
+            sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER)
         }
     }
 
