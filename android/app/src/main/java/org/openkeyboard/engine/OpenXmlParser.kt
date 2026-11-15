@@ -12,7 +12,8 @@ class ParsedKeymap(
     val singleCharBadges: Map<String, String>,
     val layerMappings: Map<String, Map<String, String>> = emptyMap(),
     val layerBadges: Map<String, Map<String, String>> = emptyMap(),
-    val longPressMappings: Map<String, String> = emptyMap()
+    val longPressMappings: Map<String, String> = emptyMap(),
+    val longPressBadges: Map<String, String> = emptyMap()
 )
 
 object OpenXmlParser {
@@ -47,21 +48,37 @@ object OpenXmlParser {
         val layerMappings = HashMap<String, HashMap<String, String>>()
         val layerBadges = HashMap<String, HashMap<String, String>>()
         val longPressMappings = HashMap<String, String>()
+        val longPressBadges = HashMap<String, String>()
 
         var currentTag = ""
         var currentCharacterHex = ""
         var currentDisplayHex = ""
         var currentKeysHex = ""
         var currentLayer = ""
+        var currentThirdKeyHex = ""
+        var currentThirdDisplayHex = ""
+        var currentThirdKeyAttr = ""
+        var currentThirdDisplayAttr = ""
 
         var eventType = parser.eventType
         while (eventType != XmlPullParser.END_DOCUMENT) {
             when (eventType) {
                 XmlPullParser.START_TAG -> {
                     currentTag = parser.name
-                    if (currentTag.equals("Map", ignoreCase = true)) {
+                    if (currentTag.equals("Map", ignoreCase = true) ||
+                        currentTag.equals("ThirdKey", ignoreCase = true) ||
+                        currentTag.equals("LongPress", ignoreCase = true)) {
                         currentLayer = parser.getAttributeValue(null, "Layer")
                             ?: parser.getAttributeValue(null, "layer")
+                            ?: if (currentTag.equals("ThirdKey", ignoreCase = true) || currentTag.equals("LongPress", ignoreCase = true)) "ThirdKey" else ""
+                        currentThirdKeyAttr = parser.getAttributeValue(null, "ThirdKey")
+                            ?: parser.getAttributeValue(null, "thirdKey")
+                            ?: parser.getAttributeValue(null, "LongPress")
+                            ?: parser.getAttributeValue(null, "longPress")
+                            ?: ""
+                        currentThirdDisplayAttr = parser.getAttributeValue(null, "ThirdDisplay")
+                            ?: parser.getAttributeValue(null, "thirdDisplay")
+                            ?: parser.getAttributeValue(null, "LongPressDisplay")
                             ?: ""
                     }
                 }
@@ -84,11 +101,15 @@ object OpenXmlParser {
                             "Display" -> currentDisplayHex = text
                             "Keys" -> currentKeysHex = text
                             "Layer" -> currentLayer = text
+                            "ThirdKey", "LongPress", "Key3" -> currentThirdKeyHex = text
+                            "ThirdDisplay", "LongPressDisplay" -> currentThirdDisplayHex = text
                         }
                     }
                 }
                 XmlPullParser.END_TAG -> {
-                    if (parser.name.equals("Map", ignoreCase = true)) {
+                    if (parser.name.equals("Map", ignoreCase = true) ||
+                        parser.name.equals("ThirdKey", ignoreCase = true) ||
+                        parser.name.equals("LongPress", ignoreCase = true)) {
                         val targetHex = if (currentCharacterHex.isNotEmpty()) currentCharacterHex else currentDisplayHex
                         if (currentKeysHex.isNotEmpty() && targetHex.isNotEmpty()) {
                             try {
@@ -97,10 +118,18 @@ object OpenXmlParser {
                                 val displayStr = if (currentDisplayHex.isNotEmpty()) parseDisplayOrChar(currentDisplayHex) else charStr
 
                                 val effectiveLayer = if (currentLayer.isNotEmpty()) currentLayer else language
+                                val isThirdKeyLayer = effectiveLayer.equals("LongPress", ignoreCase = true) ||
+                                                      effectiveLayer.equals("ThirdKey", ignoreCase = true) ||
+                                                      effectiveLayer.equals("3rdKey", ignoreCase = true) ||
+                                                      effectiveLayer.equals("Key3", ignoreCase = true)
 
-                                if (effectiveLayer.equals("LongPress", ignoreCase = true)) {
-                                    longPressMappings[keyStr.lowercase()] = charStr
-                                    longPressMappings[keyStr.uppercase()] = charStr
+                                if (isThirdKeyLayer) {
+                                    val lower = keyStr.lowercase()
+                                    val upper = keyStr.uppercase()
+                                    longPressMappings[lower] = charStr
+                                    longPressMappings[upper] = charStr
+                                    longPressBadges[lower] = displayStr
+                                    longPressBadges[upper] = displayStr
                                 } else {
                                     val mapForLayer = layerMappings.getOrPut(effectiveLayer) { HashMap() }
                                     mapForLayer[keyStr] = charStr
@@ -127,10 +156,26 @@ object OpenXmlParser {
                                                 val lowerKey = keyStr.lowercase()
                                                 if (!longPressMappings.containsKey(lowerKey)) {
                                                     longPressMappings[lowerKey] = charStr
+                                                    longPressBadges[lowerKey] = displayStr
                                                 }
                                             }
                                         }
                                     }
+                                }
+
+                                // Check if <ThirdKey> or ThirdKey attribute was specified inside this Map
+                                val thirdHex = if (currentThirdKeyHex.isNotEmpty()) currentThirdKeyHex else currentThirdKeyAttr
+                                if (thirdHex.isNotEmpty()) {
+                                    val thirdChar = parseDisplayOrChar(thirdHex)
+                                    val thirdDisp = if (currentThirdDisplayHex.isNotEmpty()) parseDisplayOrChar(currentThirdDisplayHex)
+                                                    else if (currentThirdDisplayAttr.isNotEmpty()) parseDisplayOrChar(currentThirdDisplayAttr)
+                                                    else thirdChar
+                                    val lower = keyStr.lowercase()
+                                    val upper = keyStr.uppercase()
+                                    longPressMappings[lower] = thirdChar
+                                    longPressMappings[upper] = thirdChar
+                                    longPressBadges[lower] = thirdDisp
+                                    longPressBadges[upper] = thirdDisp
                                 }
                             } catch (_: Exception) {
                                 // Skip malformed map entry
@@ -140,6 +185,10 @@ object OpenXmlParser {
                         currentDisplayHex = ""
                         currentKeysHex = ""
                         currentLayer = ""
+                        currentThirdKeyHex = ""
+                        currentThirdDisplayHex = ""
+                        currentThirdKeyAttr = ""
+                        currentThirdDisplayAttr = ""
                     }
                     currentTag = ""
                 }
@@ -151,6 +200,18 @@ object OpenXmlParser {
             for ((k, v) in mappings) {
                 if (k.length == 1 && !singleCharBadges.containsKey(k)) {
                     singleCharBadges[k] = v
+                }
+            }
+        }
+
+        // Auto-detect modifier-based Sanskrit 3rd keys (e.g. yg -> ஜ், tg -> ஸ், rg -> ஷ், eg -> ஹ், wg -> க்ஷ், qg -> ஸ்ரீ, ug -> ஶ், mg -> ஃ)
+        for ((k, v) in mappings) {
+            if (k.length == 2 && k[1] == 'g' && k[0] in 'a'..'z') {
+                val lowerKey = k[0].toString()
+                if (!longPressMappings.containsKey(lowerKey)) {
+                    longPressMappings[lowerKey] = v
+                    val badge = singleCharBadges[k] ?: v
+                    longPressBadges[lowerKey] = badge
                 }
             }
         }
@@ -170,7 +231,7 @@ object OpenXmlParser {
             smallShiftSymbol = smallShiftSymbol
         )
 
-        return ParsedKeymap(info, mappings, singleCharBadges, layerMappings, layerBadges, longPressMappings)
+        return ParsedKeymap(info, mappings, singleCharBadges, layerMappings, layerBadges, longPressMappings, longPressBadges)
     }
 
     fun hexToKeyString(hex: String): String {

@@ -214,6 +214,21 @@ class OpenKeyboardService : InputMethodService(), KeyboardView.OnKeyboardActionL
             else -> "Base"
         }
 
+        // Support seamless composition after 3rd key / Sanskrit long-press
+        val matchingSeq = if (text.any { it.code > 127 } || text.length > 1) eng.findKeySequenceForOutput(text, currentLayer) else null
+        if (matchingSeq != null && matchingSeq.length > 1) {
+            val currentBuf = keyboardView?.currentBufferText ?: ""
+            if (currentBuf.isNotEmpty() && eng.lastOutputText.isNotEmpty()) {
+                ic.deleteSurroundingText(eng.lastOutputText.length, 0)
+            }
+            ic.commitText(text, 1)
+            eng.setBufferAndOutput(matchingSeq, text)
+            currentWordPrefix.append(text)
+            keyboardView?.currentBufferText = matchingSeq
+            updateSuggestions()
+            return
+        }
+
         for (ch in text) {
             val res = eng.handleKeyPress(ch, currentLayer)
             if (res.deleteCount > 0) {

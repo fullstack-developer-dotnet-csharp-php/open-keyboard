@@ -4,11 +4,21 @@ public class ParsedKeymap {
     public let info: KeymapInfo
     public let mappings: [String: String]
     public let singleCharBadges: [String: String]
+    public let longPressMappings: [String: String]
+    public let longPressBadges: [String: String]
 
-    public init(info: KeymapInfo, mappings: [String: String], singleCharBadges: [String: String]) {
+    public init(
+        info: KeymapInfo,
+        mappings: [String: String],
+        singleCharBadges: [String: String],
+        longPressMappings: [String: String] = [:],
+        longPressBadges: [String: String] = [:]
+    ) {
         self.info = info
         self.mappings = mappings
         self.singleCharBadges = singleCharBadges
+        self.longPressMappings = longPressMappings
+        self.longPressBadges = longPressBadges
     }
 }
 
@@ -22,11 +32,18 @@ public class OpenXmlParser: NSObject, XMLParserDelegate {
 
     private var mappings = [String: String]()
     private var singleCharBadges = [String: String]()
+    private var longPressMappings = [String: String]()
+    private var longPressBadges = [String: String]()
 
     private var currentElement = ""
     private var currentCharacterHex = ""
     private var currentDisplayHex = ""
     private var currentKeysHex = ""
+    private var currentLayer = ""
+    private var currentThirdKeyHex = ""
+    private var currentThirdDisplayHex = ""
+    private var currentThirdKeyAttr = ""
+    private var currentThirdDisplayAttr = ""
     private var currentText = ""
 
     public static func parse(data: Data, filename: String, isBuiltIn: Bool = false) -> ParsedKeymap? {
@@ -34,6 +51,17 @@ public class OpenXmlParser: NSObject, XMLParserDelegate {
         let xmlParser = XMLParser(data: data)
         xmlParser.delegate = parser
         if xmlParser.parse() {
+            // Auto-detect Sanskrit 2-key mappings (e.g. yg -> ஜ்)
+            for (k, v) in parser.mappings {
+                if k.count == 2 && k.hasSuffix("g") {
+                    let first = String(k.prefix(1)).lowercased()
+                    if parser.longPressMappings[first] == nil {
+                        parser.longPressMappings[first] = v
+                        parser.longPressBadges[first] = parser.singleCharBadges[k] ?? v
+                    }
+                }
+            }
+
             let info = KeymapInfo(
                 id: (filename as NSString).deletingPathExtension,
                 filename: filename,
@@ -45,7 +73,13 @@ public class OpenXmlParser: NSObject, XMLParserDelegate {
                 isBuiltIn: isBuiltIn,
                 ruleCount: parser.mappings.count
             )
-            return ParsedKeymap(info: info, mappings: parser.mappings, singleCharBadges: parser.singleCharBadges)
+            return ParsedKeymap(
+                info: info,
+                mappings: parser.mappings,
+                singleCharBadges: parser.singleCharBadges,
+                longPressMappings: parser.longPressMappings,
+                longPressBadges: parser.longPressBadges
+            )
         }
         return nil
     }
@@ -58,6 +92,13 @@ public class OpenXmlParser: NSObject, XMLParserDelegate {
     public func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
         currentElement = elementName
         currentText = ""
+        if elementName.caseInsensitiveCompare("Map") == .orderedSame ||
+           elementName.caseInsensitiveCompare("ThirdKey") == .orderedSame ||
+           elementName.caseInsensitiveCompare("LongPress") == .orderedSame {
+            currentLayer = attributeDict["Layer"] ?? attributeDict["layer"] ?? (elementName.caseInsensitiveCompare("ThirdKey") == .orderedSame ? "ThirdKey" : "")
+            currentThirdKeyAttr = attributeDict["ThirdKey"] ?? attributeDict["thirdKey"] ?? attributeDict["LongPress"] ?? ""
+            currentThirdDisplayAttr = attributeDict["ThirdDisplay"] ?? attributeDict["thirdDisplay"] ?? attributeDict["LongPressDisplay"] ?? ""
+        }
     }
 
     public func parser(_ parser: XMLParser, foundCharacters string: String) {
@@ -83,21 +124,50 @@ public class OpenXmlParser: NSObject, XMLParserDelegate {
             currentDisplayHex = trimmed
         case "Keys":
             currentKeysHex = trimmed
-        case "Map":
+        case "Layer":
+            currentLayer = trimmed
+        case "ThirdKey", "LongPress", "Key3":
+            currentThirdKeyHex = trimmed
+        case "ThirdDisplay", "LongPressDisplay":
+            currentThirdDisplayHex = trimmed
+        case "Map", "ThirdKey", "LongPress":
             let targetHex = !currentCharacterHex.isEmpty ? currentCharacterHex : currentDisplayHex
             if !currentKeysHex.isEmpty && !targetHex.isEmpty {
                 let keyStr = OpenXmlParser.hexToKeys(currentKeysHex)
                 let charStr = OpenXmlParser.hexToChar(targetHex)
                 let displayStr = !currentDisplayHex.isEmpty ? OpenXmlParser.hexToChar(currentDisplayHex) : charStr
 
-                mappings[keyStr] = charStr
-                if keyStr.count == 1 && singleCharBadges[keyStr] == nil {
-                    singleCharBadges[keyStr] = displayStr
+                let isThirdKeyLayer = currentLayer.caseInsensitiveCompare("LongPress") == .orderedSame ||
+                                      currentLayer.caseInsensitiveCompare("ThirdKey") == .orderedSame ||
+                                      currentLayer.caseInsensitiveCompare("3rdKey") == .orderedSame
+
+                if isThirdKeyLayer {
+                    longPressMappings[keyStr.lowercased()] = charStr
+                    longPressBadges[keyStr.lowercased()] = displayStr
+                } else {
+                    mappings[keyStr] = charStr
+                    if keyStr.count == 1 && singleCharBadges[keyStr] == nil {
+                        singleCharBadges[keyStr] = displayStr
+                    }
+                }
+
+                let thirdHex = !currentThirdKeyHex.isEmpty ? currentThirdKeyHex : currentThirdKeyAttr
+                if !thirdHex.isEmpty {
+                    let thirdChar = OpenXmlParser.hexToChar(thirdHex)
+                    let thirdDispHex = !currentThirdDisplayHex.isEmpty ? currentThirdDisplayHex : currentThirdDisplayAttr
+                    let thirdDisp = !thirdDispHex.isEmpty ? OpenXmlParser.hexToChar(thirdDispHex) : thirdChar
+                    longPressMappings[keyStr.lowercased()] = thirdChar
+                    longPressBadges[keyStr.lowercased()] = thirdDisp
                 }
             }
             currentCharacterHex = ""
             currentDisplayHex = ""
             currentKeysHex = ""
+            currentLayer = ""
+            currentThirdKeyHex = ""
+            currentThirdDisplayHex = ""
+            currentThirdKeyAttr = ""
+            currentThirdDisplayAttr = ""
         default:
             break
         }

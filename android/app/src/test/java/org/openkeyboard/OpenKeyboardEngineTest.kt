@@ -66,4 +66,37 @@ class OpenKeyboardEngineTest {
         assertEquals(1, res.deleteCount)
         assertEquals("த்", res.insertText)
     }
+
+    @Test
+    fun testTamil26SanskritThirdKeys() {
+        val stream = java.io.File("D:/Users/Siva/Desktop/open-keyboard/keymaps/Tamil 26.xml").inputStream()
+        val parsed = OpenXmlParser.parse(stream, "Tamil 26.xml")
+        val engine = OpenKeyboardEngine(parsed)
+
+        assertEquals("ஸ்ரீ", engine.getLongPressChar('q'))
+        assertEquals("க்ஷ்", engine.getLongPressChar('w'))
+        assertEquals("ஹ்", engine.getLongPressChar('e'))
+        assertEquals("ஷ்", engine.getLongPressChar('r'))
+        assertEquals("ஸ்", engine.getLongPressChar('t'))
+        assertEquals("ஜ்", engine.getLongPressChar('y'))
+        assertEquals("ஶ்", engine.getLongPressChar('u'))
+        assertEquals("ௐ", engine.getLongPressChar('i'))
+        assertEquals("ஃ", engine.getLongPressChar('m'))
+
+        // Verify Sanskrit composition after long press:
+        // Sequence for "ஜ்" is "yg"
+        val seq = engine.findKeySequenceForOutput("ஜ்")
+        assertEquals("yg", seq)
+
+        engine.setBufferAndOutput(seq!!, "ஜ்")
+        // Type 'h' -> candidate "ygh" -> maps to "ஜ" (replaces 2-char "ஜ்" with 1-char "ஜ")
+        val res = engine.handleKeyPress('h')
+        assertEquals(2, res.deleteCount)
+        assertEquals("ஜ", res.insertText)
+
+        // Type 'h' again -> candidate "yghh" -> maps to "ஜா"
+        val res2 = engine.handleKeyPress('h')
+        assertEquals(1, res2.deleteCount)
+        assertEquals("ஜா", res2.insertText)
+    }
 }

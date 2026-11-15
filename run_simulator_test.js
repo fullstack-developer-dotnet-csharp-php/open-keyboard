@@ -19,6 +19,8 @@ async function typeKeySequence(page, keys) {
     executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe'
   });
   const page = await browser.newPage();
+  page.on('console', msg => console.log('PAGE LOG:', msg.text()));
+  page.on('pageerror', err => console.log('PAGE ERROR:', err.message));
   await page.setViewportSize({ width: 440, height: 950 });
 
   const htmlUrl = 'file:///' + path.resolve('D:/Users/Siva/Desktop/open-keyboard/web-simulator/index.html').replace(/\\/g, '/');
@@ -46,16 +48,16 @@ async function typeKeySequence(page, keys) {
   await page.selectOption('#keymapSelect', 'Tamil 26.xml');
   await page.waitForTimeout(400);
 
-  // Check Row 1 keys: main Tamil & badge
+  // Check Row 1 keys: main Tamil, badge, and Sanskrit 3rd key
   const expectedRow1 = [
-    { key: 'q', tamil: 'ங்', third: '1' },
-    { key: 'w', tamil: 'ய்', third: '2' },
-    { key: 'e', tamil: 'ச்', third: '3' },
-    { key: 'r', tamil: 'ப்', third: '4' },
-    { key: 't', tamil: 'ன்', third: '5' },
-    { key: 'y', tamil: 'ஐ', third: '6' },
-    { key: 'u', tamil: 'ட்', third: '7' },
-    { key: 'i', tamil: 'ந்', third: '8' }
+    { key: 'q', tamil: 'ங்', third: 'ஸ்ரீ' },
+    { key: 'w', tamil: 'ய்', third: 'க்ஷ்' },
+    { key: 'e', tamil: 'ச்', third: 'ஹ்' },
+    { key: 'r', tamil: 'ப்', third: 'ஷ்' },
+    { key: 't', tamil: 'ன்', third: 'ஸ்' },
+    { key: 'y', tamil: 'ஐ', third: 'ஜ்' },
+    { key: 'u', tamil: 'ட்', third: 'ஶ்' },
+    { key: 'i', tamil: 'ந்', third: 'ௐ' }
   ];
 
   for (let i = 0; i < expectedRow1.length; i++) {
@@ -113,6 +115,20 @@ async function typeKeySequence(page, keys) {
   cur = await page.inputValue('#editor');
   console.log('Tamil 26: t + g + h ->', cur, '(expected ஸ)');
   if (cur !== 'ஸ') throw new Error(`Expected 'ஸ', got '${cur}'`);
+
+  // Verify long-press Sanskrit 'y' -> 'ஜ்', and subsequent vowel composition with 'h' -> 'ஜ'
+  await page.click('#btnClear');
+  await page.evaluate(() => {
+    applyChar('ஜ்');
+  });
+  cur = await page.inputValue('#editor');
+  console.log('Tamil 26 long-press Sanskrit y ->', cur, '(expected ஜ்)');
+  if (cur !== 'ஜ்') throw new Error(`Expected 'ஜ்', got '${cur}'`);
+
+  await typeKeySequence(page, ['h']);
+  cur = await page.inputValue('#editor');
+  console.log('Tamil 26 long-press Sanskrit y + h ->', cur, '(expected ஜ)');
+  if (cur !== 'ஜ') throw new Error(`Expected 'ஜ', got '${cur}'`);
 
   // Shift + A in Tamil 26 -> English 'A'
   await page.click('#btnClear');

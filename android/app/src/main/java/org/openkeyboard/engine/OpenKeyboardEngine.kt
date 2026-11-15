@@ -190,6 +190,27 @@ class OpenKeyboardEngine(val parsedKeymap: ParsedKeymap) {
         return curr.mappedValue
     }
 
+    val lastOutputText: String get() = lastOutput
+
+    @Synchronized
+    fun setBufferAndOutput(keySeq: String, output: String) {
+        buffer.clear()
+        buffer.append(keySeq)
+        lastOutput = output
+    }
+
+    @Synchronized
+    fun findKeySequenceForOutput(output: String, layer: String = "Base"): String? {
+        val map = parsedKeymap.layerMappings[layer] ?: parsedKeymap.mappings
+        for ((k, v) in map) {
+            if (v == output) return k
+        }
+        for ((k, v) in parsedKeymap.mappings) {
+            if (v == output) return k
+        }
+        return null
+    }
+
     fun hasKeyMapping(keySeq: String, layer: String = "Base"): Boolean {
         val root = getRootForLayer(layer)
         return getExactMatch(root, keySeq) != null
@@ -205,6 +226,12 @@ class OpenKeyboardEngine(val parsedKeymap: ParsedKeymap) {
             return langBadgeMap[key.toString()]
         }
         return parsedKeymap.singleCharBadges[key.toString()]
+    }
+
+    fun getLongPressBadge(key: Char): String? {
+        return parsedKeymap.longPressBadges[key.toString()]
+            ?: parsedKeymap.longPressBadges[key.lowercaseChar().toString()]
+            ?: getLongPressChar(key)
     }
 
     fun getLongPressChar(key: Char): String? {

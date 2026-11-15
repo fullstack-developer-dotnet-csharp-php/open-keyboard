@@ -366,6 +366,7 @@
       <div class="editor-actions">
         <button class="action-btn" id="btnCopy">📋 Copy</button>
         <button class="action-btn" id="btnClear">🗑️ Clear</button>
+        <span id="lblBuffer" style="display:none;"></span>
       </div>
     </div>
 
@@ -402,10 +403,11 @@
         const longPressMappings = new Map();
 
         for (let i = 0; i < mapNodes.length; i++) {
-          const charNode = mapNodes[i].getElementsByTagName("Character")[0];
-          const displayNode = mapNodes[i].getElementsByTagName("Display")[0];
-          const keysNode = mapNodes[i].getElementsByTagName("Keys")[0];
-          const layerAttr = mapNodes[i].getAttribute("Layer") || mapNodes[i].getAttribute("layer") || "";
+          const mapEl = mapNodes[i];
+          const charNode = mapEl.getElementsByTagName("Character")[0];
+          const displayNode = mapEl.getElementsByTagName("Display")[0];
+          const keysNode = mapEl.getElementsByTagName("Keys")[0];
+          const layerAttr = mapEl.getAttribute("Layer") || mapEl.getAttribute("layer") || "";
 
           if (keysNode && (charNode || displayNode)) {
             const keysHex = keysNode.textContent.trim();
@@ -416,7 +418,14 @@
             const charStr = OpenXmlParser.parseDisplayOrChar(charHex);
             const displayStr = OpenXmlParser.parseDisplayOrChar(displayHex);
 
-            if (layerAttr.toLowerCase() === "longpress") {
+            const isThirdKeyLayer = layerAttr.toLowerCase() === "longpress" ||
+                                    layerAttr.toLowerCase() === "thirdkey" ||
+                                    layerAttr.toLowerCase() === "3rdkey" ||
+                                    layerAttr.toLowerCase() === "key3";
+            const thirdKeyNode = mapEl.getElementsByTagName("ThirdKey")[0] || mapEl.getElementsByTagName("LongPress")[0];
+            const thirdKeyAttr = mapEl.getAttribute("ThirdKey") || mapEl.getAttribute("thirdKey") || mapEl.getAttribute("LongPress");
+
+            if (isThirdKeyLayer) {
               longPressMappings.set(keyStr.toLowerCase(), charStr);
             } else {
               mappings.set(keyStr, charStr);
@@ -431,6 +440,22 @@
                   }
                 }
               }
+            }
+
+            if (thirdKeyNode || thirdKeyAttr) {
+              const thHex = thirdKeyNode ? thirdKeyNode.textContent.trim() : thirdKeyAttr.trim();
+              const thChar = OpenXmlParser.parseDisplayOrChar(thHex);
+              longPressMappings.set(keyStr.toLowerCase(), thChar);
+            }
+          }
+        }
+
+        // Auto-detect Sanskrit 2-key mappings (e.g. yg -> ஜ்)
+        for (const [k, v] of mappings.entries()) {
+          if (k.length === 2 && k[1] === 'g' && k[0] >= 'a' && k[0] <= 'z') {
+            const lk = k[0].toLowerCase();
+            if (!longPressMappings.has(lk)) {
+              longPressMappings.set(lk, v);
             }
           }
         }
@@ -875,6 +900,20 @@
         return;
       }
       if (!engine) return;
+
+      // If ch is a long-press multi-char or Sanskrit output with a known sequence:
+      if (engine && currentParsed && currentParsed.mappings && (ch.length > 1 || ch.charCodeAt(0) > 127)) {
+        for (const [k, v] of currentParsed.mappings.entries()) {
+          if (v === ch && k.length > 1) {
+            insertText(0, ch);
+            engine.buffer = k;
+            engine.lastOutput = ch;
+            if (lblBuffer) lblBuffer.textContent = `[${k}]`;
+            return;
+          }
+        }
+      }
+
       const res = engine.handleKey(ch);
       insertText(res.deleteCount, res.insertText);
       lblBuffer.textContent = res.buffer ? `[${res.buffer}]` : "";

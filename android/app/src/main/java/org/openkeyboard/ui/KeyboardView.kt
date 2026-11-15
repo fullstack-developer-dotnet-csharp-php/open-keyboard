@@ -247,14 +247,7 @@ class KeyboardView @JvmOverloads constructor(
                 val sanskrit = engine?.getLongPressChar(pk.code[0])
                 val longChar = when {
                     !isEnglishLayout -> {
-                        if (sanskrit != null) {
-                            val upper = pk.code.uppercase()
-                            if (engine?.hasKeyMapping(upper) == true) {
-                                upper
-                            } else {
-                                sanskrit
-                            }
-                        } else null
+                        sanskrit ?: thirdTextMap[pk.code.lowercase()]
                     }
                     else -> thirdTextMap[pk.code.lowercase()]
                 }
@@ -703,16 +696,16 @@ class KeyboardView @JvmOverloads constructor(
 
                     // 3rd Text (Dedicated Top-Left corner space): XML-defined LongPress / 3rd character or Number/Symbol hints
                     if (showThirdText && !isSymbols && !isEmoji && k.code.length == 1) {
-                        val customLongPress = engine?.getLongPressChar(k.code[0])
+                        val customBadge = engine?.getLongPressBadge(k.code[0])
                         val thirdText = when {
-                            !isEnglishLayout -> customLongPress
+                            !isEnglishLayout -> customBadge ?: thirdTextMap[k.code.lowercase()]
                             else -> thirdTextMap[k.code.lowercase()]
                         }
                         if (thirdText != null) {
-                            val isCustomLongPress = (!isEnglishLayout && customLongPress != null)
+                            val isCustomLongPress = (!isEnglishLayout && customBadge != null)
                             thirdTextPaint.color = if (isCustomLongPress) Color.parseColor("#FFD54F") else Color.parseColor("#8E918F")
                             // Sizing with dedicated room: multi-char glyphs (e.g. ஸ்ரீ, க்ஷ) use 9dp so they never collide with center
-                            thirdTextPaint.textSize = if (isCustomLongPress && thirdText.length > 1) dp(9f) else if (isCustomLongPress) dp(10f) else dp(9f)
+                            thirdTextPaint.textSize = if (isCustomLongPress && thirdText.length > 1) dp(9f) else if (isCustomLongPress) dp(10.5f) else dp(9f)
                             val tX = k.rect.left + dp(4f)
                             val tY = k.rect.top + dp(10.5f)
                             canvas.drawText(thirdText, tX, tY, thirdTextPaint)
