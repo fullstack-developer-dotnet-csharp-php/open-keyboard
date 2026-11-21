@@ -189,7 +189,7 @@
       border: 1px solid #2b2930;
     }
     .gboard-header {
-      height: 38px;
+      height: 40px;
       background: var(--gboard-header);
       display: flex;
       align-items: center;
@@ -217,21 +217,25 @@
 
     /* Keyboard Rows */
     .gboard-body {
-      padding: 6px 3px 8px 3px;
+      padding: 4.5px 3.5px 6px 3.5px;
       display: flex;
       flex-direction: column;
-      gap: 5px;
+      gap: 4.5px;
     }
     .gboard-row {
       display: flex;
       justify-content: center;
-      gap: 4px;
+      gap: 3.5px;
+    }
+    .gboard-spacer {
+      flex: 0.5;
+      pointer-events: none;
     }
     .gboard-key {
       flex: 1;
-      height: 44px;
+      height: 52px;
       background: var(--gboard-key-normal);
-      border-radius: 7px;
+      border-radius: 8px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -267,22 +271,25 @@
     }
     .gboard-key.special {
       background: var(--gboard-key-special);
-      flex: 1.45;
+      flex: 1.5;
       font-size: 13px;
       color: #c4c7c5;
       font-weight: bold;
+    }
+    .gboard-key.special.compact {
+      flex: 0.92;
     }
     .gboard-key.shift.active {
       background: var(--gboard-accent-blue);
       color: var(--gboard-accent-text);
     }
     .gboard-key.space {
-      flex: 4.5;
+      flex: 4.16;
       font-size: 11px;
       color: #8e918f;
     }
     .gboard-key.enter {
-      flex: 1.45;
+      flex: 1.5;
       background: var(--gboard-accent-blue);
       color: var(--gboard-accent-text);
       font-weight: bold;
@@ -652,8 +659,16 @@
       // Row 2 (Indented with half key width on both sides - Gboard style!)
       const r2Div = document.createElement("div");
       r2Div.className = "gboard-row";
+      const spacerLeft = document.createElement("div");
+      spacerLeft.className = "gboard-spacer";
+      r2Div.appendChild(spacerLeft);
+
       const r2 = isEmoji ? emojiRow2 : (isSymbols ? symRow2 : row2Chars);
       r2.forEach(ch => r2Div.appendChild(createKey(ch)));
+
+      const spacerRight = document.createElement("div");
+      spacerRight.className = "gboard-spacer";
+      r2Div.appendChild(spacerRight);
       keyboardBody.appendChild(r2Div);
 
       // Row 3 (Shift/ABC, 7 keys, Backspace)
@@ -747,7 +762,7 @@
 
       // 2. Smiley 😊 button
       const smileyKey = document.createElement("div");
-      smileyKey.className = "gboard-key special" + (isEmoji ? " active" : "");
+      smileyKey.className = "gboard-key special compact" + (isEmoji ? " active" : "");
       smileyKey.textContent = isEmoji ? "ABC" : "😊";
       smileyKey.onclick = () => {
         if (isSymbols) isSymbols = false;
@@ -758,7 +773,7 @@
 
       // 3. Keyboard Selection 🔄 button (Next to Smilys!)
       const langKey = document.createElement("div");
-      langKey.className = "gboard-key special";
+      langKey.className = "gboard-key special compact";
       langKey.textContent = "🔄";
       langKey.title = "Switch Keyboard Layout";
       langKey.onclick = (e) => {

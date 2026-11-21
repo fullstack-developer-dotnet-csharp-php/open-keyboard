@@ -292,9 +292,10 @@ class KeyboardView @JvmOverloads constructor(
     private val keyRects = ArrayList<KeyRect>()
     private var pressedKey: KeyRect? = null
 
-    private val HEADER_HEIGHT_DP = 36f
-    private val KEY_MARGIN_DP = 3.5f
-    private val KEY_CORNER_RADIUS_DP = 7f
+    private val HEADER_HEIGHT_DP = 40f
+    private val KEY_H_MARGIN_DP = 3.5f
+    private val KEY_V_MARGIN_DP = 4.5f
+    private val KEY_CORNER_RADIUS_DP = 8f
 
     private val qwertyRow1 = listOf("q", "w", "e", "r", "t", "y", "u", "i", "o", "p")
     private val qwertyRow2 = listOf("a", "s", "d", "f", "g", "h", "j", "k", "l")
@@ -316,7 +317,7 @@ class KeyboardView @JvmOverloads constructor(
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val width = MeasureSpec.getSize(widthMeasureSpec)
         val density = resources.displayMetrics.density
-        val targetHeight = (density * 255).toInt()
+        val targetHeight = (density * 275).toInt()
         setMeasuredDimension(width, targetHeight)
     }
 
@@ -390,19 +391,20 @@ class KeyboardView @JvmOverloads constructor(
 
         val headerH = dp(HEADER_HEIGHT_DP)
         val keyboardH = totalH - headerH
-        val margin = dp(KEY_MARGIN_DP)
-        val rowH = (keyboardH - 5 * margin) / 4f
+        val hMargin = dp(KEY_H_MARGIN_DP)
+        val vMargin = dp(KEY_V_MARGIN_DP)
+        val rowH = (keyboardH - 5 * vMargin) / 4f
 
         // Top Header Rect (Dedicated for Text Suggestions!)
         headerRect.set(0f, 0f, totalW, headerH)
         val searchChipW = dp(36f)
-        searchHeaderRect.set(totalW - margin - searchChipW, dp(6f), totalW - margin, headerH - dp(6f))
+        searchHeaderRect.set(totalW - hMargin - searchChipW, dp(6f), totalW - hMargin, headerH - dp(6f))
 
         // Divide Suggestion Strip into 3 Slots
-        val availSuggestW = totalW - (if (actionKeyType == ActionKeyType.SEARCH) searchChipW + 2 * margin else 2 * margin)
+        val availSuggestW = totalW - (if (actionKeyType == ActionKeyType.SEARCH) searchChipW + 2 * hMargin else 2 * hMargin)
         val slotW = availSuggestW / 3f
         for (i in 0..2) {
-            suggestionRects[i].set(margin + i * slotW, 0f, margin + (i + 1) * slotW, headerH)
+            suggestionRects[i].set(hMargin + i * slotW, 0f, hMargin + (i + 1) * slotW, headerH)
         }
 
         // Row 1 (10 keys)
@@ -411,46 +413,48 @@ class KeyboardView @JvmOverloads constructor(
             isSymbols -> symbolRow1
             else -> qwertyRow1
         }
-        val r1KeyW = (totalW - (r1.size + 1) * margin) / r1.size
-        val y1Top = headerH + margin
+        val keyW = (totalW - 2 * hMargin - (r1.size - 1) * hMargin) / r1.size.toFloat()
+        val y1Top = headerH + vMargin
         val y1Bottom = y1Top + rowH
         for (i in r1.indices) {
             val key = r1[i]
-            val xLeft = margin + i * (r1KeyW + margin)
+            val xLeft = hMargin + i * (keyW + hMargin)
             val code = if (!isEmoji && !isSymbols && shiftMode == ShiftMode.CAPS_ENGLISH) key.uppercase() else key
-            keyRects.add(KeyRect(RectF(xLeft, y1Top, xLeft + r1KeyW, y1Bottom), code, code))
+            keyRects.add(KeyRect(RectF(xLeft, y1Top, xLeft + keyW, y1Bottom), code, code))
         }
 
-        // Row 2 (9 keys) - Indented with 0.5 * keyWidth on both sides
+        // Row 2 (9 keys) - Indented with 0.5 * (keyW + hMargin) on both sides - exact Gboard alignment!
         val r2 = when {
             isEmoji -> emojiRow2
             isSymbols -> symbolRow2
             else -> qwertyRow2
         }
-        val r2KeyW = r1KeyW
-        val r2Indent = (totalW - (r2.size * r2KeyW + (r2.size - 1) * margin)) / 2f
-        val y2Top = y1Bottom + margin
+        val r2Indent = (totalW - (r2.size * keyW + (r2.size - 1) * hMargin)) / 2f
+        val y2Top = y1Bottom + vMargin
         val y2Bottom = y2Top + rowH
         for (i in r2.indices) {
             val key = r2[i]
-            val xLeft = r2Indent + i * (r2KeyW + margin)
+            val xLeft = r2Indent + i * (keyW + hMargin)
             val code = if (!isEmoji && !isSymbols && shiftMode == ShiftMode.CAPS_ENGLISH) key.uppercase() else key
-            keyRects.add(KeyRect(RectF(xLeft, y2Top, xLeft + r2KeyW, y2Bottom), code, code))
+            keyRects.add(KeyRect(RectF(xLeft, y2Top, xLeft + keyW, y2Bottom), code, code))
         }
 
-        // Row 3: Shift/ABC (left), 7 center keys, Backspace (right)
+        // Row 3: Shift/ABC (left), 7 center keys (exact keyW matching Rows 1 & 2!), Backspace (right)
         val r3 = when {
             isEmoji -> emojiRow3
             isSymbols -> symbolRow3
             else -> qwertyRow3
         }
-        val y3Top = y2Bottom + margin
+        val y3Top = y2Bottom + vMargin
         val y3Bottom = y3Top + rowH
-        val specialW = r1KeyW * 1.45f
-        val centerW = (totalW - 2 * specialW - (r3.size + 3) * margin) / r3.size
+
+        // In Gboard, center keys (z..m) have the exact same width as all other letter keys (keyW).
+        // Shift and Backspace take the equal remaining outer spaces on left and right.
+        val shiftW = (totalW - (r3.size * keyW + (r3.size - 1) * hMargin) - 4 * hMargin) / 2f
+        val delW = shiftW
 
         // Shift / ABC key
-        val shiftKeyRect = RectF(margin, y3Top, margin + specialW, y3Bottom)
+        val shiftKeyRect = RectF(hMargin, y3Top, hMargin + shiftW, y3Bottom)
         if (isEmoji) {
             keyRects.add(KeyRect(shiftKeyRect, "ABC", "ABC", KeyType.SYM))
         } else if (isSymbols) {
@@ -469,50 +473,50 @@ class KeyboardView @JvmOverloads constructor(
         }
 
         // 7 Center keys
-        var currentX = margin + specialW + margin
+        var currentX = hMargin + shiftW + hMargin
         for (i in r3.indices) {
             val key = r3[i]
             val code = if (!isEmoji && !isSymbols && shiftMode == ShiftMode.CAPS_ENGLISH) key.uppercase() else key
-            keyRects.add(KeyRect(RectF(currentX, y3Top, currentX + centerW, y3Bottom), code, code))
-            currentX += centerW + margin
+            keyRects.add(KeyRect(RectF(currentX, y3Top, currentX + keyW, y3Bottom), code, code))
+            currentX += keyW + hMargin
         }
 
         // Backspace
-        val delKeyRect = RectF(currentX, y3Top, totalW - margin, y3Bottom)
+        val delKeyRect = RectF(currentX, y3Top, totalW - hMargin, y3Bottom)
         keyRects.add(KeyRect(delKeyRect, "DEL", "\u232B", KeyType.DEL))
 
         // Row 4 (Bottom Bar): ?123, Smiley 😊, Keyboard 🔄 (Sync symbol, next to smilys!), Space, Period, Enter/Search
-        val y4Top = y3Bottom + margin
+        val y4Top = y3Bottom + vMargin
         val y4Bottom = y4Top + rowH
-        val symW = r1KeyW * 1.22f
-        val smileyW = r1KeyW * 0.95f
-        val langW = r1KeyW * 0.95f
-        val dotW = r1KeyW * 0.95f
-        val enterW = r1KeyW * 1.35f
-        val spaceW = totalW - (symW + smileyW + langW + dotW + enterW) - (7 * margin)
+        val symW = shiftW
+        val smileyW = keyW * 0.92f
+        val langW = keyW * 0.92f
+        val dotW = keyW
+        val enterW = delW
+        val spaceW = totalW - 2 * hMargin - (symW + smileyW + langW + dotW + enterW) - 5 * hMargin
 
-        var x4 = margin
+        var x4 = hMargin
         // 1. ?123 / ABC
         keyRects.add(KeyRect(RectF(x4, y4Top, x4 + symW, y4Bottom), "SYM", if (isSymbols || isEmoji) "ABC" else "?123", KeyType.SYM))
-        x4 += symW + margin
+        x4 += symW + hMargin
 
         // 2. Smiley 😊 button
         val smileyLabel = if (isEmoji) "ABC" else "\uD83D\uDE0A" // 😊
         keyRects.add(KeyRect(RectF(x4, y4Top, x4 + smileyW, y4Bottom), "SMILEY", smileyLabel, KeyType.SMILEY))
-        x4 += smileyW + margin
+        x4 += smileyW + hMargin
 
         // 3. Keyboard Selection Dropdown button 🔄 (Sync symbol next to Smilys!)
         langKeyRect.set(x4, y4Top, x4 + langW, y4Bottom)
         keyRects.add(KeyRect(RectF(x4, y4Top, x4 + langW, y4Bottom), "LANG", "\uD83D\uDD04", KeyType.LANG))
-        x4 += langW + margin
+        x4 += langW + hMargin
 
         // 4. Spacebar
         keyRects.add(KeyRect(RectF(x4, y4Top, x4 + spaceW, y4Bottom), "SPACE", "space", KeyType.SPACE))
-        x4 += spaceW + margin
+        x4 += spaceW + hMargin
 
         // 5. Period
         keyRects.add(KeyRect(RectF(x4, y4Top, x4 + dotW, y4Bottom), ".", ".", KeyType.NORMAL))
-        x4 += dotW + margin
+        x4 += dotW + hMargin
 
         // 6. Enter / Search
         val enterLabel = when (actionKeyType) {
@@ -523,7 +527,7 @@ class KeyboardView @JvmOverloads constructor(
             ActionKeyType.DONE -> "\u2713"
             ActionKeyType.ENTER -> "\u21B5"
         }
-        keyRects.add(KeyRect(RectF(x4, y4Top, x4 + enterW, y4Bottom), "ENTER", enterLabel, KeyType.ENTER))
+        keyRects.add(KeyRect(RectF(x4, y4Top, totalW - hMargin, y4Bottom), "ENTER", enterLabel, KeyType.ENTER))
     }
 
     override fun onDraw(canvas: Canvas) {
