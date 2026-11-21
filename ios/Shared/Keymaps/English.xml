@@ -64,5 +64,9 @@
 		<Map Layer="CapsEnglish"><Display>0058</Display><Character>0058</Character><Keys>58</Keys></Map>
 		<Map Layer="CapsEnglish"><Display>0059</Display><Character>0059</Character><Keys>59</Keys></Map>
 		<Map Layer="CapsEnglish"><Display>005A</Display><Character>005A</Character><Keys>5A</Keys></Map>
+		<Map><Display>002E</Display><Character>002E</Character><Keys>2E</Keys></Map>
+		<Map><Display>002C</Display><Character>002C</Character><Keys>2C</Keys></Map>
+		<!-- Long Press: Period (.) to Comma (,) -->
+		<Map Layer="ThirdKey"><Display>002C</Display><Character>002C</Character><Keys>2E</Keys></Map>
 	</Data>
 </Table>

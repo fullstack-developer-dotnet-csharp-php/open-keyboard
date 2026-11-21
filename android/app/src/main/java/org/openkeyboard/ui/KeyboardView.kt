@@ -211,6 +211,9 @@ class KeyboardView @JvmOverloads constructor(
     var isSuggestionsEnabled: Boolean = true
         set(value) {
             field = value
+            computeKeyLayout()
+            computeDropdownMenuRect()
+            requestLayout()
             invalidate()
         }
 
@@ -220,7 +223,8 @@ class KeyboardView @JvmOverloads constructor(
         "a" to "@", "s" to "#", "d" to "$", "f" to "%", "g" to "&",
         "h" to "-", "j" to "+", "k" to "(", "l" to ")",
         "z" to "*", "x" to "\"", "c" to "'", "v" to ":", "b" to ";",
-        "n" to "!", "m" to "?"
+        "n" to "!", "m" to "?",
+        "." to ","
     )
 
     private val keyHandler = Handler(Looper.getMainLooper())
@@ -256,13 +260,8 @@ class KeyboardView @JvmOverloads constructor(
                 computeKeyLayout()
                 invalidate()
             } else if (pk.type == KeyType.NORMAL && pk.code.length == 1) {
-                val sanskrit = engine?.getLongPressChar(pk.code[0])
-                val longChar = when {
-                    !isEnglishLayout -> {
-                        sanskrit ?: thirdTextMap[pk.code.lowercase()]
-                    }
-                    else -> thirdTextMap[pk.code.lowercase()]
-                }
+                val customLong = engine?.getLongPressChar(pk.code[0])
+                val longChar = customLong ?: thirdTextMap[pk.code.lowercase()]
                 if (longChar != null) {
                     isLongPressTriggered = true
                     performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
@@ -329,7 +328,8 @@ class KeyboardView @JvmOverloads constructor(
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val width = MeasureSpec.getSize(widthMeasureSpec)
         val density = resources.displayMetrics.density
-        val targetHeight = (density * 275).toInt()
+        val targetHeightDp = if (isSuggestionsEnabled) 275f else (275f - HEADER_HEIGHT_DP)
+        val targetHeight = (density * targetHeightDp).toInt()
         setMeasuredDimension(width, targetHeight)
     }
 
@@ -404,10 +404,12 @@ class KeyboardView @JvmOverloads constructor(
     private fun computeDropdownMenuRect() {
         val itemH = dp(36f)
         val totalItems = (enabledKeymaps.size + 3).coerceAtLeast(1)
-        val menuH = (totalItems * itemH + dp(12f)).coerceAtMost(height - dp(HEADER_HEIGHT_DP) - dp(8f))
+        val headerOffset = if (isSuggestionsEnabled) dp(HEADER_HEIGHT_DP) else 0f
+        val menuH = (totalItems * itemH + dp(12f)).coerceAtMost(height - headerOffset - dp(8f))
         val menuW = dp(235f).coerceAtMost(width - dp(16f))
         val left = langKeyRect.left.coerceAtMost(width - menuW - dp(8f)).coerceAtLeast(dp(8f))
-        val top = (langKeyRect.top - dp(6f) - menuH).coerceAtLeast(dp(HEADER_HEIGHT_DP) + dp(4f))
+        val topLimit = if (isSuggestionsEnabled) dp(HEADER_HEIGHT_DP) + dp(4f) else dp(4f)
+        val top = (langKeyRect.top - dp(6f) - menuH).coerceAtLeast(topLimit)
         val bottom = langKeyRect.top - dp(4f)
         dropdownMenuRect.set(left, top, left + menuW, bottom)
     }
@@ -418,22 +420,30 @@ class KeyboardView @JvmOverloads constructor(
         val totalH = height.toFloat()
         if (totalW <= 0 || totalH <= 0) return
 
-        val headerH = dp(HEADER_HEIGHT_DP)
+        val headerH = if (isSuggestionsEnabled) dp(HEADER_HEIGHT_DP) else 0f
         val keyboardH = totalH - headerH
         val hMargin = dp(KEY_H_MARGIN_DP)
         val vMargin = dp(KEY_V_MARGIN_DP)
         val rowH = (keyboardH - 5 * vMargin) / 4f
 
-        // Top Header Rect (Dedicated for Text Suggestions!)
-        headerRect.set(0f, 0f, totalW, headerH)
-        val searchChipW = dp(36f)
-        searchHeaderRect.set(totalW - hMargin - searchChipW, dp(6f), totalW - hMargin, headerH - dp(6f))
+        if (isSuggestionsEnabled) {
+            // Top Header Rect (Dedicated for Text Suggestions!)
+            headerRect.set(0f, 0f, totalW, headerH)
+            val searchChipW = dp(36f)
+            searchHeaderRect.set(totalW - hMargin - searchChipW, dp(6f), totalW - hMargin, headerH - dp(6f))
 
-        // Divide Suggestion Strip into 3 Slots
-        val availSuggestW = totalW - (if (actionKeyType == ActionKeyType.SEARCH) searchChipW + 2 * hMargin else 2 * hMargin)
-        val slotW = availSuggestW / 3f
-        for (i in 0..2) {
-            suggestionRects[i].set(hMargin + i * slotW, 0f, hMargin + (i + 1) * slotW, headerH)
+            // Divide Suggestion Strip into 3 Slots
+            val availSuggestW = totalW - (if (actionKeyType == ActionKeyType.SEARCH) searchChipW + 2 * hMargin else 2 * hMargin)
+            val slotW = availSuggestW / 3f
+            for (i in 0..2) {
+                suggestionRects[i].set(hMargin + i * slotW, 0f, hMargin + (i + 1) * slotW, headerH)
+            }
+        } else {
+            headerRect.setEmpty()
+            searchHeaderRect.setEmpty()
+            for (i in 0..2) {
+                suggestionRects[i].setEmpty()
+            }
         }
 
         // Row 1 (10 keys)
@@ -567,63 +577,65 @@ class KeyboardView @JvmOverloads constructor(
 
         val cornerRadius = dp(KEY_CORNER_RADIUS_DP)
 
-        // 1. Draw Header / Suggestion Strip
-        canvas.drawRect(headerRect, headerBgPaint)
-        headerDividerPaint.strokeWidth = dp(1f)
-        canvas.drawLine(0f, headerRect.bottom, width.toFloat(), headerRect.bottom, headerDividerPaint)
+        // 1. Draw Header / Suggestion Strip (if enabled)
+        if (isSuggestionsEnabled) {
+            canvas.drawRect(headerRect, headerBgPaint)
+            headerDividerPaint.strokeWidth = dp(1f)
+            canvas.drawLine(0f, headerRect.bottom, width.toFloat(), headerRect.bottom, headerDividerPaint)
 
-        // Draw Vertical dividers between suggestions
-        val divPaint = Paint().apply {
-            color = Color.parseColor("#2B2930")
-            strokeWidth = dp(1f)
-        }
-        for (i in 1..2) {
-            val divX = suggestionRects[i].left
-            canvas.drawLine(divX, dp(8f), divX, dp(HEADER_HEIGHT_DP) - dp(8f), divPaint)
-        }
-
-        // Suggestions or Live Buffer
-        val displaySuggestions = if (currentSuggestions.isNotEmpty()) {
-            currentSuggestions
-        } else if (shiftMode == ShiftMode.BASE && currentBufferText.isNotEmpty()) {
-            listOf("", "[$currentBufferText]", "")
-        } else {
-            val modeSuffix = when {
-                isEmoji -> " [Emoji]"
-                isEnglishLayout -> if (isCapsLock) " [CAPS LOCK]" else if (shiftMode == ShiftMode.CAPS_ENGLISH) " [CAPS]" else ""
-                shiftMode == ShiftMode.BASE -> ""
-                shiftMode == ShiftMode.CAPS_ENGLISH -> " [CAPS]"
-                shiftMode == ShiftMode.SMALL_ENGLISH -> " [$smallShiftSymbol]"
-                else -> ""
+            // Draw Vertical dividers between suggestions
+            val divPaint = Paint().apply {
+                color = Color.parseColor("#2B2930")
+                strokeWidth = dp(1f)
             }
-            listOf(",", "$layoutName$modeSuffix", ".")
-        }
+            for (i in 1..2) {
+                val divX = suggestionRects[i].left
+                canvas.drawLine(divX, dp(8f), divX, dp(HEADER_HEIGHT_DP) - dp(8f), divPaint)
+            }
 
-        for (i in 0 until 3.coerceAtMost(displaySuggestions.size)) {
-            val text = displaySuggestions[i]
-            if (text.isEmpty()) continue
-            val rect = suggestionRects[i]
-            val isCenter = (i == 1)
-            val p = if (isCenter) suggestionCenterTextPaint else suggestionTextPaint
-            p.textSize = if (isCenter) dp(14f) else dp(12.5f)
-            val textY = rect.centerY() - (p.descent() + p.ascent()) / 2
-            canvas.drawText(text, rect.centerX(), textY, p)
-        }
+            // Suggestions or Live Buffer
+            val displaySuggestions = if (currentSuggestions.isNotEmpty()) {
+                currentSuggestions
+            } else if (shiftMode == ShiftMode.BASE && currentBufferText.isNotEmpty()) {
+                listOf("", "[$currentBufferText]", "")
+            } else {
+                val modeSuffix = when {
+                    isEmoji -> " [Emoji]"
+                    isEnglishLayout -> if (isCapsLock) " [CAPS LOCK]" else if (shiftMode == ShiftMode.CAPS_ENGLISH) " [CAPS]" else ""
+                    shiftMode == ShiftMode.BASE -> ""
+                    shiftMode == ShiftMode.CAPS_ENGLISH -> " [CAPS]"
+                    shiftMode == ShiftMode.SMALL_ENGLISH -> " [$smallShiftSymbol]"
+                    else -> ""
+                }
+                listOf(",", "$layoutName$modeSuffix", ".")
+            }
 
-        // Header Search Icon Button (if search field)
-        if (actionKeyType == ActionKeyType.SEARCH) {
-            val chipRadius = dp(12f)
-            canvas.drawRoundRect(searchHeaderRect, chipRadius, chipRadius, chipBgPaint)
-            val sCx = searchHeaderRect.centerX()
-            val sCy = searchHeaderRect.centerY()
-            val sR = dp(4.2f)
-            iconStrokePaint.color = Color.parseColor("#A8C7FA")
-            iconStrokePaint.style = Paint.Style.STROKE
-            iconStrokePaint.strokeWidth = dp(1.8f)
-            canvas.drawCircle(sCx - dp(1.5f), sCy - dp(1.5f), sR, iconStrokePaint)
-            iconStrokePaint.strokeCap = Paint.Cap.ROUND
-            val sHandleStart = sR * 0.707f
-            canvas.drawLine(sCx - dp(1.5f) + sHandleStart, sCy - dp(1.5f) + sHandleStart, sCx + dp(5f), sCy + dp(5f), iconStrokePaint)
+            for (i in 0 until 3.coerceAtMost(displaySuggestions.size)) {
+                val text = displaySuggestions[i]
+                if (text.isEmpty()) continue
+                val rect = suggestionRects[i]
+                val isCenter = (i == 1)
+                val p = if (isCenter) suggestionCenterTextPaint else suggestionTextPaint
+                p.textSize = if (isCenter) dp(14f) else dp(12.5f)
+                val textY = rect.centerY() - (p.descent() + p.ascent()) / 2
+                canvas.drawText(text, rect.centerX(), textY, p)
+            }
+
+            // Header Search Icon Button (if search field)
+            if (actionKeyType == ActionKeyType.SEARCH) {
+                val chipRadius = dp(12f)
+                canvas.drawRoundRect(searchHeaderRect, chipRadius, chipRadius, chipBgPaint)
+                val sCx = searchHeaderRect.centerX()
+                val sCy = searchHeaderRect.centerY()
+                val sR = dp(4.2f)
+                iconStrokePaint.color = Color.parseColor("#A8C7FA")
+                iconStrokePaint.style = Paint.Style.STROKE
+                iconStrokePaint.strokeWidth = dp(1.8f)
+                canvas.drawCircle(sCx - dp(1.5f), sCy - dp(1.5f), sR, iconStrokePaint)
+                iconStrokePaint.strokeCap = Paint.Cap.ROUND
+                val sHandleStart = sR * 0.707f
+                canvas.drawLine(sCx - dp(1.5f) + sHandleStart, sCy - dp(1.5f) + sHandleStart, sCx + dp(5f), sCy + dp(5f), iconStrokePaint)
+            }
         }
 
         // 2. Draw Keys
@@ -732,12 +744,9 @@ class KeyboardView @JvmOverloads constructor(
                     // 3rd Text (Dedicated Top-Left corner space): XML-defined LongPress / 3rd character or Number/Symbol hints
                     if (showThirdText && !isSymbols && !isEmoji && k.code.length == 1) {
                         val customBadge = engine?.getLongPressBadge(k.code[0])
-                        val thirdText = when {
-                            !isEnglishLayout -> customBadge ?: thirdTextMap[k.code.lowercase()]
-                            else -> thirdTextMap[k.code.lowercase()]
-                        }
+                        val thirdText = customBadge ?: thirdTextMap[k.code.lowercase()]
                         if (thirdText != null) {
-                            val isCustomLongPress = (!isEnglishLayout && customBadge != null)
+                            val isCustomLongPress = (customBadge != null)
                             thirdTextPaint.color = if (isCustomLongPress) Color.parseColor("#FFD54F") else Color.parseColor("#8E918F")
                             // Sizing with dedicated room: multi-char glyphs (e.g. ஸ்ரீ, க்ஷ) use 9dp so they never collide with center
                             thirdTextPaint.textSize = if (isCustomLongPress && thirdText.length > 1) dp(9f) else if (isCustomLongPress) dp(10.5f) else dp(9f)
@@ -942,31 +951,29 @@ class KeyboardView @JvmOverloads constructor(
                 isDelRepeating = false
                 isLongPressTriggered = false
 
-                // Check if tapped on Suggestion Strip
-                if (event.y <= dp(HEADER_HEIGHT_DP)) {
+                // Check if tapped on Suggestion Strip (only when suggestions are enabled)
+                if (isSuggestionsEnabled && event.y <= headerRect.bottom) {
                     if (searchHeaderRect.contains(event.x, event.y) && actionKeyType == ActionKeyType.SEARCH) {
                         performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
                         listener?.onSearch()
                         return true
                     }
 
-                    if (isSuggestionsEnabled) {
-                        val displaySuggestions = if (currentSuggestions.isNotEmpty()) {
-                            currentSuggestions
-                        } else if (shiftMode == ShiftMode.BASE && currentBufferText.isNotEmpty()) {
-                            listOf("", "[$currentBufferText]", "")
-                        } else {
-                            listOf(",", "", ".")
-                        }
+                    val displaySuggestions = if (currentSuggestions.isNotEmpty()) {
+                        currentSuggestions
+                    } else if (shiftMode == ShiftMode.BASE && currentBufferText.isNotEmpty()) {
+                        listOf("", "[$currentBufferText]", "")
+                    } else {
+                        listOf(",", "", ".")
+                    }
 
-                        for (i in 0 until 3.coerceAtMost(displaySuggestions.size)) {
-                            if (suggestionRects[i].contains(event.x, event.y)) {
-                                val word = displaySuggestions[i]
-                                if (word.isNotEmpty() && !word.startsWith("[")) {
-                                    performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
-                                    listener?.onSuggestion(word)
-                                    return true
-                                }
+                    for (i in 0 until 3.coerceAtMost(displaySuggestions.size)) {
+                        if (suggestionRects[i].contains(event.x, event.y)) {
+                            val word = displaySuggestions[i]
+                            if (word.isNotEmpty() && !word.startsWith("[")) {
+                                performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+                                listener?.onSuggestion(word)
+                                return true
                             }
                         }
                     }
@@ -1046,7 +1053,31 @@ class KeyboardView @JvmOverloads constructor(
     }
 
     private fun findKeyAt(x: Float, y: Float): KeyRect? {
-        return keyRects.firstOrNull { it.rect.contains(x, y) }
+        val touchRadius = dp(15f)
+        val tLeft = x - touchRadius
+        val tTop = y - touchRadius
+        val tRight = x + touchRadius
+        val tBottom = y + touchRadius
+
+        var bestKey: KeyRect? = null
+        var maxOverlap = 0f
+
+        for (k in keyRects) {
+            val iLeft = maxOf(k.rect.left, tLeft)
+            val iRight = minOf(k.rect.right, tRight)
+            val iTop = maxOf(k.rect.top, tTop)
+            val iBottom = minOf(k.rect.bottom, tBottom)
+
+            if (iRight > iLeft && iBottom > iTop) {
+                val area = (iRight - iLeft) * (iBottom - iTop)
+                if (area > maxOverlap) {
+                    maxOverlap = area
+                    bestKey = k
+                }
+            }
+        }
+
+        return bestKey ?: keyRects.firstOrNull { it.rect.contains(x, y) }
     }
 
     private fun handleKeyAction(key: KeyRect) {

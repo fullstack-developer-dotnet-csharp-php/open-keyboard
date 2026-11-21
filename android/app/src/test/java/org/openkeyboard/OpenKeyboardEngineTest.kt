@@ -82,6 +82,8 @@ class OpenKeyboardEngineTest {
         assertEquals("ஶ்", engine.getLongPressChar('u'))
         assertEquals("ௐ", engine.getLongPressChar('i'))
         assertEquals("ஃ", engine.getLongPressChar('m'))
+        assertEquals(",", engine.getLongPressChar('.'))
+        assertEquals(",", engine.getLongPressBadge('.'))
 
         // Verify Sanskrit composition after long press:
         // Sequence for "ஜ்" is "yg"
@@ -98,5 +100,15 @@ class OpenKeyboardEngineTest {
         val res2 = engine.handleKeyPress('h')
         assertEquals(1, res2.deleteCount)
         assertEquals("ஜா", res2.insertText)
+    }
+
+    @Test
+    fun testEnglishLongPressPeriodToComma() {
+        val stream = java.io.File("D:/Users/Siva/Desktop/open-keyboard/keymaps/English.xml").inputStream()
+        val parsed = OpenXmlParser.parse(stream, "English.xml")
+        val engine = OpenKeyboardEngine(parsed)
+
+        assertEquals(",", engine.getLongPressChar('.'))
+        assertEquals(",", engine.getLongPressBadge('.'))
     }
 }

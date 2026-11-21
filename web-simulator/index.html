@@ -600,6 +600,7 @@
     let isSymbols = false;
     let isEmoji = false;
     let isShift = false;
+    let isSuggestionsEnabled = true;
 
     const editor = document.getElementById("editor");
     const keymapSelect = document.getElementById("keymapSelect");
@@ -855,7 +856,8 @@
       "a": "@", "s": "#", "d": "$", "f": "%", "g": "&",
       "h": "-", "j": "+", "k": "(", "l": ")",
       "z": "*", "x": "\"", "c": "'", "v": ":", "b": ";",
-      "n": "!", "m": "?"
+      "n": "!", "m": "?",
+      ".": ","
     };
 
     function createKey(char) {
@@ -1042,7 +1044,64 @@
         };
         dd.appendChild(div);
       });
+
+      // Divider
+      const sep = document.createElement("div");
+      sep.style.cssText = "height:1px; background:#3F3D47; margin:4px 0;";
+      dd.appendChild(sep);
+
+      // Toggle Word Suggestions
+      const sugDiv = document.createElement("div");
+      sugDiv.className = "layout-dropdown-item";
+      sugDiv.id = "btnToggleSuggestions";
+      sugDiv.innerHTML = `<span style="width:16px; font-weight:bold;">${isSuggestionsEnabled ? "✓" : ""}</span><span>💡 Word Suggestions</span>`;
+      sugDiv.onclick = (e) => {
+        e.stopPropagation();
+        isSuggestionsEnabled = !isSuggestionsEnabled;
+        const strip = document.getElementById("suggestionStrip");
+        if (strip) strip.style.display = isSuggestionsEnabled ? "flex" : "none";
+        dd.style.display = "none";
+      };
+      dd.appendChild(sugDiv);
     }
+
+    // Multi-key touch/click area overlap resolver:
+    // If pressed between multiple keys or in margin/gap, whichever key has more area is taken
+    function getBestKeyByOverlap(clientX, clientY, radius = 20) {
+      const allKeys = keyboardBody.querySelectorAll(".gboard-key");
+      let bestKey = null;
+      let maxArea = 0;
+      const tLeft = clientX - radius;
+      const tRight = clientX + radius;
+      const tTop = clientY - radius;
+      const tBottom = clientY + radius;
+
+      allKeys.forEach(k => {
+        const r = k.getBoundingClientRect();
+        const iLeft = Math.max(r.left, tLeft);
+        const iRight = Math.min(r.right, tRight);
+        const iTop = Math.max(r.top, tTop);
+        const iBottom = Math.min(r.bottom, tBottom);
+        if (iRight > iLeft && iBottom > iTop) {
+          const area = (iRight - iLeft) * (iBottom - iTop);
+          if (area > maxArea) {
+            maxArea = area;
+            bestKey = k;
+          }
+        }
+      });
+      return bestKey;
+    }
+
+    keyboardBody.addEventListener("click", (e) => {
+      // If clicked between keys on the row or body margin, select key with highest overlap
+      if (!e.target.closest(".gboard-key")) {
+        const best = getBestKeyByOverlap(e.clientX, e.clientY);
+        if (best) {
+          best.click();
+        }
+      }
+    });
 
     document.addEventListener("click", (e) => {
       const dd = document.getElementById("layoutDropdown");

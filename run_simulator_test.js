@@ -104,6 +104,19 @@ async function typeKeySequence(page, keys) {
   console.log('English shift label after unlocking (expected ⇧):', shiftLabel);
   if (shiftLabel !== '⇧') throw new Error(`Expected '⇧', got '${shiftLabel}'`);
 
+  // Test 1c: English long-press period (.) -> comma (,)
+  await page.click('#btnClear');
+  const dotKeyLoc = page.locator(`.gboard-row:nth-child(4) .gboard-key:has(.key-main-text:text-is("."))`);
+  const dotBox = await dotKeyLoc.boundingBox();
+  await page.mouse.move(dotBox.x + dotBox.width / 2, dotBox.y + dotBox.height / 2);
+  await page.mouse.down();
+  await page.waitForTimeout(450);
+  await page.mouse.up();
+  await page.waitForTimeout(100);
+  curEng = await page.inputValue('#editor');
+  console.log('English long-press . ->', curEng, '(expected ,)');
+  if (curEng !== ',') throw new Error(`Expected ',', got '${curEng}'`);
+
   await page.screenshot({ path: path.join(artDir, 'test_1_english_default.png') });
 
   // 2. Tamil 26 Layout Test
@@ -206,6 +219,19 @@ async function typeKeySequence(page, keys) {
   console.log('Tamil 26: httj + longpress r ->', cur, `(expected ${beforeLongPress}ஷ்)`);
   if (cur !== beforeLongPress + 'ஷ்') throw new Error(`Expected '${beforeLongPress}ஷ்', got '${cur}'`);
 
+  // Verify Tamil 26 long-press period (.) -> comma (,)
+  await page.click('#btnClear');
+  const dotKeyLocTam = page.locator(`.gboard-row:nth-child(4) .gboard-key:has(.key-main-text:text-is("."))`);
+  const dotBoxTam = await dotKeyLocTam.boundingBox();
+  await page.mouse.move(dotBoxTam.x + dotBoxTam.width / 2, dotBoxTam.y + dotBoxTam.height / 2);
+  await page.mouse.down();
+  await page.waitForTimeout(450);
+  await page.mouse.up();
+  await page.waitForTimeout(100);
+  const curTamDot = await page.inputValue('#editor');
+  console.log('Tamil 26 long-press . ->', curTamDot, '(expected ,)');
+  if (curTamDot !== ',') throw new Error(`Expected ',', got '${curTamDot}'`);
+
   // Shift + A in Tamil 26 -> English 'A'
   await page.click('#btnClear');
   await page.evaluate(() => {
@@ -257,6 +283,62 @@ async function typeKeySequence(page, keys) {
     renderGboard();
   });
   console.log('✓ Verified Shift + A/S/D/F/Z/X/C/V strictly type standard uppercase English in Tamil 26!');
+
+  // Verify Word Suggestion Bar Toggle
+  console.log('\n4. Verifying: Word Suggestion Bar Hidden when turned off');
+  const langKey = page.locator('.gboard-key.special.compact:has-text("🔄")');
+  await langKey.click();
+  await page.waitForTimeout(100);
+  const toggleSugBtn = page.locator('#btnToggleSuggestions');
+  await toggleSugBtn.click();
+  await page.waitForTimeout(100);
+
+  const isHidden = await page.$eval('#suggestionStrip', el => window.getComputedStyle(el).display === 'none');
+  console.log('Suggestion strip display is none? (expected true):', isHidden);
+  if (!isHidden) throw new Error('Expected suggestion strip to be hidden when toggled off!');
+  console.log('✓ Verified suggestion bar is completely hidden when turned off');
+
+  // Toggle back on
+  await langKey.click();
+  await page.waitForTimeout(100);
+  await toggleSugBtn.click();
+  await page.waitForTimeout(100);
+  const isShown = await page.$eval('#suggestionStrip', el => window.getComputedStyle(el).display === 'flex');
+  console.log('Suggestion strip restored? (expected true):', isShown);
+  if (!isShown) throw new Error('Expected suggestion strip to be restored when toggled back on!');
+
+  // Verify Multi-key Overlap Area Selection
+  console.log('\n5. Verifying: Multi-key touch overlap area weighting');
+  await page.click('#btnClear');
+  const gBox = await page.locator('.gboard-key:has(.key-hint-badge:text-is("g")), .gboard-key:has(.key-main-text:text-is("g"))').first().boundingBox();
+  const hBox = await page.locator('.gboard-key:has(.key-hint-badge:text-is("h")), .gboard-key:has(.key-main-text:text-is("h"))').first().boundingBox();
+  // Click in the gap between G and H, biased towards H
+  const midX = (gBox.x + gBox.width + hBox.x) / 2;
+  const biasedH_X = midX + 1.5; // closer to H
+  const midY = (gBox.y + gBox.height / 2);
+  await page.mouse.click(biasedH_X, midY);
+  await page.waitForTimeout(100);
+  let overlapOutput = await page.inputValue('#editor');
+  console.log(`Click between G & H biased toward H produced -> ${overlapOutput}`);
+  // In Tamil 26, 'h' produces 'அ'
+  const isExpectedH = (overlapOutput === 'அ' || overlapOutput === 'h');
+  if (!isExpectedH) throw new Error(`Expected overlap weighting to pick 'h'/'அ', got '${overlapOutput}'`);
+  console.log('✓ Verified multi-key area weighting correctly selects the key with largest contact area!');
+
+  // Verify Long Press Period . to Comma ,
+  console.log('\n6. Verifying: Long-press period . outputs comma ,');
+  await page.click('#btnClear');
+  const dotKey = page.locator('.gboard-row:nth-child(4) .gboard-key:has(.key-main-text:text-is("."))').first();
+  const dotBoxEnd = await dotKey.boundingBox();
+  await page.mouse.move(dotBoxEnd.x + dotBoxEnd.width / 2, dotBoxEnd.y + dotBoxEnd.height / 2);
+  await page.mouse.down();
+  await page.waitForTimeout(450);
+  await page.mouse.up();
+  await page.waitForTimeout(100);
+  const commaOut = await page.inputValue('#editor');
+  console.log('Long-press period output ->', commaOut, '(expected ,)');
+  if (commaOut !== ',') throw new Error(`Expected ',', got '${commaOut}'`);
+  console.log('✓ Verified long-press period successfully outputs comma!');
 
   await page.screenshot({ path: path.join(artDir, 'test_tamil26_only_verified.png') });
   console.log('Saved test_tamil26_only_verified.png');
