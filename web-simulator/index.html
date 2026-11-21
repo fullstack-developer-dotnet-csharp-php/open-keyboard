@@ -593,6 +593,10 @@
     let currentParsed = null;
     let engine = null;
     let shiftMode = 'BASE'; // 'BASE', 'CAPS_ENGLISH', 'SMALL_ENGLISH'
+    let isCapsLock = false;
+    let lastShiftTapTime = 0;
+    let shiftTimer = null;
+    let shiftLongPressed = false;
     let isSymbols = false;
     let isEmoji = false;
     let isShift = false;
@@ -683,20 +687,55 @@
       if (isSymbols || isEmoji) {
         shiftLabel = "ABC";
       } else if (isEnglish) {
-        shiftLabel = (shiftMode === 'CAPS_ENGLISH') ? "▲" : "⇧";
+        if (isCapsLock) shiftLabel = "⇪";
+        else shiftLabel = (shiftMode === 'CAPS_ENGLISH') ? "▲" : "⇧";
       } else {
         if (shiftMode === 'BASE') shiftLabel = "⇧";
         else if (shiftMode === 'CAPS_ENGLISH') shiftLabel = "▲";
         else if (shiftMode === 'SMALL_ENGLISH') shiftLabel = "★";
       }
       shiftKey.textContent = shiftLabel;
-      shiftKey.onclick = () => { 
+
+      const onShiftDown = () => {
+        shiftLongPressed = false;
+        if (isEnglish) {
+          clearTimeout(shiftTimer);
+          shiftTimer = setTimeout(() => {
+            shiftLongPressed = true;
+            isCapsLock = true;
+            shiftMode = 'CAPS_ENGLISH';
+            renderGboard();
+          }, 400);
+        }
+      };
+      const onShiftUp = () => {
+        clearTimeout(shiftTimer);
+        if (shiftLongPressed) {
+          shiftLongPressed = false;
+          return;
+        }
         if (isEmoji) isEmoji = false;
         else if (isSymbols) isSymbols = false; 
         else {
           if (isEnglish) {
-            shiftMode = (shiftMode === 'CAPS_ENGLISH') ? 'BASE' : 'CAPS_ENGLISH';
+            if (isCapsLock) {
+              isCapsLock = false;
+              shiftMode = 'BASE';
+            } else if (shiftMode === 'CAPS_ENGLISH') {
+              shiftMode = 'BASE';
+            } else {
+              const now = Date.now();
+              if (now - lastShiftTapTime < 350) {
+                isCapsLock = true;
+                shiftMode = 'CAPS_ENGLISH';
+              } else {
+                isCapsLock = false;
+                shiftMode = 'CAPS_ENGLISH';
+              }
+              lastShiftTapTime = now;
+            }
           } else {
+            isCapsLock = false;
             if (shiftMode === 'BASE') shiftMode = 'CAPS_ENGLISH';
             else if (shiftMode === 'CAPS_ENGLISH') shiftMode = 'SMALL_ENGLISH';
             else shiftMode = 'BASE';
@@ -704,6 +743,10 @@
         }
         renderGboard(); 
       };
+      shiftKey.onmousedown = onShiftDown;
+      shiftKey.onmouseup = onShiftUp;
+      shiftKey.ontouchstart = onShiftDown;
+      shiftKey.ontouchend = onShiftUp;
       r3Div.appendChild(shiftKey);
 
       const r3 = isEmoji ? emojiRow3 : (isSymbols ? symRow3 : row3Chars);
@@ -786,7 +829,7 @@
       const spaceKey = document.createElement("div");
       spaceKey.className = "gboard-key space";
       const displayLayout = isEmoji ? "Emojis 😊" :
-        (isEnglish ? (shiftMode === 'CAPS_ENGLISH' ? "English (CAPS)" : "English") :
+        (isEnglish ? (isCapsLock ? "English (CAPS LOCK)" : (shiftMode === 'CAPS_ENGLISH' ? "English (CAPS)" : "English")) :
         (shiftMode === 'CAPS_ENGLISH' ? "English (CAPS)" :
         (shiftMode === 'SMALL_ENGLISH' ? "English (★)" : currentParsed.keyboard)));
       spaceKey.textContent = displayLayout;
@@ -908,7 +951,17 @@
 
     function applyChar(ch) {
       const isEnglish = (currentParsed && (currentParsed.language === "English" || currentParsed.keyboard === "English"));
-      if (isEmoji || isEnglish || shiftMode === 'CAPS_ENGLISH' || shiftMode === 'SMALL_ENGLISH') {
+      if (isEnglish) {
+        if (engine) engine.reset();
+        insertText(0, ch);
+        lblBuffer.textContent = "";
+        if (shiftMode === 'CAPS_ENGLISH' && !isCapsLock) {
+          shiftMode = 'BASE';
+          renderGboard();
+        }
+        return;
+      }
+      if (isEmoji || shiftMode === 'CAPS_ENGLISH' || shiftMode === 'SMALL_ENGLISH') {
         if (engine) engine.reset();
         insertText(0, ch);
         lblBuffer.textContent = "";

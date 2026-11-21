@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.*
 import android.os.Handler
 import android.os.Looper
+import android.os.SystemClock
 import android.util.AttributeSet
 import android.view.HapticFeedbackConstants
 import android.view.MotionEvent
@@ -93,11 +94,14 @@ class KeyboardView @JvmOverloads constructor(
     // Non-English layouts: 3-Stage cycle (BASE -> CAPS_ENGLISH -> SMALL_ENGLISH ★ -> BASE)
     enum class ShiftMode {
         BASE,           // Normal native / lowercase English mode
-        CAPS_ENGLISH,   // 1st press: CAPS English (A, B, C...)
-        SMALL_ENGLISH   // 2nd press: small English (a, b, c...) with star symbol
+        CAPS_ENGLISH,   // CAPS English (A, B, C...)
+        SMALL_ENGLISH   // Small English (a, b, c...) with star symbol
     }
 
     var shiftMode = ShiftMode.BASE
+        private set
+
+    var isCapsLock: Boolean = false
         private set
 
     // Gboard Action Key Types (Enter vs Search vs Go vs Send etc.)
@@ -222,6 +226,7 @@ class KeyboardView @JvmOverloads constructor(
     private val keyHandler = Handler(Looper.getMainLooper())
     private var isDelRepeating = false
     private var isLongPressTriggered = false
+    private var lastShiftTapTime = 0L
     private var downX = 0f
     private var downY = 0f
 
@@ -243,7 +248,14 @@ class KeyboardView @JvmOverloads constructor(
 
     private val keyLongPressRunnable = Runnable {
         pressedKey?.let { pk ->
-            if (pk.type == KeyType.NORMAL && pk.code.length == 1) {
+            if (pk.type == KeyType.SHIFT && isEnglishLayout) {
+                isLongPressTriggered = true
+                performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+                isCapsLock = true
+                shiftMode = ShiftMode.CAPS_ENGLISH
+                computeKeyLayout()
+                invalidate()
+            } else if (pk.type == KeyType.NORMAL && pk.code.length == 1) {
                 val sanskrit = engine?.getLongPressChar(pk.code[0])
                 val longChar = when {
                     !isEnglishLayout -> {
@@ -347,8 +359,24 @@ class KeyboardView @JvmOverloads constructor(
         if (isDropdownOpen) isDropdownOpen = false
         if (isEmoji) isEmoji = false
         if (isEnglishLayout) {
-            shiftMode = if (shiftMode == ShiftMode.CAPS_ENGLISH) ShiftMode.BASE else ShiftMode.CAPS_ENGLISH
+            if (isCapsLock) {
+                isCapsLock = false
+                shiftMode = ShiftMode.BASE
+            } else if (shiftMode == ShiftMode.CAPS_ENGLISH) {
+                shiftMode = ShiftMode.BASE
+            } else {
+                val now = SystemClock.uptimeMillis()
+                if (now - lastShiftTapTime < 350) {
+                    isCapsLock = true
+                    shiftMode = ShiftMode.CAPS_ENGLISH
+                } else {
+                    isCapsLock = false
+                    shiftMode = ShiftMode.CAPS_ENGLISH
+                }
+                lastShiftTapTime = now
+            }
         } else {
+            isCapsLock = false
             shiftMode = when (shiftMode) {
                 ShiftMode.BASE -> ShiftMode.CAPS_ENGLISH
                 ShiftMode.CAPS_ENGLISH -> ShiftMode.SMALL_ENGLISH
@@ -361,6 +389,7 @@ class KeyboardView @JvmOverloads constructor(
 
     fun resetShift() {
         shiftMode = ShiftMode.BASE
+        isCapsLock = false
         isEmoji = false
         isSymbols = false
         isDropdownOpen = false
@@ -461,7 +490,9 @@ class KeyboardView @JvmOverloads constructor(
             keyRects.add(KeyRect(shiftKeyRect, "ABC", "ABC", KeyType.SYM))
         } else {
             val shiftLabel = if (isEnglishLayout) {
-                if (shiftMode == ShiftMode.CAPS_ENGLISH) "\u25B2" else "\u21E7" // ▲ (CAPS) or ⇧ (lowercase)
+                if (isCapsLock) "\u21EA" // ⇪ (CAPS LOCK)
+                else if (shiftMode == ShiftMode.CAPS_ENGLISH) "\u25B2" // ▲ (Single Caps)
+                else "\u21E7" // ⇧ (lowercase)
             } else {
                 when (shiftMode) {
                     ShiftMode.BASE -> "\u21E7"          // ⇧
@@ -559,7 +590,7 @@ class KeyboardView @JvmOverloads constructor(
         } else {
             val modeSuffix = when {
                 isEmoji -> " [Emoji]"
-                isEnglishLayout -> if (shiftMode == ShiftMode.CAPS_ENGLISH) " [CAPS]" else ""
+                isEnglishLayout -> if (isCapsLock) " [CAPS LOCK]" else if (shiftMode == ShiftMode.CAPS_ENGLISH) " [CAPS]" else ""
                 shiftMode == ShiftMode.BASE -> ""
                 shiftMode == ShiftMode.CAPS_ENGLISH -> " [CAPS]"
                 shiftMode == ShiftMode.SMALL_ENGLISH -> " [$smallShiftSymbol]"
@@ -639,7 +670,7 @@ class KeyboardView @JvmOverloads constructor(
                     val y = k.rect.centerY() - (spaceSubTextPaint.descent() + spaceSubTextPaint.ascent()) / 2
                     val displayLayout = when {
                         isEmoji -> "Emojis 😊"
-                        isEnglishLayout -> if (shiftMode == ShiftMode.CAPS_ENGLISH) "English (CAPS)" else "English"
+                        isEnglishLayout -> if (isCapsLock) "English (CAPS LOCK)" else if (shiftMode == ShiftMode.CAPS_ENGLISH) "English (CAPS)" else "English"
                         shiftMode == ShiftMode.BASE -> layoutName
                         shiftMode == ShiftMode.CAPS_ENGLISH -> "English (CAPS)"
                         shiftMode == ShiftMode.SMALL_ENGLISH -> "English ($smallShiftSymbol)"
@@ -957,6 +988,9 @@ class KeyboardView @JvmOverloads constructor(
                     } else if (key.type == KeyType.NORMAL && key.code.length == 1) {
                         // Start long-press timer for Sanskrit / Number / Symbol hints
                         keyHandler.postDelayed(keyLongPressRunnable, 400)
+                    } else if (key.type == KeyType.SHIFT && isEnglishLayout) {
+                        // Start long-press timer for Caps Lock in English
+                        keyHandler.postDelayed(keyLongPressRunnable, 400)
                     }
 
                     invalidate()
@@ -1042,6 +1076,12 @@ class KeyboardView @JvmOverloads constructor(
                 } else if (isEnglishLayout) {
                     val out = if (shiftMode == ShiftMode.CAPS_ENGLISH) key.code.uppercase() else key.code.lowercase()
                     listener?.onKeyText(out)
+                    if (shiftMode == ShiftMode.CAPS_ENGLISH && !isCapsLock) {
+                        // Single caps: auto-revert to lowercase BASE after typing 1 letter
+                        shiftMode = ShiftMode.BASE
+                        computeKeyLayout()
+                        invalidate()
+                    }
                 } else {
                     when (shiftMode) {
                         ShiftMode.CAPS_ENGLISH -> listener?.onKeyText(key.code.uppercase())

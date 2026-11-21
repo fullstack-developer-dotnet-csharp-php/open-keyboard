@@ -41,6 +41,69 @@ async function typeKeySequence(page, keys) {
   console.log('Q 3rd text hint in English (expected 1):', thirdTextQ);
   if (thirdTextQ !== '1') throw new Error(`Expected '1', got '${thirdTextQ}'`);
 
+  // Test 1a: English single tap Shift -> Single Caps (types 1 capital, then auto-reverts to lowercase)
+  await page.click('#btnClear');
+  // Single click shift
+  const shiftKeyLoc = page.locator('.gboard-key.special.shift');
+  await shiftKeyLoc.click();
+  await page.waitForTimeout(100);
+  let shiftLabel = await shiftKeyLoc.textContent();
+  console.log('English single-tap shift label (expected ▲):', shiftLabel);
+  if (shiftLabel !== '▲') throw new Error(`Expected '▲', got '${shiftLabel}'`);
+
+  // Type 'h' -> should produce 'H'
+  const hKeyLoc = page.locator(`.gboard-key:has(.key-hint-badge:text-is("h")), .gboard-key:has(.key-main-text:text-is("H"))`).first();
+  await hKeyLoc.click();
+  await page.waitForTimeout(100);
+  let curEng = await page.inputValue('#editor');
+  console.log('English typed first letter with single caps ->', curEng, '(expected H)');
+  if (curEng !== 'H') throw new Error(`Expected 'H', got '${curEng}'`);
+
+  // Check shift mode after 1 letter -> should have auto-reverted to lowercase BASE ('⇧')
+  shiftLabel = await shiftKeyLoc.textContent();
+  console.log('English shift label after 1 letter (expected ⇧):', shiftLabel);
+  if (shiftLabel !== '⇧') throw new Error(`Expected '⇧', got '${shiftLabel}'`);
+
+  // Type 'e' -> should produce lowercase 'e' (total "He")
+  const eKeyLoc = page.locator(`.gboard-key:has(.key-hint-badge:text-is("e")), .gboard-key:has(.key-main-text:text-is("e"))`).first();
+  await eKeyLoc.click();
+  await page.waitForTimeout(100);
+  curEng = await page.inputValue('#editor');
+  console.log('English typed second letter after auto-revert ->', curEng, '(expected He)');
+  if (curEng !== 'He') throw new Error(`Expected 'He', got '${curEng}'`);
+
+  // Test 1b: English long-press Shift -> Caps Lock (stays in uppercase for all letters)
+  await page.click('#btnClear');
+  // Long press shift (mousedown for 500ms)
+  const shiftBox = await shiftKeyLoc.boundingBox();
+  await page.mouse.move(shiftBox.x + shiftBox.width / 2, shiftBox.y + shiftBox.height / 2);
+  await page.mouse.down();
+  await page.waitForTimeout(450);
+  await page.mouse.up();
+  await page.waitForTimeout(100);
+
+  shiftLabel = await shiftKeyLoc.textContent();
+  console.log('English long-press shift label (expected ⇪):', shiftLabel);
+  if (shiftLabel !== '⇪') throw new Error(`Expected '⇪', got '${shiftLabel}'`);
+
+  // In Caps Lock, type 'h', then 'e' -> both uppercase "HE"
+  const hKeyLocCap = page.locator(`.gboard-key:has(.key-main-text:text-is("H"))`).first();
+  const eKeyLocCap = page.locator(`.gboard-key:has(.key-main-text:text-is("E"))`).first();
+  await hKeyLocCap.click();
+  await page.waitForTimeout(100);
+  await eKeyLocCap.click();
+  await page.waitForTimeout(100);
+  curEng = await page.inputValue('#editor');
+  console.log('English typed under Caps Lock ->', curEng, '(expected HE)');
+  if (curEng !== 'HE') throw new Error(`Expected 'HE', got '${curEng}'`);
+
+  // Tap Shift to unlock Caps Lock
+  await shiftKeyLoc.click();
+  await page.waitForTimeout(100);
+  shiftLabel = await shiftKeyLoc.textContent();
+  console.log('English shift label after unlocking (expected ⇧):', shiftLabel);
+  if (shiftLabel !== '⇧') throw new Error(`Expected '⇧', got '${shiftLabel}'`);
+
   await page.screenshot({ path: path.join(artDir, 'test_1_english_default.png') });
 
   // 2. Tamil 26 Layout Test
@@ -129,6 +192,19 @@ async function typeKeySequence(page, keys) {
   cur = await page.inputValue('#editor');
   console.log('Tamil 26 long-press Sanskrit y + h ->', cur, '(expected ஜ)');
   if (cur !== 'ஜ') throw new Error(`Expected 'ஜ', got '${cur}'`);
+
+  // Verify typing 'httj' then long-press 'r' (ஷ்) does NOT delete previously typed text!
+  await page.click('#btnClear');
+  await typeKeySequence(page, ['h', 't', 't', 'j']);
+  cur = await page.inputValue('#editor');
+  console.log('Tamil 26: httj ->', cur);
+  const beforeLongPress = cur;
+  await page.evaluate(() => {
+    applyChar('ஷ்');
+  });
+  cur = await page.inputValue('#editor');
+  console.log('Tamil 26: httj + longpress r ->', cur, `(expected ${beforeLongPress}ஷ்)`);
+  if (cur !== beforeLongPress + 'ஷ்') throw new Error(`Expected '${beforeLongPress}ஷ்', got '${cur}'`);
 
   // Shift + A in Tamil 26 -> English 'A'
   await page.click('#btnClear');
